@@ -1,0 +1,28 @@
+{
+  "manifest_version": 2,
+  "name": "JK-Navigator-Too",
+  "version": "0.0.1",
+  "description": "Adds J/K (and other useful) bindings to many web pages.",
+
+  "options_page": "options/options.html",
+  "background": { "scripts": [ "background.js" ] },
+
+  "content_scripts": [ {
+   "matches": [ "<all_urls>" ],
+   "js": [ "common.js", "scroller.js", "foreground.js" ],
+   "run_at": "document_idle",
+   "all_frames": true } ],
+
+   "icons": { "16": "icons/icon-16.png",
+              "48": "icons/icon-48.png",
+             "128": "icons/icon-128.png" },
+
+   "page_action": {
+          "default_icon": {
+            "19": "icons/icon-19.png",
+            "38": "icons/icon-38.png"
+          },
+          "default_title": "Text-Aid-Too" },
+
+  "permissions": [ "storage" ]
+}

@@ -1,0 +1,123 @@
+<html>
+  <head>
+    <title>Text-Aid-Too Options</title>
+    <link rel="stylesheet" type="text/css" href="options.css">
+    <script type="text/javascript" src="common.js"></script>
+    <script type="text/javascript" src="options.js"></script>
+  </head>
+
+  <body>
+    <div id="wrapper">
+
+      <header>Text-Aid-Too Options</header>
+      <p/> <p/>
+
+      <table id="options">
+        <tr>
+          <td class="optionName">Port</td><td><input type="number" id="port" value="" /></td>
+        </tr>
+        <tr>
+          <td class="optionName">Secret</td><td><input type="text" id="secret" value="" /></td>
+        </tr>
+        <tr>
+          <td class="optionName">Keyboard shortcut</td>
+          <td>
+            <input type="checkbox" id="ctrlKey" value="false" /><code>Control</code>
+            <span id="defaultKey">[ The default is <code>Ctrl-;</code> ]</span>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <input type="checkbox" id="altKey" value="false" /><code>Alt</code>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <input type="checkbox" id="shiftKey" value="false" /><code>Shift</code>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <span id="keyCode"></span>&nbsp;<code>keyCode</code>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <input type="button" id="setKey" value="Set Key" />
+          </td>
+        </tr>
+      </table>
+
+      <br />
+      <br />
+
+      <p>
+        Server set up: <span id="statusWrapper">Server status: <span id="status">?</span></span>
+        <ul>
+          <pre id = "command"></pre>
+        </ul>
+      </p>
+
+      <p>
+        Explanation:
+        <ul>
+          <li>
+            This extension does nothing on its own; you also need to install and run the
+            <code>text-aid-too</code> server.  See the project's <a
+              href="https://github.com/smblott-github/text-aid-too#text-aid-too" target="_blank">home page</a>
+            for details.
+          </li>
+          <li>
+            There's no need to save your changes; just use <code>Escape</code> to blur the inputs above.
+            Option values are synchronised between Chrome instances.
+          </li>
+
+          <li>
+            Set <code>Port</code> to the port number used by the server.  The default is <code>9293</code>.
+          </li>
+
+          <li>
+            Set <code>Secret</code> to a secret value which you provide to the server (optional, but
+            recommended). If the server uses a
+            secret, then it ignores requests which do not include that secret.
+            See <a href="https://github.com/smblott-github/text-aid-too#security" target="_blank">here</a> for
+                                                                                  details.
+          </li>
+
+          <li>
+            The default keyboard shortcut is <code>Ctrl-;</code>, but you can set your own shortcut
+            above.
+          </li>
+
+          <li>
+            For more information, see the project's
+            <a href="https://github.com/smblott-github/text-aid-too#text-aid-too" target="_blank">home page</a>.
+            Please report issues
+            <a href="https://github.com/smblott-github/text-aid-too/issues" target="_blank">here</a>.
+          </li>
+
+          <li>
+            Version <span id="version"></span>.
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        Credits:
+        <ul>
+          <li>
+            Icon made by <a href="http://appzgear.com" title="Appzgear">Appzgear</a> from <a
+              href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed under <a
+                                             href="http://creativecommons.org/licenses/by/3.0/"
+                                             title="Creative Commons BY 3.0">CC BY 3.0</a>.
+          </li>
+        </ul>
+      </p>
+
+    </div>
+  </body>
+</html>
