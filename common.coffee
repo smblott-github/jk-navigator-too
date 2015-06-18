@@ -136,6 +136,9 @@ Common =
 
     null
 
+  isDisplayed: (element) ->
+    "none" != getComputedStyle(element).getPropertyValue "display"
+
   #
   # Bounds the rect by the current viewport dimensions. If the rect is offscreen or has a height or width < 3
   # then null is returned instead of a rect.

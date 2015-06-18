@@ -41,6 +41,8 @@ class Interface
     oldIndex = elements.indexOf @element
     newIndex = Math.max 0, Math.min elements.length - 1, oldIndex + 1
 
+    console.log oldIndex, newIndex, elements.length, (@element and newIndex == oldIndex) or not elements[newIndex]
+
     if (@element and newIndex == oldIndex) or not elements[newIndex]
       element = @element ? document.body
       amount = 50
@@ -66,6 +68,8 @@ class Interface
     for selector in Common.stringToArray @config.selectors
       try
         elements.push document.querySelectorAll(selector)...
+
+    elements = elements.filter (ele) -> Common.isDisplayed ele
 
     switch action
       when "up"
