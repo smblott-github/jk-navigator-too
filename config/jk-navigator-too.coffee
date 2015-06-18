@@ -15,6 +15,7 @@ configs.push
   name: "The Journal IE"
   regexps: "^http://www\\.thejournal\\.ie/$"
   selectors: "div.river.span-8 div.post"
+  activators: "h4 a"
 
 configs.push
   name: "La Fouly Webcam"

@@ -53,12 +53,14 @@ class Interface
     console.log oldIndex, newIndex, elements.length, (@element and newIndex == oldIndex) or not elements[newIndex]
 
     if (@element and newIndex == oldIndex) or not elements[newIndex]
+      console.log "scroll"
       element = @element ? document.body
       amount = 50
       amount *= -1 if action == "up"
       Scroller.scrollBy element, "y", amount, true
     else
       @selectElement elements[newIndex]
+      console.log "pick", @element
 
   eventToAction: do ->
     mapping =
@@ -94,6 +96,10 @@ class Interface
       duplicate = curr == prev
       prev = curr
       not duplicate
+    elements.filter (curr) ->
+      duplicate = curr == prev
+      prev = curr
+      not duplicate
 
   getPosition: (element) ->
     { top, bottom } = element.getBoundingClientRect()
@@ -113,9 +119,10 @@ class Interface
       @element.style.backgroundColor = @config.color
 
       { top, bottom } = @element.getBoundingClientRect()
-      isOffTop = top < @offset
-      isOffBottom = 0 < bottom - (window.innerHeight - @offset)
-      Scroller.scrollBy @element, "y", top - @offset if isOffTop or isOffBottom
+      isOffTop = top < @config.offset
+      isOffBottom = 0 < bottom - (window.innerHeight - @config.offset)
+      console.log "scroll?", isOffTop or isOffBottom
+      Scroller.scrollBy @element, "y", top - @config.offset if isOffTop or isOffBottom
 
   clearSelection: ->
     if @element?
