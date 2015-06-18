@@ -5,8 +5,11 @@ Common =
     defaults = []
 
     defaults.push
-      regexps: "^https?://(www.)?google.([a-z.]+)/search\\?"
+      regexps: "^https?://(www\\.)?google\\.([a-z\\.]+)/search\\?"
       selectors: [ "li.g h3.r a", "a._Eu._H2" ]
+
+    defaults.push
+      regexps: "^https://www\\.facebook\\.com/$"
 
     defaults
 

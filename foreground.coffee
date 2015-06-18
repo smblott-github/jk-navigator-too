@@ -13,21 +13,30 @@ class Interface
   onKeyDown: (event) ->
     CoreScroller.registerKeydown event
     return unless Common.isActive()
-    return unless action = @eventToAction event
-
-    event.preventDefault()
-    event.stopImmediatePropagation()
-
     return if event.repeat
+
+    action = @eventToAction event
 
     if @element
       @clearSelection() unless @getPosition(@element) == "visible"
 
-    if action == "enter" and @element
-      @activateElement @element
+    if action == "enter"
+      element =
+        if @element then @element
+        else if document.activeElement and "visible" == @getPosition document.activeElement
+          document.activeElement
 
-    else if action in [ "up", "down" ]
+      return unless element
+      @activateElement element
+
+    else if action in [ "up", "down" ] and @config.selectors
       @performUpDown action
+
+    else
+      return
+
+    event.preventDefault()
+    event.stopImmediatePropagation()
 
     false
 
@@ -65,7 +74,7 @@ class Interface
 
   getElements: (action) ->
     elements = []
-    for selector in Common.stringToArray @config.selectors
+    for selector in Common.stringToArray @config.selectors ? []
       try
         elements.push document.querySelectorAll(selector)...
 
@@ -131,7 +140,11 @@ class Interface
     if element.tagName.toLowerCase() == "a"
       activate element
     else
-      activate element.getElementsByTagName('a')[0]
+      for selector in [ "a[target=_blank]", "a" ]
+        candidate = element.querySelector selector
+        if candidate
+          activate candidate
+          return
 
 Config =
   lookup: (configs, callback) ->
