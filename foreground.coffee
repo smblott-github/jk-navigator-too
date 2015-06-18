@@ -103,9 +103,9 @@ class Interface
 
   getPosition: (element) ->
     { top, bottom } = element.getBoundingClientRect()
-    if bottom <= 0
+    if top <= 0
       "above"
-    else if window.innerHeight <= top
+    else if window.innerHeight <= bottom
       "below"
     else
       "visible"
