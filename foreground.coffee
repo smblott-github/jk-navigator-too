@@ -5,18 +5,23 @@ class Interface
     @offset ?= 100
     @colour ?= "#fcc"
 
+    Scroller.init()
+    Common.installListener window, "keydown", @keyDownHandler = (event) => @onKeyDown event
+    Common.installListener window, "keyup", @KeyUpHandler = (event) => @onKeyUp event
     chrome.runtime.sendMessage name: "icon"
-    Common.installListener window, "keydown", @handler = (event) => @onKeyDown event
 
   onKeyDown: (event) ->
+    CoreScroller.registerKeydown event
     return unless Common.isActive()
     return unless action = @eventToAction event
 
-    if @element
-      @clearSelection() unless @getPosition(@element) == "visible"
-
     event.preventDefault()
     event.stopImmediatePropagation()
+
+    return if event.repeat
+
+    if @element
+      @clearSelection() unless @getPosition(@element) == "visible"
 
     if action == "enter" and @element
       @activateElement @element
@@ -26,6 +31,9 @@ class Interface
 
     false
 
+  onKeyUp: (event) ->
+    CoreScroller.registerKeyup event
+
   performUpDown: (action) ->
     elements = @getElements action
     elements.reverse() if action in [ "up" ]
@@ -33,7 +41,13 @@ class Interface
     oldIndex = elements.indexOf @element
     newIndex = Math.max 0, Math.min elements.length - 1, oldIndex + 1
 
-    @selectElement elements[newIndex]
+    if (@element and newIndex == oldIndex) or not elements[newIndex]
+      element = @element ? document.body
+      amount = 50
+      amount *= -1 if action == "up"
+      Scroller.scrollBy element, "y", amount, true
+    else
+      @selectElement elements[newIndex]
 
   eventToAction: do ->
     mapping =
@@ -92,7 +106,7 @@ class Interface
       { top, bottom } = @element.getBoundingClientRect()
       isOffTop = top < @offset
       isOffBottom = 0 < bottom - (window.innerHeight - @offset)
-      Scroller.scrollBy "y", top - @offset if isOffTop or isOffBottom
+      Scroller.scrollBy @element, "y", top - @offset if isOffTop or isOffBottom
 
   clearSelection: ->
     if @element?
@@ -131,8 +145,6 @@ Config =
     callback null
 
   init: ->
-    Scroller.init()
-
     config = new AsyncDataFetcher (callback) =>
       chrome.storage.sync.get "configs", (items) =>
         unless chrome.runtime.lastError

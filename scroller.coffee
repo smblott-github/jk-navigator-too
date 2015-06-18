@@ -118,28 +118,23 @@ checkVisibility = (element) ->
 # translated to relative scrolls.  CoreScroller is not exported.
 CoreScroller =
   init: ->
-    return
     @time = 0
     @lastEvent = null
     @keyIsDown = false
 
-    # NOTE(smblott) With extreme keyboard configurations, Chrome sometimes does not get a keyup event for
-    # every keydown, in which case tapping "j" scrolls indefinitely.  This appears to be a Chrome/OS/XOrg bug
-    # of some kind.  See #1549.
-    handlerStack.push
-      _name: 'scroller/track-key-status'
-      keydown: (event) =>
-        handlerStack.alwaysContinueBubbling =>
-          @keyIsDown = true
-          @time += 1 unless event.repeat
-          @lastEvent = event
-      keyup: =>
-        handlerStack.alwaysContinueBubbling =>
-          @keyIsDown = false
-          @time += 1
+  registerKeydown: (event) ->
+    @keyIsDown = true
+    @time += 1 unless event.repeat
+    @lastEvent = event
+    return
+
+  registerKeyup: (event = null) ->
+    @keyIsDown = false
+    @time += 1
+    return
 
   # Return true if CoreScroller would not initiate a new scroll right now.
-  wouldNotInitiateScroll: -> false # @lastEvent?.repeat and Settings.get "smoothScroll"
+  wouldNotInitiateScroll: -> @lastEvent?.repeat
 
   # Calibration fudge factors for continuous scrolling.  The calibration value starts at 1.0.  We then
   # increase it (until it exceeds @maxCalibration) if we guess that the scroll is too slow, or decrease it
@@ -152,12 +147,6 @@ CoreScroller =
   # Scroll element by a relative amount (a number) in some direction.
   scroll: (element, direction, amount, continuous = true) ->
     return unless amount
-
-    unless true # Settings.get "smoothScroll"
-      # Jump scrolling.
-      performScroll element, direction, amount
-      checkVisibility element
-      return
 
     # We don't activate new animators on keyboard repeats; rather, the most-recently activated animator
     # continues scrolling.
@@ -216,15 +205,12 @@ CoreScroller =
 # Scroller contains the two main scroll functions which are used by clients.
 Scroller =
   init: ->
-    return
-    handlerStack.push
-      _name: 'scroller/active-element'
-      DOMActivate: (event) -> handlerStack.alwaysContinueBubbling -> activatedElement = event.target
     CoreScroller.init()
 
   # scroll the active element in :direction by :amount * :factor.
   # :factor is needed because :amount can take on string values, which scrollBy converts to element dimensions.
-  scrollBy: (direction, amount, factor = 1) ->
+  scrollBy: (element, direction, amount, continuous = false) ->
+    factor = 1
     # if this is called before domReady, just use the window scroll function
     if (!document.body and amount instanceof Number)
       if (direction == "x")
@@ -233,7 +219,7 @@ Scroller =
         window.scrollBy(0, amount)
       return
 
-    activatedElement ||= (document.body and firstScrollableElement()) or document.body
+    activatedElement = element
     return unless activatedElement
 
     # Avoid the expensive scroll calculation if it will not be used.  This reduces costs during smooth,
@@ -241,7 +227,7 @@ Scroller =
     unless CoreScroller.wouldNotInitiateScroll()
       element = findScrollableElement activatedElement, direction, amount, factor
       elementAmount = factor * getDimension element, direction, amount
-      CoreScroller.scroll element, direction, elementAmount
+      CoreScroller.scroll element, direction, elementAmount, continuous
 
   scrollTo: (direction, pos) ->
     activatedElement ||= (document.body and firstScrollableElement()) or document.body
@@ -299,4 +285,5 @@ Scroller =
     CoreScroller.scroll element, "x", amount, false if amount < 0
 
 root = exports ? window
+root.CoreScroller = CoreScroller
 root.Scroller = Scroller
