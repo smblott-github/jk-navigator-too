@@ -19,7 +19,8 @@ Common.documentReady ->
           chrome.storage.sync.set obj
 
   config.use (config) ->
-    new Interface config
+    if config
+      new Interface config
 
 class Interface
   constructor: (@config) ->
@@ -27,6 +28,7 @@ class Interface
     @element = null
 
     Common.installListener window, "keydown", @handler = (event) => @onKeyDown event
+    chrome.runtime.sendMessage name: "icon"
 
   onKeyDown: (event) ->
     return unless Common.isActive()
