@@ -1,12 +1,22 @@
 
+logEvent = (event, url) ->
+  event.error ?= false
+  event.url ?= url if url
+
+  chrome.storage.local.get "log", (items) ->
+    items.log ?= []
+    items.log = items.log.reverse()[..100].reverse()
+    items.log.push event
+    chrome.storage.local.set items
+
 do ->
   forceConfigUpdate = true
 
-  chrome.storage.sync.get "configs", (items) =>
+  chrome.storage.local.get "configs", (items) =>
     unless chrome.runtime.lastError
       if forceConfigUpdate or not items.configs
         obj = {}; obj.configs = Common.defaults
-        chrome.storage.sync.set obj
+        chrome.storage.local.set obj
 
 do ->
   updateIcon = (request, sender) ->
@@ -34,7 +44,7 @@ do ->
       console.error "JSON parse error", url
       return
     obj = {}; obj.custom = json
-    chrome.storage.sync.set obj, ->
+    chrome.storage.local.set obj, ->
       if chrome.runtime.lastError
         console.error "storage error", url
       else

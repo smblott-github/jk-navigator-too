@@ -2,8 +2,8 @@
 class Interface
   constructor: (@config) ->
     @element = null
-    @offset ?= 100
-    @colour ?= "#fcc"
+    @config.offset ?= 100
+    @config.color ?= "#fcc"
 
     Scroller.init()
     Common.installListener window, "keydown", @keyDownHandler = (event) => @onKeyDown event
@@ -27,7 +27,7 @@ class Interface
           document.activeElement
 
       return unless element
-      @activateElement element
+      @activateElement element, event
 
     else if action in [ "up", "down" ] and @config.selectors
       @performUpDown action
@@ -66,11 +66,7 @@ class Interface
       "75": "up"    # "k"
       "13": "enter" # "<Enter>"
 
-    (event) ->
-      if event.ctrlKey or event.metaKey or event.shiftKey
-        null
-      else
-        mapping[event.keyCode]
+    (event) -> mapping[event.keyCode]
 
   getElements: (action) ->
     elements = []
@@ -114,7 +110,7 @@ class Interface
       @element = element
 
       @previousBackgroundColor = element.style.backgroundColor
-      @element.style.backgroundColor = @colour
+      @element.style.backgroundColor = @config.color
 
       { top, bottom } = @element.getBoundingClientRect()
       isOffTop = top < @offset
@@ -126,23 +122,23 @@ class Interface
       @element.style.backgroundColor = @previousBackgroundColor
       @element = null
 
-  activateElement: (element) ->
+  activateElement: (element, event) ->
     activate = (ele = element) ->
       urlA = document.location.toString().split("#")[0]
       urlB = ele.href?.split("#")[0]
 
-      modifiers = {}
-      unless urlA and urlB and urlA == urlB
-        modifiers = ctrlKey: true, shiftKey: true
-
-      Common.simulateClick ele, modifiers
+      Common.simulateClick ele, event
 
     if element.tagName.toLowerCase() == "a"
       activate element
     else
-      for selector in [ "a[target=_blank]", "a" ]
-        candidate = element.querySelector selector
-        if candidate
+      selectors = [ "a[target=_blank]", "a[href~=http", "a[href~=https]", "a" ]
+      selectors = [ (Common.stringToArray @config.activators)..., selectors... ] if @config.activators
+      console.log "selectors", selectors
+      for selector in selectors
+        console.log "selector", selector
+        if candidate = element.querySelector selector
+          console.log "candidate", candidate
           activate candidate
           return
 
@@ -163,7 +159,7 @@ Config =
 
   init: ->
     config = new AsyncDataFetcher (callback) =>
-      chrome.storage.sync.get [ "configs", "custom" ], (items) =>
+      chrome.storage.local.get [ "configs", "custom" ], (items) =>
         unless chrome.runtime.lastError
           configs = items.configs ? Common.defaults
           if items.custom

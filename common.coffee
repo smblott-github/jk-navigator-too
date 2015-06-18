@@ -5,11 +5,22 @@ Common =
     defaults = []
 
     defaults.push
+      name: "Google Search"
       regexps: "^https?://(www\\.)?google\\.([a-z\\.]+)/search\\?"
-      selectors: [ "li.g h3.r a", "a._Eu._H2" ]
+      selectors: [ "li.g h3.r a", "a._eu._h2" ]
 
     defaults.push
+      # this uses the native facebook j/k bindings, but adds the ability to activate the active element on
+      # enter.
+      name: "Facebook Home Page"
       regexps: "^https://www\\.facebook\\.com/$"
+      activators: [ "div.fbstoryattachmentimage img", "a[rel=theater]" ]
+
+    # defaults.push
+    #   # this uses the native facebook j/k bindings, but adds the ability to activate the active element on
+    #   # enter.
+    #   name: "Google Plus Home Page"
+    #   regexps: "^https://plus.google.com/$"
 
     defaults
 
