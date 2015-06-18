@@ -6,15 +6,7 @@ Common =
 
     defaults.push
       regexps: "^https?://(www.)?google.([a-z.]+)/search\\?"
-      selectors: "li.g h3.r a"
-
-    defaults.push
-      regexps: "^http://www.irishtimes.com/$"
-      selectors: [ "div.story.clearfix", "div.story.index_story" ]
-
-    defaults.push
-      regexps: "http://intent-radio.smblott.org/"
-      selectors: "a"
+      selectors: [ "li.g h3.r a", "a._Eu._H2" ]
 
     defaults
 

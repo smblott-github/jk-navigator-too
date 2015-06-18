@@ -146,9 +146,11 @@ Config =
 
   init: ->
     config = new AsyncDataFetcher (callback) =>
-      chrome.storage.sync.get "configs", (items) =>
+      chrome.storage.sync.get [ "configs", "custom" ], (items) =>
         unless chrome.runtime.lastError
           configs = items.configs ? Common.defaults
+          if items.custom
+            configs = [ items.custom..., configs... ]
           @lookup configs, callback
 
     config.use (config) ->
