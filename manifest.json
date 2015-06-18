@@ -5,7 +5,7 @@
   "description": "Adds J/K (and other useful) bindings to many web pages.",
 
   "options_page": "options/options.html",
-  "background": { "scripts": [ "background.js" ] },
+  "background": { "scripts": [ "common.js", "background.js" ] },
 
   "content_scripts": [ {
    "matches": [ "<all_urls>" ],
