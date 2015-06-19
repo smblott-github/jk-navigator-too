@@ -59,6 +59,10 @@ pre, code, .code, #status {
   background: #eeeeee;
 }
 
+.network-url, #manual-text, #default-text, .network-text {
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
 #statusWrapper, #defaultKey, .float-right {
    float: right;
 }

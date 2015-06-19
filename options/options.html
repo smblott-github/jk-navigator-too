@@ -17,7 +17,7 @@
       <header>Custom Sites</header>
       <div id="manual">
         <p>
-        Insert your custom JSON below.
+        Insert your custom JSON below (this must be a list of objects).
         <span class="float-right json"><button type="submit">Save</button></span>
         </p>
 
@@ -26,9 +26,21 @@
 
       <header>Network Sites</header>
       <div id="network">
+        <template id="network-template">
+          <p>
+            URL: <span class="network-url"></span>
+            <span class="float-right">Enabled: <input class="network-enabled" type="checkbox" name="enabled"/></span>
+          </p>
+
+          <textarea class="network-text" rows="12" cols="40" readonly></textarea>
+        </template>
       </div>
 
       <header>Defaults</header>
+      <p>
+        These are built in to <i>JK-Navigator-Too</i>.
+      </p>
+
       <div id="default">
         <textarea id="default-text" rows="12" cols="40" readonly></textarea>
       </div>
