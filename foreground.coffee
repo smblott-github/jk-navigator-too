@@ -144,6 +144,7 @@ class Interface
         height: (bottom - top) + "px"
         border: "solid #827E8F"
         zIndex: zIndex
+        opacity: "0.6"
 
         "box-sizing": "border-box"
         "pointer-events": "none"
