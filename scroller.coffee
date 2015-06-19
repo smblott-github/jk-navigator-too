@@ -1,3 +1,5 @@
+# The is a hacked version of the Vimium scroller.
+
 #
 # activatedElement is different from document.activeElement -- the latter seems to be reserved mostly for
 # input elements. This mechanism allows us to decide whether to scroll a div or to scroll the whole document.
@@ -160,7 +162,7 @@ CoreScroller =
     amount = Math.abs amount
 
     # Initial intended scroll duration (in ms). We allow a bit longer for longer scrolls.
-    duration = Math.max 100, 20 * Math.log amount
+    duration = Math.max 200, 20 * Math.log amount
 
     totalDelta = 0
     totalElapsed = 0.0
