@@ -39,11 +39,11 @@ Common =
         "border-color": "#3b5998"
         opacity: "0.2"
 
-    # This matches all pages.
-    # With no selectors, the page smooth scrolls on "j" and "k".
-    defaults.push
-      name: "Generic J/K Scrolling"
-      regexps: "."
+    # # This matches all pages.
+    # # With no selectors, the page smooth scrolls on "j" and "k".
+    # defaults.push
+    #   name: "Generic J/K Scrolling"
+    #   regexps: "."
 
     defaults
 
