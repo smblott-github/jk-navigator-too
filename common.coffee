@@ -8,14 +8,26 @@ Common =
       name: "Google Search"
       regexps: "^https?://(www\\.)?google\\.([a-z\\.]+)/search\\?"
       selectors: [ "li.g", "a._eu._h2" ]
+      offset: "50"
       # selectors: [ "li.g h3.r a", "a._eu._h2" ]
+
+    # FIXME. On "k", this highlights unwanted elements.
+    defaults.push
+      name: "DuckDuckGo Search"
+      regexps: "^https://duckduckgo\\.com/\\?q="
+      selectors: [ "div#links div.result__body", "div.c-info > div" ]
+      offset: "50"
+      style:
+        "z-index": 2000000000
 
     defaults.push
       # this uses the native facebook j/k bindings, but adds the ability to activate the active element on
       # enter.
       name: "Facebook Home Page"
       regexps: "^https://www\\.facebook\\.com/$"
+      activeSelector: 'div[tabindex="0"][data-timestamp]'
       activators: [ "div.fbstoryattachmentimage img", "a[rel=theater]" ]
+      nativeJK: true
 
     # defaults.push
     #   # this uses the native facebook j/k bindings, but adds the ability to activate the active element on
@@ -153,6 +165,11 @@ Common =
 
   isDisplayed: (element) ->
     "none" != getComputedStyle(element).getPropertyValue "display"
+
+  isInViewport: (element) ->
+    { top, bottom } = element.getBoundingClientRect()
+    offScreen = bottom <= 0 or window.innerHeight <= top
+    not offScreen
 
   #
   # Bounds the rect by the current viewport dimensions. If the rect is offscreen or has a height or width < 3

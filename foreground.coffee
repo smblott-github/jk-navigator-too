@@ -7,8 +7,7 @@ class Interface
     @element = null
 
     @config.offset ?= 100
-    @config.color ?= "#827E8F"
-    @config.border ?= false
+    @config.nativeJK ?= false
 
     if @debug.config
       console.log @config.name
@@ -26,20 +25,18 @@ class Interface
     return if event.repeat
 
     action = @eventToAction event
-
-    if @element
-      @clearSelection() unless @getPosition(@element) == "visible"
+    console.log "action:", action if action
 
     if action == "enter"
-      element =
-        if @element then @element
-        else if document.activeElement and "visible" == @getPosition document.activeElement
-          document.activeElement
-
+      element = @element ? document.activateElement
+      element = document.querySelector @config.activeSelector if not element and @config.activeSelector
       return unless element
+      return unless Common.isInViewport element
+
       @activateElement element, event
 
     else if action in [ "up", "down" ] and @config.selectors
+      return if @config.nativeJK
       @performUpDown action
 
     else
@@ -134,6 +131,7 @@ class Interface
           "" + (1 + parseInt index)
         else if index == "auto"
           "auto"
+          element.childNodes.length * 2
         else
           "2000000000"
 
@@ -144,11 +142,13 @@ class Interface
         top: (window.scrollY + top) + "px"
         width: (right - left) + "px"
         height: (bottom - top) + "px"
-        border: "solid #{@config.color}"
+        border: "solid #827E8F"
         zIndex: zIndex
 
         "box-sizing": "border-box"
         "pointer-events": "none"
+
+      Common.extend @overlay.style, @config.style if @config.style
 
       { top, bottom } = @element.getBoundingClientRect()
       isOffTop = top < @config.offset
@@ -183,7 +183,6 @@ Config =
     for config in configs
       try
         for regexp in Common.stringToArray config.regexps
-          console.log url, regexp
           if (new RegExp regexp).test url
             callback config
             return
