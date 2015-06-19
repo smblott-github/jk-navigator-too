@@ -1,8 +1,30 @@
+# Requires GNU make.
 
-install: jk-navigator-too.txt
-	rsync $< desktop:/home/www/smblott.org/static
-	rsync $< desktop:/home/www/smblott.org
+# It can be easier to write JSON by building the relevant objects in
+# Javascript/CoffeeScript then writing them out.  This Makefile helps to
+# automate that process.  It also uploads the resulting files to a web server.
+
+# Set target to an rsync-accessible target directory.
+target ?= desktop:/home/www/smblott.org
+
+js = $(wildcard *.js)
+cs = $(wildcard *.coffee)
+
+install: $(js:.js=.txt) $(cs:.coffee=.txt)
+	rsync $? $(target)
+
+auto:
+	# For "entr", see http://entrproject.org/.
+	@ls $(cs) $(js) | entr $(MAKE) --no-print-directory auto-install
+
+auto-install:
+	@date
+	@$(MAKE) --no-print-directory install
 
 %.txt: %.coffee
 	coffee $< > $@
 
+%.txt: %.js
+	node $< > $@
+
+.PHONY: install auto auto-install

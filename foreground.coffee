@@ -65,6 +65,15 @@ class Interface
       amount *= -1 if action == "up"
       Scroller.scrollBy element, "y", amount, true
     else
+      # Sometimes, we just scroll to the previously selected element, which feels better from a UX
+      # perspective.
+      if @element and newIndex != oldIndex
+        { top, bottom } = @element.getBoundingClientRect()
+        if action == "up" and top < 0
+          newIndex = oldIndex
+        else if action == "down" and @config.offset < top and innerHeight < bottom
+          newIndex = oldIndex
+
       @selectElement elements[newIndex]
 
   eventToAction: do ->
@@ -110,7 +119,7 @@ class Interface
     { top, bottom } = element.getBoundingClientRect()
     if top <= 0
       "above"
-    else if window.innerHeight <= bottom
+    else if innerHeight <= bottom
       "below"
     else
       "visible"
@@ -153,7 +162,7 @@ class Interface
 
       { top, bottom } = @element.getBoundingClientRect()
       isOffTop = top < @config.offset
-      isOffBottom = 0 < bottom - (window.innerHeight - @config.offset)
+      isOffBottom = 0 < bottom - (innerHeight - @config.offset)
       Scroller.scrollBy @element, "y", top - @config.offset # if isOffTop or isOffBottom
 
   clearSelection: ->

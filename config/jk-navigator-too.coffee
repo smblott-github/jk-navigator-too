@@ -7,21 +7,25 @@ configs.push
   selectors: "ol.item-section > li"
 
 configs.push
-  name: "Irish Times Article"
-  regexps: "^http://www\\.irishtimes\\.com/."
-  selectors: 'section[property="articleBody"] > p'
-
-configs.push
   name: "Irish Times Home Page"
   regexps: "^http://www\\.irishtimes\\.com/$"
   selectors: [
-    "div#content_left_upper div.homepagetopspot"
-    "div#content_left_upper div.story.clearfix"
-    "div#content_left_upper div.story.index_story"
-    "div#content_left_upper div.feature_box"
-    "div#content_left_upper row.section.news-package.news"
-    "div#content_left_upper div.firstrow div.story"
+    "div#content_left_upper div.story"
+    "div#content_left div.story"
+    # "div#content_left_upper div.story.clearfix"
+    # "div#content_left_upper div.story.index_story"
+    # "div#content_left div.feature_box"
+    # "div#content_left div.business.story"
+    # "div#content_left_upper row.section.news-package.news"
+    # "div#content_left_upper div.firstrow div.story"
   ]
+
+configs.push
+  name: "Irish Times Article"
+  regexps: "^http://www\\.irishtimes\\.com/."
+  selectors: 'section[property="articleBody"] > p'
+  style:
+    opacity: "0.2"
 
 configs.push
   name: "Intent Radio"
