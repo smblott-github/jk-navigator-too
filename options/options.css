@@ -59,6 +59,10 @@ pre, code, .code, #status {
   background: #eeeeee;
 }
 
-#statusWrapper, #defaultKey {
+#statusWrapper, #defaultKey, .float-right {
    float: right;
+}
+
+textarea:read-only {
+   background-color: #e3e3e3;
 }

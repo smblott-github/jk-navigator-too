@@ -202,6 +202,7 @@ class Interface
     catch
       console.error "bad CSS selector: #{selector}"
       if all then [] else null
+
 Config =
   lookup: (configs, callback) ->
     url = document.location.toString()
@@ -220,12 +221,12 @@ Config =
 
   init: ->
     config = new AsyncDataFetcher (callback) =>
-      chrome.storage.local.get [ "configs", "custom" ], (items) =>
-        unless chrome.runtime.lastError
-          configs = items.configs ? Common.defaults
-          if items.custom
-            configs = [ items.custom..., configs... ]
-          @lookup configs, callback
+      chrome.storage.sync.get null, (items) =>
+        configs = []
+        networkKeys = items.network.map (url) => Common.getObjKey url
+        for key in [ "manual", networkKeys..., "default" ]
+          configs.push items[key]...  if items[key]
+        @lookup configs, callback
 
     config.use (config) ->
       new Interface config if config

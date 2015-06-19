@@ -196,7 +196,65 @@ Common =
       null
     else
       boundedRect
+  fetchNetwork: (url) ->
+    chrome.storage.sync.get null, (items) =>
+      date = (new Date).getTime()
 
+      jsonKey = @getJsonKey url
+      objKey = @getObjKey url
+      successKey = @getSuccessKey url
+      failureKey = @getFailureKey url
+
+      state = {}
+      state[jsonKey] = items[jsonKey] ? "[]"
+      state[objKey] = items[objKey] ? []
+      state[successKey] = items[successKey] ? null
+      state[failureKey] = items[failureKey] ? null
+
+      failure = (message) ->
+        console.error "#{message}: #{url}"
+        obj = {}; obj[failureKey] = date
+        chrome.storage.sync.set obj
+
+      success = (xhr) ->
+        json = xhr.responseText
+        if json == items[jsonKey]
+          obj = {}; obj[successKey] = date
+          chrome.storage.sync.set obj, -> console.log "unchanged: #{url}"
+        else
+          try
+            obj = JSON.parse json
+            state[successKey] = date
+            state[jsonKey] = json
+            state[objKey] = obj
+            if "[object Array]" == Object.prototype.toString.call obj
+              # Note.  We could save sync space and bandwidth by storing only the json in sync, and storing
+              # the object in "local" instead.
+              chrome.storage.sync.set state, -> console.log "success: #{url}"
+            else
+              failure "incorrect json type"
+          catch
+            failure "JSON parse error"
+
+      url = "#{url}?date=#{date}"
+      xhr = new XMLHttpRequest()
+      xhr.open "GET", url, true
+      xhr.timeout = 5000
+      xhr.ontimeout = xhr.onerror = (xhr) -> failure "fetch error"
+
+      xhr.onreadystatechange = ->
+        if xhr.readyState == 4
+          if xhr.status == 200
+            success xhr
+          else
+            failure "fetch error"
+
+      xhr.send()
+
+  getJsonKey: (url) -> "json-#{url}"
+  getObjKey: (url) -> "obj-#{url}"
+  getSuccessKey: (url) -> "success-#{url}"
+  getFailureKey: (url) -> "failure-#{url}"
 
 # This is a simple class for the common case where we want to use some data value which may be immediately
 # available, or for which we may have to wait.  It implements a use-immediately-or-wait queue, and calls the
