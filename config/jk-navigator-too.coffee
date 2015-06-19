@@ -36,7 +36,7 @@ configs.push
 configs.push
   name: "The Journal IE Article"
   regexps: "^http://www\\.thejournal\\.ie/."
-  selectors: [ "span#articleContent p", "ul.commentList div.comment" ]
+  selectors: [ "span#articleContent p", "span#articleContent blockquote", "ul.commentList div.comment" ]
 
 configs.push
   name: "La Fouly Webcam"
