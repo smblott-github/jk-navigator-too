@@ -38,8 +38,9 @@ configs.push
   name: "La Fouly Webcam"
   regexps: "^http://www\\.telelafouly\\.ch/[a-z]+/webcam"
   selectors: "a.cboxElement img"
-  color: "#55B4CF"
   offset: 20
+  style:
+    "border-color": "#55B4CF"
 
 console.log JSON.stringify configs
 

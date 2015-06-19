@@ -28,7 +28,7 @@ Common =
       activators: 'a[href^="/watch"]'
 
     defaults.push
-      # this uses the native facebook j/k bindings, but adds the ability to activate the active element on
+      # this uses the native Facebook j/k bindings, but adds the ability to activate the active element on
       # enter.
       name: "Facebook Home Page"
       regexps: "^https://www\\.facebook\\.com/$"
