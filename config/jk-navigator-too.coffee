@@ -15,11 +15,12 @@ configs.push
   name: "Irish Times Home Page"
   regexps: "^http://www\\.irishtimes\\.com/$"
   selectors: [
-    "div.story.clearfix"
-    "div.story.index_story"
-    "div.feature_box"
-    "row.section.news-package.news"
-    "div.firstrow div.story"
+    "div#content_left_upper div.homepagetopspot"
+    "div#content_left_upper div.story.clearfix"
+    "div#content_left_upper div.story.index_story"
+    "div#content_left_upper div.feature_box"
+    "div#content_left_upper row.section.news-package.news"
+    "div#content_left_upper div.firstrow div.story"
   ]
 
 configs.push

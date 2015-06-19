@@ -154,7 +154,7 @@ class Interface
       { top, bottom } = @element.getBoundingClientRect()
       isOffTop = top < @config.offset
       isOffBottom = 0 < bottom - (window.innerHeight - @config.offset)
-      Scroller.scrollBy @element, "y", top - @config.offset if isOffTop or isOffBottom
+      Scroller.scrollBy @element, "y", top - @config.offset # if isOffTop or isOffBottom
 
   clearSelection: ->
     if @element?
