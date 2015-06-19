@@ -1,7 +1,7 @@
 
 class Interface
   debug:
-    config: true
+    config: false
 
   constructor: (@config) ->
     @element = null
@@ -20,20 +20,21 @@ class Interface
     chrome.runtime.sendMessage name: "icon", show: @config.selectors?
 
   onKeyDown: (event) ->
+    # console.clear()
     CoreScroller.registerKeydown event
     return unless Common.isActive()
     return if event.repeat
 
     action = @eventToAction event
-    console.log "action:", action if action
 
     if action == "enter"
       element = @element ? document.activateElement
-      element = document.querySelector @config.activeSelector if not element and @config.activeSelector
-      return unless element
-      return unless Common.isInViewport element
+      try
+        element = document.querySelector @config.activeSelector if not element and @config.activeSelector
+        return unless element
+        return unless Common.isInViewport element
 
-      @activateElement element, event
+        @activateElement element, event
 
     else if action in [ "up", "down" ]
       return if @config.nativeJK
@@ -52,12 +53,10 @@ class Interface
 
   performUpDown: (action) ->
     elements = @getElements action
-    elements.reverse() if action in [ "up" ]
+    elements.reverse() if action == "up"
 
     oldIndex = elements.indexOf @element
     newIndex = Math.max 0, Math.min elements.length - 1, oldIndex + 1
-
-    # console.log oldIndex, newIndex, elements.length, (@element and newIndex == oldIndex) or not elements[newIndex]
 
     if (@element and newIndex == oldIndex) or not elements[newIndex]
       element = @element ? document.body
@@ -84,11 +83,11 @@ class Interface
 
     (event) -> mapping[event.keyCode]
 
+  # Return an array of elements which may be the target of this movement.
   getElements: (action) ->
     elements = []
     for selector in Common.stringToArray @config.selectors ? []
-      try
-        elements.push document.querySelectorAll(selector)...
+      elements.push document.querySelectorAll(selector)...
 
     elements = elements.filter (ele) -> Common.isDisplayed ele
 
@@ -98,10 +97,11 @@ class Interface
       when "down"
         elements = elements.filter (ele) => @getPosition(ele) != "above"
 
-    # Sort.
+    # Sort (and discard elements which are too small).
     elements = elements.map (ele) -> element: ele, rect: ele.getBoundingClientRect()
     elements.sort (a,b) ->
       if a.rect.top == b.rect.top then a.rect.left - b.rect.left else a.rect.top - b.rect.top
+    elements = elements.filter (ele) -> 100 < (ele.rect.bottom - ele.rect.top) * (ele.rect.right - ele.rect.left)
     elements = elements.map (ele) -> ele.element
 
     # De-duplicate.
@@ -127,7 +127,7 @@ class Interface
   selectElement: (element) ->
     if element
       @clearSelection()
-      @element = element
+      @element = document.activeElement = element
 
       { top, bottom, left, right } = element.getBoundingClientRect()
       # top -= 2; left -= 2
@@ -183,9 +183,10 @@ class Interface
       selectors = [ "a[target=_blank]", "a[href~=http", "a[href~=https]", "a" ]
       selectors = [ (Common.stringToArray @config.activators)..., selectors... ] if @config.activators
       for selector in selectors
-        if candidate = element.querySelector selector
-          activate candidate
-          return
+        try
+          if candidate = element.querySelector selector
+            activate candidate
+            return
 
 Config =
   lookup: (configs, callback) ->

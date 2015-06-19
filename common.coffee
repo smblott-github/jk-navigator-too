@@ -28,13 +28,12 @@ Common =
       activators: 'a[href^="/watch"]'
 
     defaults.push
-      # this uses the native Facebook j/k bindings, but adds the ability to activate the active element on
-      # enter.
       name: "Facebook Home Page"
-      regexps: "^https://www\\.facebook\\.com/$"
-      activeSelector: 'div[tabindex="0"][data-timestamp]'
+      regexps: "^https?://www\\.facebook\\.com"
+      selectors: "div[data-timestamp] > div.userContentWrapper"
       activators: [ "div.fbstoryattachmentimage img", "a[rel=theater]" ]
-      nativeJK: true
+      style:
+        opacity: "0.0"
 
     # This matches all pages.
     # With no selectors, the page smooth scrolls on "j" and "k".

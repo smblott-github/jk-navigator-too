@@ -42,5 +42,17 @@ configs.push
   style:
     "border-color": "#55B4CF"
 
+configs.push
+  name: "Vbulletin Forum Display"
+  regexps: "\\bforumdisplay\\.php\\?f(orumid)?="
+  selectors: "td[id^='td_threadtitle_']"
+  offset: 150
+
+configs.push
+  name: "Vbulletin Thread"
+  regexps: "\\bshowthread\\.php\\?(t|p)="
+  selectors: "td[id^='td_post_']"
+  offset: 150
+
 console.log JSON.stringify configs
 
