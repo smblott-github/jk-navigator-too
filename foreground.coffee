@@ -18,6 +18,7 @@ class Interface
     Scroller.init()
     Common.installListener window, "keydown", @keyDownHandler = (event) => @onKeyDown event
     Common.installListener window, "keyup", @KeyUpHandler = (event) => @onKeyUp event
+    Common.installListener window, "scroll", @scrollHandler = (event) => @onScroll event
     chrome.runtime.sendMessage name: "icon", show: @config.selectors?
 
   onKeyDown: (event) ->
@@ -125,7 +126,7 @@ class Interface
     else
       "visible"
 
-  selectElement: (element) ->
+  selectElement: (element, shouldScroll = true) ->
     if element
       @clearSelection()
       @element = document.activeElement = element
@@ -165,10 +166,11 @@ class Interface
 
       Common.extend @overlay.style, @config.style if @config.style
 
-      { top, bottom } = @element.getBoundingClientRect()
-      isOffTop = top < @config.offset
-      isOffBottom = 0 < bottom - (innerHeight - @config.offset)
-      Scroller.scrollBy @element, "y", top - @config.offset # if isOffTop or isOffBottom
+      if shouldScroll
+        { top, bottom } = @element.getBoundingClientRect()
+        isOffTop = top < @config.offset
+        isOffBottom = 0 < bottom - (innerHeight - @config.offset)
+        Scroller.scrollBy @element, "y", top - @config.offset # if isOffTop or isOffBottom
 
   clearSelection: ->
     if @element?
@@ -202,6 +204,24 @@ class Interface
     catch
       console.error "bad CSS selector: #{selector}"
       if all then [] else null
+
+  # If we scroll, and there's already a selected element, and that element goes out of the viewport, then we
+  # select the top-most visible selectable element.
+  onScroll: do ->
+    timer = null
+
+    cancel = ->
+      if timer
+        clearTimeout timer; timer = null
+
+    (event) ->
+      cancel()
+      return unless @element
+      return if Common.isInViewport @element
+      if element = @getElements("down")[0]
+        Common.setTimeout 200, =>
+          timer = null
+          @selectElement element, false unless Common.isInViewport @element
 
 Config =
   lookup: (configs, callback) ->
