@@ -2,6 +2,7 @@
 class Interface
   debug:
     config: false
+    selector: false
 
   constructor: (@config) ->
     @element = null
@@ -29,12 +30,12 @@ class Interface
 
     if action == "enter"
       element = @element ? document.activateElement
-      try
-        element = document.querySelector @config.activeSelector if not element and @config.activeSelector
-        return unless element
-        return unless Common.isInViewport element
+      if not element and @config.activeSelector
+        element = @querySelector document, @config.activeSelector
+      return unless element
+      return unless Common.isInViewport element
 
-        @activateElement element, event
+      @activateElement element, event
 
     else if action in [ "up", "down" ]
       return if @config.nativeJK
@@ -87,7 +88,7 @@ class Interface
   getElements: (action) ->
     elements = []
     for selector in Common.stringToArray @config.selectors ? []
-      elements.push document.querySelectorAll(selector)...
+      elements.push @querySelector(document, selector, true)...
 
     elements = elements.filter (ele) -> Common.isDisplayed ele
 
@@ -183,11 +184,20 @@ class Interface
       selectors = [ "a[target=_blank]", "a[href~=http", "a[href~=https]", "a" ]
       selectors = [ (Common.stringToArray @config.activators)..., selectors... ] if @config.activators
       for selector in selectors
-        try
-          if candidate = element.querySelector selector
+          if candidate = @querySelector element, selector
             activate candidate
             return
 
+  querySelector: (element, selector, all = false) ->
+    search = (selector) ->
+      if all then element.querySelectorAll selector else element.querySelector selector
+    try
+      console.log "#{selector} #{all}:" if @debug.selector
+      console.log "  #{search selector}" if @debug.selector
+      search selector
+    catch
+      console.error "bad CSS selector: #{selector}"
+      if all then [] else null
 Config =
   lookup: (configs, callback) ->
     url = document.location.toString()
