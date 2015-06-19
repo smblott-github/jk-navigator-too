@@ -206,6 +206,7 @@ Config =
   lookup: (configs, callback) ->
     url = document.location.toString()
     for config in configs
+      continue if configs.disabled
       try
         for regexp in Common.stringToArray config.regexps
           if (new RegExp regexp).test url

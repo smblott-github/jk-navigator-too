@@ -54,5 +54,5 @@ configs.push
   selectors: "td[id^='td_post_']"
   offset: 150
 
-console.log JSON.stringify configs
+console.log JSON.stringify configs, null, "  "
 
