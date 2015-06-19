@@ -131,9 +131,9 @@ class Interface
       @element = document.activeElement = element
 
       { top, bottom, left, right } = element.getBoundingClientRect()
-      borderWidth = 2
-      top -= borderWidth; left -= borderWidth
-      bottom += borderWidth; right += borderWidth
+      borderWidth = 2; extraBorder = 2
+      top -= borderWidth + extraBorder; left -= borderWidth + extraBorder
+      bottom += borderWidth + extraBorder; right += borderWidth + extraBorder
 
       @overlay = document.createElement "div"
       @overlay.id = "JK-Navigator-Too-Overlay"

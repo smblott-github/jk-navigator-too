@@ -36,7 +36,8 @@ Common =
       selectors: "div[data-timestamp] > div.userContentWrapper"
       activators: [ "div.fbstoryattachmentimage img", "a[rel=theater]" ]
       style:
-        opacity: "0.0"
+        "border-color": "#3b5998"
+        opacity: "0.2"
 
     # This matches all pages.
     # With no selectors, the page smooth scrolls on "j" and "k".
