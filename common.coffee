@@ -7,7 +7,8 @@ Common =
     defaults.push
       name: "Google Search"
       regexps: "^https?://(www\\.)?google\\.([a-z\\.]+)/search\\?"
-      selectors: [ "li.g h3.r a", "a._eu._h2" ]
+      selectors: [ "li.g", "a._eu._h2" ]
+      # selectors: [ "li.g h3.r a", "a._eu._h2" ]
 
     defaults.push
       # this uses the native facebook j/k bindings, but adds the ability to activate the active element on

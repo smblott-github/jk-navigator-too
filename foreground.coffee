@@ -1,9 +1,19 @@
 
 class Interface
+  debug:
+    config: true
+
   constructor: (@config) ->
     @element = null
+
     @config.offset ?= 100
-    @config.color ?= "#fcc"
+    @config.color ?= "#827E8F"
+    @config.border ?= false
+
+    if @debug.config
+      console.log @config.name
+      for own key, value of @config
+        console.log "  #{key} #{value}" unless key == "name"
 
     Scroller.init()
     Common.installListener window, "keydown", @keyDownHandler = (event) => @onKeyDown event
@@ -50,17 +60,15 @@ class Interface
     oldIndex = elements.indexOf @element
     newIndex = Math.max 0, Math.min elements.length - 1, oldIndex + 1
 
-    console.log oldIndex, newIndex, elements.length, (@element and newIndex == oldIndex) or not elements[newIndex]
+    # console.log oldIndex, newIndex, elements.length, (@element and newIndex == oldIndex) or not elements[newIndex]
 
     if (@element and newIndex == oldIndex) or not elements[newIndex]
-      console.log "scroll"
       element = @element ? document.body
       amount = 50
       amount *= -1 if action == "up"
       Scroller.scrollBy element, "y", amount, true
     else
       @selectElement elements[newIndex]
-      console.log "pick", @element
 
   eventToAction: do ->
     mapping =
@@ -115,19 +123,42 @@ class Interface
       @clearSelection()
       @element = element
 
-      @previousBackgroundColor = element.style.backgroundColor
-      @element.style.backgroundColor = @config.color
+      { top, bottom, left, right } = element.getBoundingClientRect()
+      # top -= 2; left -= 2
+      @overlay = document.createElement "div"
+      @overlay.id = "JK-Navigator-Too-Overlay"
+      document.body.appendChild @overlay
+
+      zIndex = do (index = getComputedStyle(element).getPropertyValue "z-index") ->
+        if /^[0-9]+$/.test index
+          "" + (1 + parseInt index)
+        else if index == "auto"
+          "auto"
+        else
+          "2000000000"
+
+      @overlay = document.getElementById "JK-Navigator-Too-Overlay"
+      Common.extend @overlay.style,
+        position: "absolute"
+        left: (window.scrollX + left) + "px"
+        top: (window.scrollY + top) + "px"
+        width: (right - left) + "px"
+        height: (bottom - top) + "px"
+        border: "solid #{@config.color}"
+        zIndex: zIndex
+
+        "box-sizing": "border-box"
+        "pointer-events": "none"
 
       { top, bottom } = @element.getBoundingClientRect()
       isOffTop = top < @config.offset
       isOffBottom = 0 < bottom - (window.innerHeight - @config.offset)
-      console.log "scroll?", isOffTop or isOffBottom
       Scroller.scrollBy @element, "y", top - @config.offset if isOffTop or isOffBottom
 
   clearSelection: ->
     if @element?
-      @element.style.backgroundColor = @previousBackgroundColor
-      @element = null
+      @overlay.parentNode.removeChild @overlay if @overlay
+      @element = @overlay = null
 
   activateElement: (element, event) ->
     activate = (ele = element) ->
@@ -141,11 +172,8 @@ class Interface
     else
       selectors = [ "a[target=_blank]", "a[href~=http", "a[href~=https]", "a" ]
       selectors = [ (Common.stringToArray @config.activators)..., selectors... ] if @config.activators
-      console.log "selectors", selectors
       for selector in selectors
-        console.log "selector", selector
         if candidate = element.querySelector selector
-          console.log "candidate", candidate
           activate candidate
           return
 
@@ -155,6 +183,7 @@ Config =
     for config in configs
       try
         for regexp in Common.stringToArray config.regexps
+          console.log url, regexp
           if (new RegExp regexp).test url
             callback config
             return

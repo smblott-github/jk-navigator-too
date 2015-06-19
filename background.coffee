@@ -33,7 +33,6 @@ do ->
       false
 
 do ->
-  urls = [ "http://static.smblott.org/jk-navigator-too.txt" ]
   urls = [ "http://smblott.org/jk-navigator-too.txt" ]
 
   success = (xhr, url) ->
@@ -48,13 +47,21 @@ do ->
       if chrome.runtime.lastError
         console.error "storage error", url
       else
-        console.log "ok", url
+        console.log "ok", url, "\n"
+        for config in json
+          console.log "#{config.name}: #{config.regexps}"
+          if config.selectors
+            for selector in Common.stringToArray config.selectors
+              console.log "  #{selector}"
+        console.log xhr
 
   failure = (xhr, url) ->
     console.error "fetch error", url
 
   for url in urls
     do (url) ->
+      date = new Date
+      url = "#{url}?date=#{date.getTime()}"
       xhr = new XMLHttpRequest()
       xhr.open "GET", url, true
       xhr.timeout = 5000
@@ -62,7 +69,6 @@ do ->
 
       xhr.onreadystatechange = ->
         if xhr.readyState == 4
-          console.log xhr
           (if xhr.status == 200 then success else failure) xhr, url
 
       xhr.send()
