@@ -2,22 +2,11 @@
 configs = []
 
 configs.push
-  name: "Youtube Search Results"
-  regexps: "^https?://www\\.youtube\\.com/results\\?."
-  selectors: "ol.item-section > li"
-
-configs.push
   name: "Irish Times Home Page"
   regexps: "^http://www\\.irishtimes\\.com/$"
   selectors: [
     "div#content_left_upper div.story"
     "div#content_left div.story"
-    # "div#content_left_upper div.story.clearfix"
-    # "div#content_left_upper div.story.index_story"
-    # "div#content_left div.feature_box"
-    # "div#content_left div.business.story"
-    # "div#content_left_upper row.section.news-package.news"
-    # "div#content_left_upper div.firstrow div.story"
   ]
 
 configs.push

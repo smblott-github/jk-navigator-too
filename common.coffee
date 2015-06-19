@@ -7,18 +7,25 @@ Common =
     defaults.push
       name: "Google Search"
       regexps: "^https?://(www\\.)?google\\.([a-z\\.]+)/search\\?"
-      selectors: [ "li.g", "a._eu._h2" ]
+      selectors: "div#search li.g"
       offset: "50"
-      # selectors: [ "li.g h3.r a", "a._eu._h2" ]
 
-    # FIXME. On "k", this highlights unwanted elements.
     defaults.push
       name: "DuckDuckGo Search"
       regexps: "^https://duckduckgo\\.com/\\?q="
-      selectors: [ "div#links div.result__body", "div.c-info > div" ]
+      selectors: [
+        "div#links div.result__body"
+        "div#zero_click_wrapper div.zci__main div.zci__body"
+      ]
       offset: "50"
       style:
         "z-index": 2000000000
+
+    defaults.push
+      name: "Youtube Search Results"
+      regexps: "^https?://www\\.youtube\\.com/results\\?."
+      selectors: "ol.item-section > li"
+      activators: 'a[href^="/watch"]'
 
     defaults.push
       # this uses the native facebook j/k bindings, but adds the ability to activate the active element on
@@ -34,12 +41,6 @@ Common =
     defaults.push
       name: "Generic J/K Scrolling"
       regexps: "."
-
-    # defaults.push
-    #   # this uses the native facebook j/k bindings, but adds the ability to activate the active element on
-    #   # enter.
-    #   name: "Google Plus Home Page"
-    #   regexps: "^https://plus.google.com/$"
 
     defaults
 
