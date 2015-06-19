@@ -61,7 +61,7 @@ class Interface
 
     if (@element and newIndex == oldIndex) or not elements[newIndex]
       element = @element ? document.body
-      amount = 50
+      amount = 100
       amount *= -1 if action == "up"
       Scroller.scrollBy element, "y", amount, true
     else
