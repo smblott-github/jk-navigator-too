@@ -35,7 +35,7 @@ class Interface
 
       @activateElement element, event
 
-    else if action in [ "up", "down" ] and @config.selectors
+    else if action in [ "up", "down" ]
       return if @config.nativeJK
       @performUpDown action
 

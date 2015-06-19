@@ -29,6 +29,10 @@ Common =
       activators: [ "div.fbstoryattachmentimage img", "a[rel=theater]" ]
       nativeJK: true
 
+    defaults.push
+      name: "Generic J/K Scrolling"
+      regexps: "."
+
     # defaults.push
     #   # this uses the native facebook j/k bindings, but adds the ability to activate the active element on
     #   # enter.

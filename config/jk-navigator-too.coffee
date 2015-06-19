@@ -7,6 +7,11 @@ configs.push
   selectors: "ol.item-section > li"
 
 configs.push
+  name: "Irish Times Article"
+  regexps: "^http://www\\.irishtimes\\.com/."
+  selectors: 'section[property="articleBody"] > p'
+
+configs.push
   name: "Irish Times Home Page"
   regexps: "^http://www\\.irishtimes\\.com/$"
   selectors: [
@@ -31,7 +36,7 @@ configs.push
 configs.push
   name: "The Journal IE Article"
   regexps: "^http://www\\.thejournal\\.ie/."
-  selectors: "span#articleContent p"
+  selectors: [ "span#articleContent p", "ul.commentList div.comment" ]
 
 configs.push
   name: "La Fouly Webcam"
