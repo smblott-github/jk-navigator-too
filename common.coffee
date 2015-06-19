@@ -9,6 +9,9 @@ Common =
       regexps: "^https?://(www\\.)?google\\.([a-z\\.]+)/search\\?"
       selectors: "div#search li.g"
       offset: "50"
+      style:
+        "border-color": "#0266C8"
+        opacity: "0.2"
 
     defaults.push
       name: "DuckDuckGo Search"

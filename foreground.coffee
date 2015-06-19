@@ -131,7 +131,10 @@ class Interface
       @element = document.activeElement = element
 
       { top, bottom, left, right } = element.getBoundingClientRect()
-      # top -= 2; left -= 2
+      borderWidth = 2
+      top -= borderWidth; left -= borderWidth
+      bottom += borderWidth; right += borderWidth
+
       @overlay = document.createElement "div"
       @overlay.id = "JK-Navigator-Too-Overlay"
       document.body.appendChild @overlay
@@ -153,6 +156,7 @@ class Interface
         width: (right - left) + "px"
         height: (bottom - top) + "px"
         border: "solid #827E8F"
+        "border-width": "#{borderWidth}px"
         zIndex: zIndex
         opacity: "0.6"
 
