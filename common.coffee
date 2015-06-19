@@ -29,6 +29,8 @@ Common =
       activators: [ "div.fbstoryattachmentimage img", "a[rel=theater]" ]
       nativeJK: true
 
+    # This matches all pages.
+    # With no selectors, the page smooth scrolls on "j" and "k".
     defaults.push
       name: "Generic J/K Scrolling"
       regexps: "."

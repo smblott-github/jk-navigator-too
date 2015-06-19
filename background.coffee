@@ -20,7 +20,12 @@ do ->
 
 do ->
   updateIcon = (request, sender) ->
-    chrome.pageAction.show sender.tab.id
+    console.log request
+    console.log sender
+    if request.show
+      chrome.pageAction.show sender.tab.id
+    else
+      # chrome.pageAction.hide sender.tab.id
     false # We will not be calling sendResponse.
 
   handlers =

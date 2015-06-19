@@ -17,7 +17,7 @@ class Interface
     Scroller.init()
     Common.installListener window, "keydown", @keyDownHandler = (event) => @onKeyDown event
     Common.installListener window, "keyup", @KeyUpHandler = (event) => @onKeyUp event
-    chrome.runtime.sendMessage name: "icon"
+    chrome.runtime.sendMessage name: "icon", show: @config.selectors?
 
   onKeyDown: (event) ->
     CoreScroller.registerKeydown event
