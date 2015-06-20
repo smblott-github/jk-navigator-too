@@ -4,7 +4,7 @@ class Interface
     config: false
     selector: false
 
-  constructor: (@config) ->
+  constructor: (@config, element = null) ->
     @element = null
 
     @config.offset ?= 100
@@ -20,6 +20,9 @@ class Interface
     Common.installListener window, "keyup", @KeyUpHandler = (event) => @onKeyUp event
     Common.installListener window, "scroll", @scrollHandler = (event) => @onScroll event
     chrome.runtime.sendMessage name: "icon", show: @config.selectors?
+
+    @selectElement element false if element
+    @onScroll()
 
   onKeyDown: (event) ->
     # console.clear()
@@ -216,12 +219,12 @@ class Interface
 
     (event) ->
       cancel()
-      return unless @element
-      return if Common.isInViewport @element
-      if element = @getElements("down")[0]
-        Common.setTimeout 200, =>
-          timer = null
-          @selectElement element, false unless Common.isInViewport @element
+      unless @element and Common.isInViewport @element
+        if element = @getElements("down")[0]
+          timer = Common.setTimeout 200, =>
+            timer = null
+            unless @element and Common.isInViewport @element
+              @selectElement element, false
 
 init = ->
   chrome.runtime.sendMessage { name: "config", url: document.location.toString() }, (config) ->
