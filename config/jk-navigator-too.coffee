@@ -32,14 +32,19 @@ configs.push
 
 configs.push
   name: "The Journal IE"
-  regexps: "^http://www\\.thejournal\\.ie/$"
+  regexps: "^http://www\\.thejournal\\.ie/?$"
   selectors: "div.river.span-8 div.post"
   activators: "h4 a"
 
 configs.push
   name: "The Journal IE Article"
   regexps: "^http://www\\.thejournal\\.ie/."
-  selectors: [ "span#articleContent p", "span#articleContent blockquote", "ul.commentList li div.comment" ]
+  selectors: [
+    "span#articleContent p"
+    "span#articleContent blockquote"
+    "ul.commentList li div.comment"
+    "iframe[id^='twitter-widget']"
+  ]
   style:
     opacity: "0.2"
 

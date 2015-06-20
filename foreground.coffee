@@ -70,12 +70,15 @@ class Interface
     else
       # Sometimes, we just scroll to the previously selected element, which feels better from a UX
       # perspective.
+      # Delta is a wiggle fudgement.  If we're closer than delta, then we that assume the current element is
+      # already in the right position.
+      delta = 10
       if @element and newIndex != oldIndex
         { top, bottom } = @element.getBoundingClientRect()
-        if action == "up" and top + 10 < @config.offset
+        if action == "up" and top + delta < @config.offset
           Common.log "  use previous element \"up\"" if @debug.select
           newIndex = oldIndex
-        else if action == "down" and @config.offset + 10 < top
+        else if action == "down" and @config.offset + delta < top
           Common.log "  use previous element \"down\"" if @debug.select
           newIndex = oldIndex
 
@@ -173,7 +176,7 @@ class Interface
         { top, bottom } = @element.getBoundingClientRect()
         isOffTop = top < @config.offset
         isOffBottom = 0 < bottom - (innerHeight - @config.offset)
-        Common.log "  top=#{top} delta=#{top - @config.offset}"
+        Common.log "  top=#{top} delta=#{top - @config.offset}" if @debug.scroll
         Scroller.scrollBy @element, "y", top - @config.offset # if isOffTop or isOffBottom
 
   clearSelection: ->
