@@ -2,6 +2,15 @@
 configs = []
 
 configs.push
+  name: "Facebook Home Page (smblott)"
+  regexps: "^https?://www\\.facebook\\.com/?$"
+  selectors: "div[data-timestamp] > div.userContentWrapper"
+  activators: [ "div.fbstoryattachmentimage img", "a[rel=theater]" ]
+  style:
+    "border-color": "#3b5998"
+    opacity: "0.2"
+
+configs.push
   name: "Irish Times Home Page"
   regexps: "^http://www\\.irishtimes\\.com/$"
   selectors: [

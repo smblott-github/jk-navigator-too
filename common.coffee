@@ -32,7 +32,7 @@ Common =
 
     defaults.push
       name: "Facebook Home Page"
-      regexps: "^https?://www\\.facebook\\.com"
+      regexps: "^https?://www\\.facebook\\.com/?$"
       selectors: "div[data-timestamp] > div.userContentWrapper"
       activators: [ "div.fbstoryattachmentimage img", "a[rel=theater]" ]
       style:
@@ -67,6 +67,27 @@ Common =
         identities.push obj
       index
     getObj: (id) -> identities[id]
+
+  # Poor man's structural equality.
+  structurallyEqual: (a, b) ->
+    return true if a == b
+    return false unless typeof(a) == typeof b
+    if a.length
+      return false unless b.length
+      return false unless a.length == b.length
+      for e, i in a
+        return false unless @structurallyEqual e, b[i]
+      true
+    else if "object" == typeof a
+      return false unless "object" == typeof b
+      ka = Object.keys a; kb = Object.keys b
+      ka.sort(); kb.sort()
+      return false unless @structurallyEqual ka, kb
+      for own k, v of a
+        return false unless @structurallyEqual v, b[k]
+      true
+    else
+      a == b
 
   # Returns the active element (if it is editable) or null.
   getEditableElement: do ->

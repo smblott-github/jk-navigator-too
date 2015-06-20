@@ -70,7 +70,6 @@ initialiseNetworkRules = ->
     network = $("network")
     network.removeChild network.firstChild while network.firstChild
     for url in items.network
-      console.log items[Common.getKey url][0].name
       new RuleSet $("network"), url, items[Common.getKey url]
 
 showMessage = do ->
@@ -136,6 +135,10 @@ fetchUrl = (url) ->
     chrome.storage.sync.get [ "network", key ], (items) ->
       if chrome.runtime.lastError
         showMessage "Yikes, an internal Chrome error occurred."
+        return
+
+      if Common.structurallyEqual configs, items[key]
+        showMessage "Looks like the rules are unchanged."
         return
 
       items.network ?= []

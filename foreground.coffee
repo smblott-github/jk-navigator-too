@@ -22,7 +22,7 @@ class Interface
     chrome.runtime.sendMessage name: "icon", show: @config.selectors?
 
     @selectElement element false if element
-    @onScroll()
+    @onScroll focusDelay: 0
 
   onKeyDown: (event) ->
     # console.clear()
@@ -209,10 +209,11 @@ class Interface
         clearTimeout timer; timer = null
 
     (event) ->
+      delay = event?.focusDelay ? 200
       cancel()
       unless @element and Common.isInViewport @element
         if element = @getElements("down")[0]
-          timer = Common.setTimeout 200, =>
+          timer = Common.setTimeout delay, =>
             timer = null
             unless @element and Common.isInViewport @element
               @selectElement element, false
