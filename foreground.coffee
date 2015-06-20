@@ -223,33 +223,10 @@ class Interface
           timer = null
           @selectElement element, false unless Common.isInViewport @element
 
-Config =
-  lookup: (configs, callback) ->
-    url = document.location.toString()
-    for config in configs
-      continue if configs.disabled
-      try
-        for regexp in Common.stringToArray config.regexps
-          if (new RegExp regexp).test url
-            callback config
-            return
-      catch
-        console.error "regexp failed to compile: #{regexp}"
-        console.error config
+init = ->
+  chrome.runtime.sendMessage { name: "config", url: document.location.toString() }, (config) ->
+    console.log "config:", config?.name ? "disabled"
+    new Interface config if config
 
-    callback null
-
-  init: ->
-    config = new AsyncDataFetcher (callback) =>
-      chrome.storage.sync.get null, (items) =>
-        configs = []
-        networkKeys = items.network.map (url) => Common.getObjKey url
-        for key in [ "manual", networkKeys..., "default" ]
-          configs.push items[key]...  if items[key]
-        @lookup configs, callback
-
-    config.use (config) ->
-      new Interface config if config
-
-Common.documentReady -> Config.init()
+if document?.location?.toString() then init() else Common.documentReady init
 

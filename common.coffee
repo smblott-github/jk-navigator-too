@@ -271,6 +271,48 @@ class AsyncDataFetcher
   use: (callback) ->
     if @data? then callback @data else @queue.push callback
 
+# A simple cache. Entries used within two expiry periods are retained, otherwise they are discarded.
+# At most 2 * @entries entries are retained.
+class SimpleCache
+  # expiry: expiry time in milliseconds (default, one hour)
+  # entries: maximum number of entries in @cache (there may be up to this many entries in @previous, too)
+  constructor: (@expiry = 60 * 60 * 1000, @entries = 1000) ->
+    @cache = {}
+    @previous = {}
+    @lastRotation = new Date()
+
+  has: (key) ->
+    @rotate()
+    (key of @cache) or key of @previous
+
+  # Set value, and return that value
+  set: (key, value = null) ->
+    @rotate()
+    delete @previous[key]
+    @cache[key] = value
+
+  get: (key) ->
+    @rotate()
+    if key of @cache
+      @cache[key]
+    else if key of @previous
+      @cache[key] = @previous[key]
+      delete @previous[key]
+      @cache[key]
+    else
+      null
+
+  rotate: (force = false) ->
+    if force or @entries < Object.keys(@cache).length or @expiry < new Date() - @lastRotation
+      @lastRotation = new Date()
+      @previous = @cache
+      @cache = {}
+
+  clear: ->
+    @rotate true
+    @rotate true
+
 root = exports ? window
 root.Common = Common
 root.AsyncDataFetcher = AsyncDataFetcher
+root.SimpleCache = SimpleCache
