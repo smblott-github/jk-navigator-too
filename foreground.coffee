@@ -22,7 +22,8 @@ class Interface
     chrome.runtime.sendMessage name: "icon", show: @config.selectors?
 
     @selectElement element false if element
-    @onScroll focusDelay: 0
+    # Disabled.  It's not clear that the UX is better like this on not.
+    # @onScroll focusDelay: 0
 
   onKeyDown: (event) ->
     # console.clear()

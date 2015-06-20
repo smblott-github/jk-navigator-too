@@ -67,8 +67,19 @@ configs.push
   name: "Steephill Photos"
   regexps: "^https?://www\\.steephill\\.tv/.*/photos/"
   selectors: "tr a[name] img"
-  # selectors: "div[align='center'] tr a[href^='http'] img"
   offset: 20
+
+configs.push
+  name: "Reddit"
+  regexps: "^http://www\\.reddit\\.com/?"
+  selectors: "div.entry > p.title > a"
+  offset: 20
+
+configs.push
+  name: "Twitter"
+  regexps: "^https?://([a-z]+\\.)?twitter.com/?"
+  selectors: "div.home-stream div.content"
+  offset: 80
 
 console.log JSON.stringify configs, null, "  "
 
