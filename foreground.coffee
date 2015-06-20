@@ -3,6 +3,7 @@ class Interface
   debug:
     config: false
     selector: false
+    select: false
 
   constructor: (@config, element = null) ->
     @element = null
@@ -59,8 +60,10 @@ class Interface
 
     oldIndex = elements.indexOf @element
     newIndex = Math.max 0, Math.min elements.length - 1, oldIndex + 1
+    Common.log oldIndex, newIndex, elements.length if @debug.select
 
     if (@element and newIndex == oldIndex) or not elements[newIndex]
+      Common.log "  scroll (smooth)" if @debug.select
       element = @element ? document.body
       amount = 100 * if action == "up" then -1 else 1
       Scroller.scrollBy (@element ? document.body), "y", amount, true
@@ -69,11 +72,14 @@ class Interface
       # perspective.
       if @element and newIndex != oldIndex
         { top, bottom } = @element.getBoundingClientRect()
-        if action == "up" and top < 0
+        if action == "up" and top + 10 < @config.offset
+          Common.log "  use previous element \"up\"" if @debug.select
           newIndex = oldIndex
-        else if action == "down" and @config.offset < top and innerHeight < bottom
+        else if action == "down" and @config.offset + 10 < top
+          Common.log "  use previous element \"down\"" if @debug.select
           newIndex = oldIndex
 
+      Common.log "  scroll (element) #{elements[newIndex]?}" if @debug.select
       @selectElement elements[newIndex]
 
   eventToAction: do ->
@@ -122,6 +128,8 @@ class Interface
       "visible"
 
   selectElement: (element, shouldScroll = true) ->
+    Common.log "selectElement #{element?} #{shouldScroll}" if @debug.select
+    Common.log "              #{element == @element} (expect false for a new element)" if @debug.select
     if element
       @clearSelection()
       @element = document.activeElement = element
@@ -165,6 +173,7 @@ class Interface
         { top, bottom } = @element.getBoundingClientRect()
         isOffTop = top < @config.offset
         isOffBottom = 0 < bottom - (innerHeight - @config.offset)
+        Common.log "  top=#{top} delta=#{top - @config.offset}"
         Scroller.scrollBy @element, "y", top - @config.offset # if isOffTop or isOffBottom
 
   clearSelection: ->
@@ -193,8 +202,8 @@ class Interface
     search = (selector) ->
       if all then element.querySelectorAll selector else element.querySelector selector
     try
-      Common.log "#{selector} #{all}:" if @debug.selector
-      Common.log "  #{search selector}" if @debug.selector
+      Common.log "#{selector} #{all}" if @debug.selector
+      Common.log "  #{search(selector).length}" if @debug.selector
       search selector
     catch
       console.error "bad CSS selector: #{selector}"
