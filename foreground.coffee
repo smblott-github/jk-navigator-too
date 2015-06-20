@@ -18,7 +18,7 @@ class Interface
     Scroller.init()
     Common.installListener window, "keydown", @keyDownHandler = (event) => @onKeyDown event
     Common.installListener window, "keyup", @KeyUpHandler = (event) => @onKeyUp event
-    Common.installListener window, "scroll", @scrollHandler = (event) => @onScroll event
+    Common.installListener window, "scroll", @scrollHandler = => @onScroll()
     chrome.runtime.sendMessage name: "icon", show: @config.selectors?
 
     @selectElement element false if element
@@ -30,27 +30,23 @@ class Interface
     return unless Common.isActive()
     return if event.repeat
 
-    action = @eventToAction event
+    switch action = @eventToAction event
+      when "enter"
+        element = @element ? document.activateElement
+        element ?= @querySelector document, @config.activeSelector if @config.activeSelector
+        return unless element and Common.isInViewport element
 
-    if action == "enter"
-      element = @element ? document.activateElement
-      if not element and @config.activeSelector
-        element = @querySelector document, @config.activeSelector
-      return unless element
-      return unless Common.isInViewport element
+        @activateElement element, event
 
-      @activateElement element, event
+      when "up", "down"
+        return if @config.nativeJK
+        @performUpDown action
 
-    else if action in [ "up", "down" ]
-      return if @config.nativeJK
-      @performUpDown action
-
-    else
-      return
+      else
+        return
 
     event.preventDefault()
     event.stopImmediatePropagation()
-
     false
 
   onKeyUp: (event) ->
@@ -65,9 +61,8 @@ class Interface
 
     if (@element and newIndex == oldIndex) or not elements[newIndex]
       element = @element ? document.body
-      amount = 100
-      amount *= -1 if action == "up"
-      Scroller.scrollBy element, "y", amount, true
+      amount = 100 * if action == "up" then -1 else 1
+      Scroller.scrollBy (@element ? document.body), "y", amount, true
     else
       # Sometimes, we just scroll to the previously selected element, which feels better from a UX
       # perspective.
