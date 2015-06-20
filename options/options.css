@@ -37,6 +37,13 @@ input[type="text"], input[type="number"], textarea {
   color: #444;
   font: inherit;
   padding: 3px;
+}
+
+input[type="text"], input[type="number"] {
+  width: 70%;
+}
+
+textarea {
   width: 100%;
 }
 
@@ -54,12 +61,12 @@ button:focus, input[type="text"]:focus, textarea:focus {
   outline: none;
 }
 
-pre, code, .code, #status {
+pre, code, .code, #status, .rule-name, #fetch-message {
   font-family: Consolas, "Liberation Mono", Courier, monospace;
   background: #eeeeee;
 }
 
-.network-url, #manual-text, #default-text, .network-text {
+.network-url, #manual-text, #default-text, .network-text, .rule-text {
   font-family: Consolas, "Liberation Mono", Courier, monospace;
 }
 
@@ -69,4 +76,17 @@ pre, code, .code, #status {
 
 textarea:read-only {
    background-color: #e3e3e3;
+}
+
+.rule-show, .container-remove, #add-network-button, #save-custom {
+   /* margin-right: 15px; */
+   min-width: 120px;
+}
+
+.rule-wrapper {
+   /*
+   border-style: solid;
+   border-width: 1px;
+   border-color: #e3e3e3;
+   */
 }

@@ -14,36 +14,67 @@
         Work in progres...
       <p/>
 
-      <header>Custom Sites</header>
+      <header>Custom Rules</header>
       <div id="manual">
         <p>
         Insert your custom JSON below (this must be a list of objects).
-        <span class="float-right json"><button type="submit">Save</button></span>
+        <span class="float-right json"><button id="save-custom" type="submit">Save</button></span>
         </p>
 
-        <textarea id="manual-text" rows="12" cols="40"></textarea>
+        <textarea id="manual-text" rows="8" cols="40"></textarea>
       </div>
 
-      <header>Network Sites</header>
-      <div id="network">
-        <template id="network-template">
+      <template id="container-template">
+        <div class="container-wrapper">
           <p>
-            URL: <span class="network-url"></span>
-            <span class="float-right">Enabled: <input class="network-enabled" type="checkbox" name="enabled"/></span>
+            URL: <span class="container-url"></span>
+            <span class="float-right">
+              <input class="container-remove" type="button" value="Remove URL" />
+            </span>
           </p>
+          <div class="rule-list"></div>
+        </div>
+      </template>
 
-          <textarea class="network-text" rows="12" cols="40" readonly></textarea>
-        </template>
-      </div>
+      <template id="rule-template">
+        <div class="rule-wrapper">
+          <p>
+            <!-- Name: -->
+            <span class="rule-name"></span>
+            <span class="float-right">
+              <input class="rule-show" type="button"/>
+              <!--
+              Enabled:
+              <input class="rule-enabled" type="checkbox" name="enabled"/>
+              -->
+            </span>
+          </p>
+          <textarea class="rule-text" rows="8" cols="40" readonly></textarea>
+        </div>
+      </template>
 
-      <header>Defaults</header>
+      <header>Network Rules</header>
+
       <p>
-        These are built in to <i>JK-Navigator-Too</i>.
+        Add URLs below to fetch rules over the network.  All configuration is synced between Chrome instances.
       </p>
 
-      <div id="default">
-        <textarea id="default-text" rows="12" cols="40" readonly></textarea>
-      </div>
+      <p>
+        URL: <input type="text" name="" id="add-network-text" value="" />
+        <span class="float-right">
+            <input id="add-network-button" type="button" value="Add URL" />
+        </span>
+      </p>
+
+      <p id="fetch-message"></p>
+
+      <div id="network"></div>
+
+      <header>Default Rules</header>
+
+      <p>These rules are built in. You can enable or disable them, but you cannot remove them.</p>
+
+      <div id="default"></div>
 
       <header>Credits</header>
 

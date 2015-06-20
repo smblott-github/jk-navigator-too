@@ -1,7 +1,7 @@
 
 Common =
 
-  defaults: do ->
+  default: do ->
     defaults = []
 
     defaults.push
@@ -38,12 +38,6 @@ Common =
       style:
         "border-color": "#3b5998"
         opacity: "0.2"
-
-    # # This matches all pages.
-    # # With no selectors, the page smooth scrolls on "j" and "k".
-    # defaults.push
-    #   name: "Generic J/K Scrolling"
-    #   regexps: "."
 
     defaults
 
@@ -196,63 +190,36 @@ Common =
       null
     else
       boundedRect
-  fetchNetwork: (url) ->
-    chrome.storage.sync.get null, (items) =>
-      date = (new Date).getTime()
 
-      jsonKey = @getJsonKey url
-      objKey = @getObjKey url
-      successKey = @getSuccessKey url
-      failureKey = @getFailureKey url
+  wget: (url, callback) ->
+    date = new Date().getTime()
+    url = "#{url}?date=#{date}"
+    xhr = new XMLHttpRequest()
+    xhr.open "GET", url, true
+    xhr.timeout = 2500
 
-      state = {}
-      state[jsonKey] = items[jsonKey] ? "[]"
-      state[objKey] = items[objKey] ? []
-      state[successKey] = items[successKey] ? null
-      state[failureKey] = items[failureKey] ? null
+    response =
+      xhr: xhr
+      date: date
 
-      failure = (message) ->
-        console.error "#{message}: #{url}"
-        obj = {}; obj[failureKey] = date
-        chrome.storage.sync.set obj
+    failure = (error) ->
+      callback Common.extend response, success: false, error: error
 
-      success = (xhr) ->
-        json = xhr.responseText
-        if json == items[jsonKey]
-          obj = {}; obj[successKey] = date
-          chrome.storage.sync.set obj, -> console.log "unchanged: #{url}"
+    xhr.ontimeout = -> failure "HTTP request timed out."
+    xhr.onerror = -> failure "Unknown HTTP error."
+
+    xhr.onreadystatechange = ->
+      if xhr.readyState == 4
+        if xhr.status != 200
+          failure "Error - HTTP status: #{xhr.status}."
+        else if not xhr.responseText
+          failure "Error - HTTP response text empty."
         else
-          try
-            obj = JSON.parse json
-            state[successKey] = date
-            state[jsonKey] = json
-            state[objKey] = obj
-            if "[object Array]" == Object.prototype.toString.call obj
-              # Note.  We could save sync space and bandwidth by storing only the json in sync, and storing
-              # the object in "local" instead.
-              chrome.storage.sync.set state, -> console.log "success: #{url}"
-            else
-              failure "incorrect json type"
-          catch
-            failure "JSON parse error"
+          callback Common.extend response, success: true, text: xhr.responseText
 
-      url = "#{url}?date=#{date}"
-      xhr = new XMLHttpRequest()
-      xhr.open "GET", url, true
-      xhr.timeout = 5000
-      xhr.ontimeout = xhr.onerror = (xhr) -> failure "fetch error"
+    xhr.send()
 
-      xhr.onreadystatechange = ->
-        if xhr.readyState == 4
-          if xhr.status == 200
-            success xhr
-          else
-            failure "fetch error"
-
-      xhr.send()
-
-  getJsonKey: (url) -> "json-#{url}"
-  getObjKey: (url) -> "obj-#{url}"
+  getKey: (url) -> "obj-#{url}"
   getSuccessKey: (url) -> "success-#{url}"
   getFailureKey: (url) -> "failure-#{url}"
 

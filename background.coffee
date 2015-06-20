@@ -1,16 +1,24 @@
 
 do ->
-  defaults =
-    manual: []
-    network: [ "http://smblott.org/jk-navigator-too.txt" ]
-    default: Common.defaults
+  # Force reset to default (for dev/debug only).
+  forceReset = false
 
-  chrome.storage.sync.get Object.keys(defaults), (items) ->
-    unless chrome.runtime.lastError
-      for own key of items
-        delete defaults[key] if items[key]?
-      chrome.storage.sync.set defaults
-      Common.fetchNetwork url for url in items.network
+  setDefaults = ->
+    defaults = custom: [], network: []
+    chrome.storage.sync.get Object.keys(defaults), (items) ->
+      unless chrome.runtime.lastError
+        for own key of defaults
+          delete defaults[key] if items[key] and not forceReset
+        if 0 < Object.keys(defaults).length
+          console.log "setting defaults:", defaults
+          chrome.storage.sync.set defaults
+
+  if forceReset
+    chrome.storage.sync.get null, (items) ->
+      console.log "removing:", Object.keys(items)...
+      chrome.storage.sync.remove Object.keys(items), setDefaults
+  else
+    setDefaults()
 
 getConfig = do ->
   configs = []
@@ -27,22 +35,22 @@ getConfig = do ->
         testRegexp url, regexp
 
   getConfigs = ->
+    console.log "updating configs..."
     chrome.storage.sync.get null, (items) ->
       unless chrome.runtime.lastError
-        # We use try because the storage area may not yet have been initialised.
-        try
-          newConfigs = []
-          networkKeys = items.network.map (url) => Common.getObjKey url
-          for key in [ "manual", networkKeys..., "default" ]
-            newConfigs.push items[key]...  if items[key]
-          configs = newConfigs
-          cache.clear()
-          console.log "configs updated"
-        catch
-          console.log "configs not yet available"
+        cache.clear()
+        configs = []
+        networkKeys =
+          try items.network.map (url) -> Common.getKey url
+          catch then []
+        for key in [ "custom", networkKeys...]
+          configs.push items[key]...  if items[key]
+        configs.push Common.default...
+        console.log "  #{config.name}" for config in configs
 
   getConfigs()
-  chrome.storage.onChanged.addListener getConfigs
+  chrome.storage.onChanged.addListener (changes, area) ->
+    getConfigs() if area == "sync" and changes.network
 
   lookup = (url, sendResponse) ->
     if cache.has url
