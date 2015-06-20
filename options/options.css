@@ -78,7 +78,7 @@ textarea:read-only {
    background-color: #e3e3e3;
 }
 
-.rule-show, .container-remove, #add-network-button, #save-custom {
+.rule-show, .container-remove, .container-refresh, #add-network-button, #save-custom {
    /* margin-right: 15px; */
    min-width: 120px;
 }

@@ -39,6 +39,11 @@ Common =
         "border-color": "#3b5998"
         opacity: "0.2"
 
+    defaults.push
+      name: "JK-Navigator-Too Options Page"
+      regexps: "^chrome-extension://.*/options/options.html"
+      selectors: []
+
     defaults
 
   documentReady: (func) ->

@@ -3,6 +3,8 @@
     <title>JK-Navigator-Too Options</title>
     <link rel="stylesheet" type="text/css" href="options.css">
     <script type="text/javascript" src="../common.js"></script>
+    <script type="text/javascript" src="../scroller.js"></script>
+    <script type="text/javascript" src="../foreground.js"></script>
     <script type="text/javascript" src="options.js"></script>
   </head>
 
@@ -14,8 +16,8 @@
         Work in progres...
       <p/>
 
-      <header>Custom Rules</header>
       <div id="manual">
+        <header>Custom Rules</header>
         <p>
         Insert your custom JSON below (this must be a list of objects).
         <span class="float-right json"><button id="save-custom" type="submit">Save</button></span>
@@ -29,6 +31,7 @@
           <p>
             URL: <span class="container-url"></span>
             <span class="float-right">
+              <input class="container-refresh" type="button" value="Refresh URL" />
               <input class="container-remove" type="button" value="Remove URL" />
             </span>
           </p>
@@ -72,7 +75,8 @@
 
       <header>Default Rules</header>
 
-      <p>These rules are built in. You can enable or disable them, but you cannot remove them.</p>
+      <p>These rules are built in. You cannot change or remove them, but you can add your own rules which
+      override them.</p>
 
       <div id="default"></div>
 
