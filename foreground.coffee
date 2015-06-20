@@ -99,17 +99,13 @@ class Interface
 
     # Sort (and discard elements which are too small).
     elements = elements.map (ele) -> element: ele, rect: ele.getBoundingClientRect()
+    elements = elements.filter (ele) -> 100 < (ele.rect.bottom - ele.rect.top) * (ele.rect.right - ele.rect.left)
     elements.sort (a,b) ->
       if a.rect.top == b.rect.top then a.rect.left - b.rect.left else a.rect.top - b.rect.top
-    elements = elements.filter (ele) -> 100 < (ele.rect.bottom - ele.rect.top) * (ele.rect.right - ele.rect.left)
     elements = elements.map (ele) -> ele.element
 
     # De-duplicate.
     prev = null
-    elements.filter (curr) ->
-      duplicate = curr == prev
-      prev = curr
-      not duplicate
     elements.filter (curr) ->
       duplicate = curr == prev
       prev = curr
