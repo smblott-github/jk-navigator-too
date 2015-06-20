@@ -41,6 +41,7 @@ getConfig = do ->
         cache.clear()
         configs = []
         networkKeys =
+          # We need "try" here because initialisation may not yet be complete.
           try items.network.map (url) -> Common.getKey url
           catch then []
         for key in [ "custom", networkKeys...]
