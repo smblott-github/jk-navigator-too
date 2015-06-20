@@ -78,7 +78,17 @@ configs.push
 configs.push
   name: "Twitter"
   regexps: "^https?://([a-z]+\\.)?twitter.com/?"
-  selectors: "div.home-stream div.content"
+  selectors: [
+    "div.home-stream div.content"
+    "div.profile-stream div.content"
+    "div.list-stream div.content"
+  ]
+  offset: 80
+
+configs.push
+  name: "Google Plus"
+  regexps: "^https?://plus\\.google\\.com"
+  selectors: [ "div[id^='update-']" ]
   offset: 80
 
 console.log JSON.stringify configs, null, "  "
