@@ -81,6 +81,7 @@ Common =
     else if "object" == typeof a
       return false unless "object" == typeof b
       ka = Object.keys a; kb = Object.keys b
+      return false unless ka.length and kb.length
       ka.sort(); kb.sort()
       return false unless @structurallyEqual ka, kb
       for own k, v of a
@@ -248,6 +249,9 @@ Common =
   getKey: (url) -> "obj-#{url}"
   getSuccessKey: (url) -> "success-#{url}"
   getFailureKey: (url) -> "failure-#{url}"
+
+  log: (args...) ->
+    chrome.runtime.sendMessage name: "log", message: args if document.hasFocus()
 
 # This is a simple class for the common case where we want to use some data value which may be immediately
 # available, or for which we may have to wait.  It implements a use-immediately-or-wait queue, and calls the

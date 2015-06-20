@@ -50,8 +50,7 @@ getConfig = do ->
         console.log "  #{config.name}" for config in configs
 
   getConfigs()
-  chrome.storage.onChanged.addListener (changes, area) ->
-    getConfigs() if area == "sync" and changes.network
+  chrome.storage.onChanged.addListener getConfigs
 
   lookup = (url, sendResponse) ->
     if cache.has url
@@ -91,10 +90,15 @@ updateIcon = (request, sender) ->
     # chrome.pageAction.hide sender.tab.id
   false # We will not be calling sendResponse.
 
+consoleLog = (request, sender) ->
+  console.log "#{sender.tab.id}", request.message...
+  false # We will not be calling sendResponse.
+
 do ->
   handlers =
     icon: updateIcon
     config: getConfig
+    log: consoleLog
 
   chrome.runtime.onMessage.addListener (request, sender, sendResponse) ->
     if handlers[request.name]?

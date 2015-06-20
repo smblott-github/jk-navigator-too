@@ -11,9 +11,9 @@ class Interface
     @config.nativeJK ?= false
 
     if @debug.config
-      console.log @config.name
+      Common.log @config.name
       for own key, value of @config
-        console.log "  #{key} #{value}" unless key == "name"
+        Common.log "  #{key} #{value}" unless key == "name"
 
     Scroller.init()
     Common.installListener window, "keydown", @keyDownHandler = (event) => @onKeyDown event
@@ -192,8 +192,8 @@ class Interface
     search = (selector) ->
       if all then element.querySelectorAll selector else element.querySelector selector
     try
-      console.log "#{selector} #{all}:" if @debug.selector
-      console.log "  #{search selector}" if @debug.selector
+      Common.log "#{selector} #{all}:" if @debug.selector
+      Common.log "  #{search selector}" if @debug.selector
       search selector
     catch
       console.error "bad CSS selector: #{selector}"
@@ -220,7 +220,7 @@ class Interface
 
 init = ->
   chrome.runtime.sendMessage { name: "config", url: document.location.toString() }, (config) ->
-    console.log "config:", config?.name ? "disabled"
+    Common.log "config:", config?.name ? "disabled"
     new Interface config if config
 
 if document?.location?.toString() then init() else Common.documentReady init

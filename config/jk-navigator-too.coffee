@@ -63,5 +63,12 @@ configs.push
   selectors: "td[id^='td_post_']"
   offset: 150
 
+configs.push
+  name: "Steephill Photos"
+  regexps: "^https?://www\\.steephill\\.tv/.*/photos/"
+  selectors: "tr a[name] img"
+  # selectors: "div[align='center'] tr a[href^='http'] img"
+  offset: 20
+
 console.log JSON.stringify configs, null, "  "
 
