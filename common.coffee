@@ -303,10 +303,11 @@ class SimpleCache
       null
 
   rotate: (force = false) ->
-    if force or @entries < Object.keys(@cache).length or @expiry < new Date() - @lastRotation
-      @lastRotation = new Date()
-      @previous = @cache
-      @cache = {}
+    Common.nextTick =>
+      if force or @entries < Object.keys(@cache).length or @expiry < new Date() - @lastRotation
+        @lastRotation = new Date()
+        @previous = @cache
+        @cache = {}
 
   clear: ->
     @rotate true
