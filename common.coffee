@@ -258,7 +258,6 @@ Common =
 
   getKey: (url) -> "obj-#{url}"
   getSuccessKey: (url) -> "success-#{url}"
-  getFailureKey: (url) -> "failure-#{url}"
 
   log: (args...) ->
     chrome.runtime.sendMessage name: "log", message: args if document.hasFocus()

@@ -10,10 +10,11 @@ textify = (text) ->
 refreshers = []
 
 class RuleSet
-  constructor: (container, url, rules) ->
+  constructor: (container, url, rules, lastUpdated = "on installation") ->
     template = document.querySelector('#container-template').content
     element = document.importNode template, true
     element.querySelector(".container-url").textContent = url
+    element.querySelector(".container-last-updated").textContent = lastUpdated
     wrapper = element.querySelector(".container-wrapper")
 
     removeButton = element.querySelector(".container-remove")
@@ -74,7 +75,7 @@ initialiseNetworkRules = (callback) ->
     network = $("network")
     network.removeChild network.firstChild while network.firstChild
     for url in items.network
-      new RuleSet $("network"), url, items[Common.getKey url]
+      new RuleSet $("network"), url, items[Common.getKey url], items[Common.getSuccessKey url]
     callback?()
 
 showMessage = do ->
@@ -151,7 +152,9 @@ fetchUrl = (url) ->
       update = {}
       update.network = items.network
       key = Common.getKey url
+      successKey = Common.getSuccessKey url
       update[key] = configs
+      update[successKey] = new Date().toString()
       chrome.storage.sync.set update, ->
         if chrome.runtime.lastError
           showMessage "Yikes, an internal Chrome error occurred."
@@ -164,10 +167,10 @@ fetchUrl = (url) ->
           showMessage "These rules have been added previously; they've been refreshed now."
           initialiseNetworkRules()
         else
-          chrome.storage.sync.get key, (items) ->
+          chrome.storage.sync.get [ key, successKey ], (items) ->
             unless chrome.runtime.lastError
               showMessage "Network rules added successfully."
-              new RuleSet $("network"), url, items[key]
+              new RuleSet $("network"), url, items[key], items[successKey]
 
 Common.documentReady ->
   chrome.storage.sync.get null, (items) ->
