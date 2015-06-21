@@ -61,12 +61,12 @@ button:focus, input[type="text"]:focus, textarea:focus {
   outline: none;
 }
 
-pre, code, .code, #status, .rule-name, #fetch-message {
+pre, code, .code, #status, .rule-name, #fetch-message  {
   font-family: Consolas, "Liberation Mono", Courier, monospace;
   background: #eeeeee;
 }
 
-.network-url, #manual-text, #default-text, .network-text, .rule-text {
+.network-url, #manual-text, #default-text, .network-text, .rule-text, #messages {
   font-family: Consolas, "Liberation Mono", Courier, monospace;
 }
 
@@ -89,4 +89,26 @@ textarea:read-only {
    border-width: 1px;
    border-color: #e3e3e3;
    */
+}
+
+#messages {
+   position: fixed;
+   right: 20px;
+   bottom: 20px;
+   width: 600px;
+   min-height: 50px;
+   max-height: 150px;
+   background-color: #fafafa;
+   border-radius: 4px;
+   overflow: scroll;
+   border-style: solid;
+   border-color: #666666;
+   border-width: 1px;
+}
+
+#messages::-webkit-scrollbar { width: 0 !important }
+
+.message-container {
+   margin-top: 0px;
+   margin-bottom: 0px;
 }

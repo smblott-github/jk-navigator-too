@@ -82,7 +82,7 @@ initialiseNetworkRules = (callback) ->
 class Tween
   constructor: (options) ->
     @element = options.element
-    @delay = options.delay ? 3000
+    @delay = options.delay ? 5000
     @fade= options.fade ? 0.02
     @opacity 0.0
     @timer = null
@@ -101,11 +101,15 @@ class Tween
 
 Common.documentReady ->
   showMessage = do ->
-    messageElement = $("fetch-message")
+    messageElement = $("messages")
     tween = new Tween element: messageElement
 
     (msg) ->
-      messageElement.textContent = msg
+      template = document.querySelector('#message-template').content
+      element = document.importNode template, true
+      element.querySelector(".message-container").textContent = msg
+      messageElement.appendChild element
+      messageElement.scrollTop = messageElement.scrollHeight
       tween.show()
 
 fetchUrl = (url) ->
@@ -116,7 +120,7 @@ fetchUrl = (url) ->
     url = localStorage.previousUrl = urlElement.value.trim()
 
     if url.length == 0
-      showMessage "Please enter a URL above."
+      showMessage "Please enter a URL in the box."
       return
 
     if /\s/.test(url) or not /^https?:\/\/.*\//.test url
@@ -155,7 +159,7 @@ fetchUrl = (url) ->
         return
 
       if Common.structurallyEqual configs, items[key]
-        showMessage "Looks like the rules are unchanged."
+        showMessage "Looks like #{url} is unchanged."
         return
 
       items.network ?= []
@@ -172,7 +176,7 @@ fetchUrl = (url) ->
           return
 
         if refreshingRules
-          showMessage "Rules refreshed successfully for #{url}."
+          showMessage "Rules refreshed: #{url}."
           initialiseNetworkRules()
         else if items[key]
           showMessage "These rules have been added previously; they've been refreshed now."
@@ -189,9 +193,6 @@ Common.documentReady ->
     urlElement = $("add-network-text")
     urlElement.value = localStorage.previousUrl
 
-    messageElement = $("fetch-message")
-    messageElement.style.opacity = "0.0"
-
     $("add-network-button").addEventListener "click", fetchUrl
     urlElement.addEventListener "keydown", (event) ->
       fetchUrl() if event.keyCode == 13
@@ -199,7 +200,6 @@ Common.documentReady ->
     $("manual-text").textContent = textify items.custom
     $("manual").style.display = "none"
 
-    refreshers.push -> showMessage "You don't yet have any network rules to refresh."
     new RuleSet $("default"), "defaults", Common.default
 
     initialiseNetworkRules ->
