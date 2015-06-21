@@ -1,5 +1,6 @@
 
 $ = (id) -> document.getElementById id
+showMessage = null
 
 textify = (text) ->
   text = JSON.stringify(text, null, 2)
@@ -78,24 +79,34 @@ initialiseNetworkRules = (callback) ->
       new RuleSet $("network"), url, items[Common.getKey url], items[Common.getSuccessKey url]
     callback?()
 
-showMessage = do ->
-  timer = null
-  messageElement = null
+class Tween
+  constructor: (options) ->
+    @element = options.element
+    @delay = options.delay ? 3000
+    @fade= options.fade ? 0.02
+    @opacity 0.0
+    @timer = null
 
-  tween = ->
-    clearTimeout timer if timer
-    opacity = 1.0
-    messageElement.style.opacity = opacity
-    stepTween = ->
-      opacity = opacity - 0.02
-      messageElement.style.opacity = opacity
-      timer = Common.setTimeout 10, stepTween if 0 < opacity
-    timer = Common.setTimeout 3500, stepTween
+  show: ->
+    clearTimeout @timer if @timer
+    @opacity opacity = 1.0
 
-  (msg) ->
+    step = =>
+      @opacity opacity -= @fade
+      @timer = Common.setTimeout 10, step if 0.0 < opacity
+    @timer = Common.setTimeout @delay, step
+
+  opacity: (opacity) ->
+    @element.style.opacity =opacity
+
+Common.documentReady ->
+  showMessage = do ->
     messageElement = $("fetch-message")
-    messageElement.textContent = msg
-    tween()
+    tween = new Tween element: messageElement
+
+    (msg) ->
+      messageElement.textContent = msg
+      tween.show()
 
 fetchUrl = (url) ->
   refreshingRules = "string" == typeof url
@@ -188,6 +199,7 @@ Common.documentReady ->
     $("manual-text").textContent = textify items.custom
     $("manual").style.display = "none"
 
+    refreshers.push -> showMessage "You don't yet have any network rules to refresh."
     new RuleSet $("default"), "defaults", Common.default
 
     initialiseNetworkRules ->
