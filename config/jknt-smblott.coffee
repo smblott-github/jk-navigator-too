@@ -1,11 +1,26 @@
 
 configs = []
 
+# configs.push
+#   name: "Facebook Home Page (smblott)"
+#   regexps: "^https?://www\\.facebook\\.com/?$"
+#   selectors: "div[data-timestamp] > div.userContentWrapper"
+#   activators: [ "div.fbstoryattachmentimage img", "a[rel=theater]" ]
+#   style:
+#     "border-color": "#3b5998"
+#     opacity: "0.2"
+
 configs.push
-  name: "Facebook Home Page (smblott)"
-  regexps: "^https?://www\\.facebook\\.com/?$"
-  selectors: "div[data-timestamp] > div.userContentWrapper"
-  activators: [ "div.fbstoryattachmentimage img", "a[rel=theater]" ]
+  name: "Facebook"
+  regexps: "^https?://www\\.facebook\\.com/."
+  selectors: [
+    "div#content div.userContentWrapper"
+  ]
+  activators: [
+    "div.fbstoryattachmentimage img",
+    "a[rel=theater]"
+    "i > input[type='button']"
+  ]
   style:
     "border-color": "#3b5998"
     opacity: "0.2"
@@ -39,15 +54,17 @@ configs.push
 
 configs.push
   name: "BBC News"
-  regexps: "^https?://www\\.bbc\\.(com|co.uk)/news/?"
+  regexps: "^https?://www\\.bbc\\.(com|co.uk)/news/\\?$"
+  regexps: "^https?://www\\.bbc\\.(com|co.uk)/news/.*[^0-9]$"
   selectors: [
-    "div.column--primary div[data-entityid^='container-top-stories']"
-    "div.column--primary div[data-entityid^='av-stories-now']"
-    "div.column--primary div[data-entityid^='feature-main']"
-    "div.column--primary div[data-entityid^='explainers']"
-    "div.column--primary div[data-entityid^='cluster_2']"
-    "div.column--primary div[data-entityid^='also-in-news']"
-    "div.column--primary div[data-entityid^='the_reporters']"
+    "div.column--primary a[tabindex]"
+    # "div.column--primary div[data-entityid^='container-top-stories']"
+    # "div.column--primary div[data-entityid^='av-stories-now']"
+    # "div.column--primary div[data-entityid^='feature-main']"
+    # "div.column--primary div[data-entityid^='explainers']"
+    # "div.column--primary div[data-entityid^='cluster_2']"
+    # "div.column--primary div[data-entityid^='also-in-news']"
+    # "div.column--primary div[data-entityid^='the_reporters']"
   ]
   offset: 20
   style:
@@ -75,13 +92,13 @@ configs.push
 
 configs.push
   name: "Vbulletin Forum Display"
-  regexps: "\\bforumdisplay\\.php\\?f(orumid)?="
+  regexps: "\\bforumdisplay\\.php\\?"
   selectors: "td[id^='td_threadtitle_']"
   offset: 150
 
 configs.push
   name: "Vbulletin Thread"
-  regexps: "\\bshowthread\\.php\\?(t|p)="
+  regexps: "\\bshowthread\\.php\\?"
   selectors: "td[id^='td_post_']"
   offset: 150
 
@@ -120,6 +137,7 @@ configs.push
   selectors: [
     "li.js-navigation-item"
     "div.pagination a.next_page"
+    "div.subnav-links a.subnav-item:not(.selected):not([data-selected-links^='repo_labels']):not([data-selected-links^='repo_milestones'])"
   ]
   activators: "a.issue-title-link"
   offset: 30
@@ -163,14 +181,21 @@ configs.push
   ]
   offset: 250
 
-configs.push
-  name: "Google Plus"
-  regexps: "^https?://plus\\.google\\.com"
-  selectors: [ "div[id^='update-']" ]
-  offset: 80
-  style:
-    "border-color": "#0266C8"
-    opacity: "0.2"
+# configs.push
+#   name: "Google Plus"
+#   regexps: "^https?://plus\\.google\\.com"
+#   # selectors: [ "div[id^='update-']" ]
+#   activators: [
+#     # This needs more work.
+#     "div[role='button']:not([g:token])" # Launch videos.
+#     "a[target='_blank'][href^='http']:not([oid]):not([itemprop='map'])" # External links (but not maps).
+#     "a[href^='photos/']" # Photos.
+#   ]
+#   offset: 80
+#   nativeJK: true
+#   style:
+#     "border-color": "#0266C8"
+#     opacity: "0.2"
 
 console.log JSON.stringify configs, null, "  "
 

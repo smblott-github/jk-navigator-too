@@ -2,7 +2,7 @@
 class Interface
   debug:
     config: false
-    selector: false
+    selector: true
     select: false
 
   constructor: (@config, element = null) ->
@@ -18,8 +18,8 @@ class Interface
         Common.log "  #{key} #{value}" unless key == "name"
 
     Scroller.init()
-    # Common.installListener window, "keydown", @keyDownHandler = (event) => @onKeyDown event
-    # Common.installListener window, "keyup", @KeyUpHandler = (event) => @onKeyUp event
+    Common.installListener window, "keydown", @keyDownHandler = (event) => @onKeyDown event
+    Common.installListener window, "keyup", @KeyUpHandler = (event) => @onKeyUp event
     Common.installListener window, "scroll", @scrollHandler = => @onScroll()
     chrome.runtime.sendMessage name: "icon", show: true if @config.selectors?
 
@@ -31,8 +31,8 @@ class Interface
     chrome.runtime.sendMessage name: "icon", show: false
     @clearSelection()
     @isEnabled = false
-    # window.removeEventListener "keydown", @keyDownHandler, true
-    # window.removeEventListener "keyup", @keyUphandler, true
+    window.removeEventListener "keydown", @keyDownHandler, true
+    window.removeEventListener "keyup", @keyUphandler, true
     window.removeEventListener "scroll", @scrollHandler, true
 
   onKeyDown: (event) ->
@@ -51,6 +51,7 @@ class Interface
 
       when "up", "down"
         return if @config.nativeJK
+        return if event.shiftKey or event.ctrlKey or event.altKey
         @performUpDown action
 
       else
@@ -196,7 +197,9 @@ class Interface
 
   activateElement: (element, event) ->
     activate = (ele = element) ->
+      Common.log "click:", ele
       Common.simulateClick ele, event
+      ele.blur()
 
     if element.tagName.toLowerCase() == "a"
       activate element
@@ -215,10 +218,10 @@ class Interface
       if all then element.querySelectorAll selector else element.querySelector selector
     try
       Common.log "#{selector} #{all}" if @debug.selector
-      Common.log "  #{search(selector).length}" if @debug.selector
+      Common.log search selector if @debug.selector
       search selector
     catch
-      console.error "bad CSS selector: #{selector}"
+      Common.log "ERROR: bad CSS selector: #{selector}"
       if all then [] else null
 
   # If we scroll, and there's already a selected element, and that element goes out of the viewport, then we
@@ -243,14 +246,18 @@ class Interface
 Wrapper =
   interface: null
 
-  handleKeyEvent: (event) ->
-    switch event.type
-      when "keydown"
-        @interface?.onKeyDown event
-      when "keyup"
-        @interface?.onKeyUp event
+  # handleKeyEvent: (event) ->
+  #   switch event.type
+  #     when "keydown"
+  #       @interface?.onKeyDown event
+  #     when "keyup"
+  #       @interface?.onKeyUp event
 
   init: ->
+    # handleKeyEvent = (event) => @handleKeyEvent event
+    # for name in [ "keydown", "keyup" ]
+    #   Common.installListener window, name, handleKeyEvent
+
     @launch()
 
     chrome.runtime.onMessage.addListener (request, sender, sendResponse) =>
@@ -264,13 +271,6 @@ Wrapper =
     chrome.runtime.sendMessage { name: "config", url: document.location.toString() }, (config) =>
       Common.log "config:", config?.name ? "disabled"
       @interface = new Interface config if config
-
-handleKeyEvent = (event) -> Wrapper.handleKeyEvent event
-
-# Install listeners very early (and document start).  This allows the listeners to be installed ahead of
-# Vimium's.
-for name in [ "keydown", "keyup" ]
-  Common.installListener window, name, handleKeyEvent
 
 if document?.location?.toString()
   Wrapper.init()

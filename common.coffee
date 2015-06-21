@@ -14,7 +14,7 @@ Common =
 
     defaults.push
       name: "DuckDuckGo Search"
-      regexps: "^https://duckduckgo\\.com/\\?q="
+      regexps: "^https://duckduckgo\\.com/\\?"
       selectors: [
         "div#links div.result__body"
         "div#zero_click_wrapper div.zci__main div.zci__body"
@@ -25,7 +25,7 @@ Common =
 
     defaults.push
       name: "Youtube Search Results"
-      regexps: "^https?://www\\.youtube\\.com/results\\?."
+      regexps: "^https?://www\\.youtube\\.com/results\\?"
       selectors: "ol.item-section > li"
       activators: 'a[href^="/watch"]'
 
