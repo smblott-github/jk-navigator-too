@@ -1,4 +1,3 @@
-
 Common =
 
   default: do ->
@@ -70,18 +69,22 @@ Common =
 
   # Poor man's structural equality.
   structurallyEqual: (a, b) ->
-    return true if a == b
-    return false unless typeof(a) == typeof b
-    if a.length
-      return false unless b.length
+    if a == b
+      true
+    else if typeof(a) != typeof b
+      false
+    else if "string" == typeof a
+      a == b
+    else if a.length? or b.length?
+      return false unless a.length? and b.length?
       return false unless a.length == b.length
       for e, i in a
         return false unless @structurallyEqual e, b[i]
       true
     else if "object" == typeof a
-      return false unless "object" == typeof b
       ka = Object.keys a; kb = Object.keys b
-      return false unless ka.length and kb.length
+      return false unless ka.length? and kb.length?
+      return false unless ka.length == kb.length
       ka.sort(); kb.sort()
       return false unless @structurallyEqual ka, kb
       for own k, v of a
@@ -119,6 +122,13 @@ Common =
   extend: (hash1, hash2) ->
     hash1[key] = value for own key, value of hash2
     hash1
+
+  normaliseUrl: (url) ->
+    # We exclude anchors.
+    url = url.split("#")[0]
+    # We include the presence of parameters, but not the parameters themselves.
+    url = "#{url.split("&")[0]}&" if 0 <= url.indexOf "&"
+    url
 
   # FIXME.
   chromeStoreKey: "klbcooigafjpbiahdjccmajnaehomajc"

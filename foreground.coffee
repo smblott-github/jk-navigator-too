@@ -7,6 +7,7 @@ class Interface
 
   constructor: (@config, element = null) ->
     @element = null
+    @isEnabled = true
 
     @config.offset ?= 100
     @config.nativeJK ?= false
@@ -25,6 +26,14 @@ class Interface
     @selectElement element false if element
     # Disabled.  It's not clear that the UX is better like this on not.
     # @onScroll focusDelay: 0
+
+  deactivate: ->
+    chrome.runtime.sendMessage name: "icon", show: false
+    @clearSelection()
+    @isEnabled = false
+    window.removeEventListener "keydown", @keyDownHandler, true
+    window.removeEventListener "keyup", @keyUphandler, true
+    window.removeEventListener "scroll", @scrollHandler, true
 
   onKeyDown: (event) ->
     # console.clear()
@@ -131,9 +140,9 @@ class Interface
       "visible"
 
   selectElement: (element, shouldScroll = true) ->
-    Common.log "selectElement #{element?} #{shouldScroll}" if @debug.select
+    Common.log "selectElement #{element?} #{shouldScroll} #{@isEnabled}" if @debug.select
     Common.log "              #{element == @element} (expect false for a new element)" if @debug.select
-    if element
+    if element and @isEnabled
       @clearSelection()
       @element = document.activeElement = element
 
@@ -231,10 +240,23 @@ class Interface
             unless @element and Common.isInViewport @element
               @selectElement element, false
 
-init = ->
-  chrome.runtime.sendMessage { name: "config", url: document.location.toString() }, (config) ->
-    Common.log "config:", config?.name ? "disabled"
-    new Interface config if config
+Wrapper =
+  interface: null
 
-if document?.location?.toString() then init() else Common.documentReady init
+  init: ->
+    @launch()
+
+    chrome.runtime.onMessage.addListener (request, sender, sendResponse) =>
+      @launch() if request.name == "refresh"
+      false
+
+  launch: ->
+    @interface?.deactivate()
+    @interface = null
+
+    chrome.runtime.sendMessage { name: "config", url: document.location.toString() }, (config) =>
+      Common.log "config:", config?.name ? "disabled"
+      @interface = new Interface config if config
+
+if document?.location?.toString() then Wrapper.init() else Common.documentReady -> Wrapper.init()
 

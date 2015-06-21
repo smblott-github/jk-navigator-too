@@ -49,6 +49,11 @@ getConfig = do ->
         configs.push Common.default...
         console.log "  #{config.name}" for config in configs
 
+        chrome.windows.getAll { populate: true }, (windows) ->
+          for window in windows
+            for tab in window.tabs
+              chrome.tabs.sendMessage tab.id, name: "refresh"
+
   getConfigs()
   chrome.storage.onChanged.addListener getConfigs
 
@@ -73,15 +78,8 @@ getConfig = do ->
       console.log "#{url} -> disabled"
       sendResponse cache.set url, null
 
-  normaliseUrl = (url) ->
-    # We exclude anchors.
-    url = url.split("#")[0]
-    # We include the presence of parameters, but not the parameters themselves.
-    url = "#{url.split("&")[0]}&" if 0 <= url.indexOf "&"
-    url
-
   (request, sender, sendResponse) ->
-    lookup normaliseUrl(request.url), sendResponse
+    lookup Common.normaliseUrl(request.url), sendResponse
 
 updateIcon = (request, sender) ->
   if request.show
