@@ -95,6 +95,9 @@ configs.push
   regexps: "^https?://plus\\.google\\.com"
   selectors: [ "div[id^='update-']" ]
   offset: 80
+  style:
+    "border-color": "#0266C8"
+    opacity: "0.2"
 
 console.log JSON.stringify configs, null, "  "
 
