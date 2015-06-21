@@ -85,7 +85,7 @@ updateIcon = (request, sender) ->
   if request.show
     chrome.pageAction.show sender.tab.id
   else
-    # chrome.pageAction.hide sender.tab.id
+    chrome.pageAction.hide sender.tab.id
   false # We will not be calling sendResponse.
 
 consoleLog = (request, sender) ->
@@ -103,4 +103,7 @@ do ->
       handlers[request.name]? request, sender, sendResponse
     else
       false
+
+chrome.webNavigation.onHistoryStateUpdated.addListener (details) ->
+  chrome.tabs.sendMessage details.tabId, name: "refresh"
 

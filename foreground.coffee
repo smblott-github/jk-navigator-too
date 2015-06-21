@@ -21,7 +21,7 @@ class Interface
     Common.installListener window, "keydown", @keyDownHandler = (event) => @onKeyDown event
     Common.installListener window, "keyup", @KeyUpHandler = (event) => @onKeyUp event
     Common.installListener window, "scroll", @scrollHandler = => @onScroll()
-    chrome.runtime.sendMessage name: "icon", show: @config.selectors?
+    chrome.runtime.sendMessage name: "icon", show: true if @config.selectors?
 
     @selectElement element false if element
     # Disabled.  It's not clear that the UX is better like this on not.
@@ -87,9 +87,10 @@ class Interface
         if action == "up" and top + delta < @config.offset
           Common.log "  use previous element \"up\"" if @debug.select
           newIndex = oldIndex
-        else if action == "down" and @config.offset + delta < top
-          Common.log "  use previous element \"down\"" if @debug.select
-          newIndex = oldIndex
+        # # XXX: Broken at the bottom of the page.
+        # else if action == "down" and @config.offset + delta < top
+        #   Common.log "  use previous element \"down\"" if @debug.select
+        #   newIndex = oldIndex
 
       Common.log "  scroll (element) #{elements[newIndex]?}" if @debug.select
       @selectElement elements[newIndex]

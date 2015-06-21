@@ -111,6 +111,24 @@ configs.push
     "border-color": "#55B4CF"
 
 configs.push
+  name: "Github Issues/Pulls"
+  regexps: [
+    "^https?://github.com/.*/(issues|pulls)($|\\?)"
+    "^https?://github.com/notifications"
+    "^https?://github.com/.*/notifications"
+  ]
+  selectors: [
+    "li.js-navigation-item"
+    "div.pagination a.next_page"
+    # "ul.table-list li.selectable"
+    # "ul.notifications li.issue-notification"
+    # "ul.notifications li.pull-request-notification"
+    # "ul.notifications li.notifications-more"
+  ]
+  activators: "a.issue-title-link"
+  offset: 80
+
+configs.push
   name: "Google Plus"
   regexps: "^https?://plus\\.google\\.com"
   selectors: [ "div[id^='update-']" ]
