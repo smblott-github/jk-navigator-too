@@ -195,9 +195,6 @@ class Interface
 
   activateElement: (element, event) ->
     activate = (ele = element) ->
-      urlA = document.location.toString().split("#")[0]
-      urlB = ele.href?.split("#")[0]
-
       Common.simulateClick ele, event
 
     if element.tagName.toLowerCase() == "a"
@@ -206,9 +203,11 @@ class Interface
       selectors = [ "a[target=_blank]", "a[href~=http", "a[href~=https]", "a" ]
       selectors = [ (Common.stringToArray @config.activators)..., selectors... ] if @config.activators
       for selector in selectors
-          if candidate = @querySelector element, selector
-            activate candidate
-            return
+        if candidate = @querySelector element, selector
+          activate candidate
+          return
+      # OK.  Just click the element, then.
+      activate element
 
   querySelector: (element, selector, all = false) ->
     search = (selector) ->
