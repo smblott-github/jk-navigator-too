@@ -18,8 +18,8 @@ class Interface
         Common.log "  #{key} #{value}" unless key == "name"
 
     Scroller.init()
-    Common.installListener window, "keydown", @keyDownHandler = (event) => @onKeyDown event
-    Common.installListener window, "keyup", @KeyUpHandler = (event) => @onKeyUp event
+    # Common.installListener window, "keydown", @keyDownHandler = (event) => @onKeyDown event
+    # Common.installListener window, "keyup", @KeyUpHandler = (event) => @onKeyUp event
     Common.installListener window, "scroll", @scrollHandler = => @onScroll()
     chrome.runtime.sendMessage name: "icon", show: true if @config.selectors?
 
@@ -31,8 +31,8 @@ class Interface
     chrome.runtime.sendMessage name: "icon", show: false
     @clearSelection()
     @isEnabled = false
-    window.removeEventListener "keydown", @keyDownHandler, true
-    window.removeEventListener "keyup", @keyUphandler, true
+    # window.removeEventListener "keydown", @keyDownHandler, true
+    # window.removeEventListener "keyup", @keyUphandler, true
     window.removeEventListener "scroll", @scrollHandler, true
 
   onKeyDown: (event) ->
@@ -243,6 +243,13 @@ class Interface
 Wrapper =
   interface: null
 
+  handleKeyEvent: (event) ->
+    switch event.type
+      when "keydown"
+        @interface?.onKeyDown event
+      when "keyup"
+        @interface?.onKeyUp event
+
   init: ->
     @launch()
 
@@ -258,5 +265,15 @@ Wrapper =
       Common.log "config:", config?.name ? "disabled"
       @interface = new Interface config if config
 
-if document?.location?.toString() then Wrapper.init() else Common.documentReady -> Wrapper.init()
+handleKeyEvent = (event) -> Wrapper.handleKeyEvent event
+
+# Install listeners very early (and document start).  This allows the listeners to be installed ahead of
+# Vimium's.
+for name in [ "keydown", "keyup" ]
+  Common.installListener window, name, handleKeyEvent
+
+if document?.location?.toString()
+  Wrapper.init()
+else
+  Common.documentReady -> Wrapper.init()
 

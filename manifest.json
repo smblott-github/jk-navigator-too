@@ -10,7 +10,7 @@
   "content_scripts": [ {
    "matches": [ "<all_urls>" ],
    "js": [ "common.js", "scroller.js", "foreground.js" ],
-   "run_at": "document_idle",
+   "run_at": "document_start",
    "all_frames": true } ],
 
    "icons": { "16": "icons/icon-16.png",
