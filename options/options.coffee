@@ -7,6 +7,8 @@ textify = (text) ->
   text = text.replace /},\n  {/g, "},\n\n  {"
   text
 
+refreshers = []
+
 class RuleSet
   constructor: (container, url, rules) ->
     template = document.querySelector('#container-template').content
@@ -34,7 +36,9 @@ class RuleSet
         else
           removeButton.style.color = ""
 
-      refreshButton.addEventListener "click", -> fetchUrl url
+      refresh = -> fetchUrl url
+      refreshButton.addEventListener "click", refresh
+      refreshers.push refresh
 
     for rule in rules
       do (rule) ->
@@ -65,12 +69,13 @@ class RuleSet
         wrapper.appendChild ele
     container.appendChild element
 
-initialiseNetworkRules = ->
+initialiseNetworkRules = (callback) ->
   chrome.storage.sync.get null, (items) ->
     network = $("network")
     network.removeChild network.firstChild while network.firstChild
     for url in items.network
       new RuleSet $("network"), url, items[Common.getKey url]
+    callback?()
 
 showMessage = do ->
   timer = null
@@ -166,12 +171,7 @@ fetchUrl = (url) ->
 
 Common.documentReady ->
   chrome.storage.sync.get null, (items) ->
-    $("manual-text").textContent = textify items.custom
-    $("manual").style.display = "none"
-    new RuleSet $("default"), "defaults", Common.default
-    initialiseNetworkRules()
-
-    localStorage.previousUrl ?= "http://smblott.org/jk-navigator-too.txt"
+    localStorage.previousUrl ?= "http://smblott.org/jknt-smblott.txt"
     urlElement = $("add-network-text")
     urlElement.value = localStorage.previousUrl
 
@@ -181,4 +181,14 @@ Common.documentReady ->
     $("add-network-button").addEventListener "click", fetchUrl
     urlElement.addEventListener "keydown", (event) ->
       fetchUrl() if event.keyCode == 13
+
+    $("manual-text").textContent = textify items.custom
+    $("manual").style.display = "none"
+
+    new RuleSet $("default"), "defaults", Common.default
+
+    initialiseNetworkRules ->
+      url = document.location.toString()
+      if /[?&]refresh\b/.test url
+        callback() for callback in refreshers
 
