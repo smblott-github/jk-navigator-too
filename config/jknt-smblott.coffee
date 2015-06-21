@@ -104,8 +104,11 @@ configs.push
     "div.home-stream div.content"
     "div.profile-stream div.content"
     "div.list-stream div.content"
+    "div.new-tweets-bar"
   ]
   offset: 80
+  style:
+    "border-color": "#55B4CF"
 
 configs.push
   name: "Google Plus"
