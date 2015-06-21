@@ -31,22 +31,39 @@ configs.push
   selectors: "a"
 
 configs.push
-  name: "The Journal IE"
+  name: "The Journal IE Home Page"
   regexps: "^http://www\\.thejournal\\.ie/?$"
   selectors: "div.river.span-8 div.post"
   activators: "h4 a"
+  offset: 20
 
 configs.push
-  name: "The Journal IE Article"
-  regexps: "^http://www\\.thejournal\\.ie/."
+  name: "BBC News"
+  regexps: "^https?://www\\.bbc\\.(com|co.uk)/news/?"
   selectors: [
-    "span#articleContent p"
-    "span#articleContent blockquote"
-    "ul.commentList li div.comment"
-    "iframe[id^='twitter-widget']"
+    "div.column--primary div[data-entityid^='container-top-stories']"
+    "div.column--primary div[data-entityid^='av-stories-now']"
+    "div.column--primary div[data-entityid^='feature-main']"
+    "div.column--primary div[data-entityid^='explainers']"
+    "div.column--primary div[data-entityid^='cluster_2']"
+    "div.column--primary div[data-entityid^='also-in-news']"
+    "div.column--primary div[data-entityid^='the_reporters']"
   ]
+  offset: 20
   style:
-    opacity: "0.2"
+    "z-index": 2000000000
+
+# configs.push
+#   name: "The Journal IE Article"
+#   regexps: "^http://www\\.thejournal\\.ie/."
+#   selectors: [
+#     "span#articleContent p"
+#     "span#articleContent blockquote"
+#     "ul.commentList li div.comment"
+#     "iframe[id^='twitter-widget']"
+#   ]
+#   style:
+#     opacity: "0.2"
 
 configs.push
   name: "La Fouly Webcam"
