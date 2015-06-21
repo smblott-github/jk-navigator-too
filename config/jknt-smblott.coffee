@@ -127,7 +127,7 @@ configs.push
 configs.push
   name: "Github Discussions"
   regexps: [
-    "^https?://github.com/.*/(issues?|pulls?)/[1-9]+$"
+    "^https?://github.com/.*/(issues?|pulls?)/[0-9]+$"
   ]
   selectors: [
     "div.discussion-timeline div[id^='issue-']"
@@ -149,6 +149,19 @@ configs.push
     "div.tabnav a.tabnav-tab:not(.selected):not(.preview-tab)"
   ]
   offset: 30
+
+configs.push
+  name: "Github Diffs"
+  regexps: [
+    "^https?://github.com/.*/pull/[0-9]+/files"
+  ]
+  selectors: [
+    "td.blob-code-addition"
+    "td.blob-code-deletion"
+    # Navigation bar.
+    "div.tabnav a.tabnav-tab:not(.selected):not(.preview-tab)"
+  ]
+  offset: 250
 
 configs.push
   name: "Google Plus"
