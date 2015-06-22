@@ -2,12 +2,11 @@
 class Interface
   debug:
     config: false
-    selector: true
+    selector: false
     select: false
 
   constructor: (@config, element = null) ->
     @element = null
-    @isEnabled = true
 
     @config.offset ?= 100
     @config.nativeJK ?= false
@@ -17,25 +16,16 @@ class Interface
       for own key, value of @config
         Common.log "  #{key} #{value}" unless key == "name"
 
-    Scroller.init()
-    Common.installListener window, "keydown", @keyDownHandler = (event) => @onKeyDown event
-    Common.installListener window, "keyup", @KeyUpHandler = (event) => @onKeyUp event
-    Common.installListener window, "scroll", @scrollHandler = => @onScroll()
     chrome.runtime.sendMessage name: "icon", show: true if @config.selectors?
-
-    @selectElement element false if element
+    @selectElement element, false if element
     # Disabled.  It's not clear that the UX is better like this on not.
     # @onScroll focusDelay: 0
 
   deactivate: ->
     chrome.runtime.sendMessage name: "icon", show: false
     @clearSelection()
-    @isEnabled = false
-    window.removeEventListener "keydown", @keyDownHandler, true
-    window.removeEventListener "keyup", @keyUphandler, true
-    window.removeEventListener "scroll", @scrollHandler, true
 
-  onKeyDown: (event) ->
+  onKeydown: (event) ->
     # console.clear()
     CoreScroller.registerKeydown event
     return unless Common.isActive()
@@ -61,7 +51,7 @@ class Interface
     event.stopImmediatePropagation()
     false
 
-  onKeyUp: (event) ->
+  onKeyup: (event) ->
     CoreScroller.registerKeyup event
 
   performUpDown: (action) ->
@@ -142,9 +132,9 @@ class Interface
       "visible"
 
   selectElement: (element, shouldScroll = true) ->
-    Common.log "selectElement #{element?} #{shouldScroll} #{@isEnabled}" if @debug.select
+    Common.log "selectElement #{element?} #{shouldScroll}" if @debug.select
     Common.log "              #{element == @element} (expect false for a new element)" if @debug.select
-    if element and @isEnabled
+    if element
       @clearSelection()
       @element = document.activeElement = element
 
@@ -246,18 +236,12 @@ class Interface
 Wrapper =
   interface: null
 
-  # handleKeyEvent: (event) ->
-  #   switch event.type
-  #     when "keydown"
-  #       @interface?.onKeyDown event
-  #     when "keyup"
-  #       @interface?.onKeyUp event
-
   init: ->
-    # handleKeyEvent = (event) => @handleKeyEvent event
-    # for name in [ "keydown", "keyup" ]
-    #   Common.installListener window, name, handleKeyEvent
+    Common.installListener window, "keydown", (event) => @interface?.onKeydown event
+    Common.installListener window, "keyup", (event) => @interface?.onKeyup event
+    Common.installListener window, "scroll", (event) => @interface?.onScroll event
 
+    Scroller.init()
     @launch()
 
     chrome.runtime.onMessage.addListener (request, sender, sendResponse) =>
@@ -265,15 +249,13 @@ Wrapper =
       false
 
   launch: ->
+    element = @interface?.element
     @interface?.deactivate()
     @interface = null
 
     chrome.runtime.sendMessage { name: "config", url: document.location.toString() }, (config) =>
       Common.log "config:", config?.name ? "disabled"
-      @interface = new Interface config if config
+      @interface = new Interface(config, element) if config
 
-if document?.location?.toString()
-  Wrapper.init()
-else
-  Common.documentReady -> Wrapper.init()
+Common.documentReady -> Wrapper.init()
 
