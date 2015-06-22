@@ -4,7 +4,7 @@ do ->
   forceReset = false
 
   setDefaults = ->
-    defaults = custom: [], network: []
+    defaults = network: []
     chrome.storage.sync.get Object.keys(defaults), (items) ->
       unless chrome.runtime.lastError
         for own key of defaults

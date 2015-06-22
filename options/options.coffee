@@ -21,26 +21,22 @@ class RuleSet
     removeButton = element.querySelector(".container-remove")
     refreshButton = element.querySelector(".container-refresh")
 
-    if url == "defaults"
-      removeButton.style.display = "none"
-      refreshButton.style.display = "none"
-    else
-      removeButton.addEventListener "click", ->
-        removeButton.style.color = "Red"
-        if confirm "Are you sure you want to remove this these rules?"
-          wrapper.style.display = "none"
-          key = Common.getKey url
-          chrome.storage.sync.get [ "network", key ], (items) ->
-            unless chrome.runtime.lastError
-              network = items.network.filter (str) -> str != url
-              chrome.storage.sync.remove key, ->
-                chrome.storage.sync.set { network }
-        else
-          removeButton.style.color = ""
+    removeButton.addEventListener "click", ->
+      removeButton.style.color = "Red"
+      if confirm "Are you sure you want to remove this these rules?"
+        wrapper.style.display = "none"
+        key = Common.getKey url
+        chrome.storage.sync.get [ "network", key ], (items) ->
+          unless chrome.runtime.lastError
+            network = items.network.filter (str) -> str != url
+            chrome.storage.sync.remove key, ->
+              chrome.storage.sync.set { network }
+      else
+        removeButton.style.color = ""
 
-      refresh = -> fetchUrl url
-      refreshButton.addEventListener "click", refresh
-      refreshers.push refresh
+    refresh = -> fetchUrl url
+    refreshButton.addEventListener "click", refresh
+    refreshers.push refresh
 
     for rule in rules
       do (rule) ->
@@ -136,6 +132,9 @@ fetchUrl = (url) ->
       showMessage error
       return
 
+    # Strip leading comments (everything up to the first "[").
+    text = "[" + text.split("[")[1..].join("[") if 0 < text.indexOf "["
+
     try
       configs = JSON.parse text
     catch
@@ -159,7 +158,7 @@ fetchUrl = (url) ->
         return
 
       if Common.structurallyEqual configs, items[key]
-        showMessage "Looks like #{url} is unchanged."
+        showMessage "...#{url} hasn't unchanged."
         return
 
       items.network ?= []
@@ -169,7 +168,7 @@ fetchUrl = (url) ->
       key = Common.getKey url
       successKey = Common.getSuccessKey url
       update[key] = configs
-      update[successKey] = new Date().toString()
+      update[successKey] = "#{new Date().toLocaleDateString()}, #{new Date().toLocaleTimeString()}"
       chrome.storage.sync.set update, ->
         if chrome.runtime.lastError
           showMessage "Yikes, an internal Chrome error occurred."
@@ -184,7 +183,7 @@ fetchUrl = (url) ->
         else
           chrome.storage.sync.get [ key, successKey ], (items) ->
             unless chrome.runtime.lastError
-              showMessage "Network rules added successfully."
+              showMessage "...#{url} added successfully."
               new RuleSet $("network"), url, items[key], items[successKey]
 
 Common.documentReady ->
@@ -196,11 +195,6 @@ Common.documentReady ->
     $("add-network-button").addEventListener "click", fetchUrl
     urlElement.addEventListener "keydown", (event) ->
       fetchUrl() if event.keyCode == 13
-
-    $("manual-text").textContent = textify items.custom
-    $("manual").style.display = "none"
-
-    new RuleSet $("default"), "defaults", Common.default
 
     initialiseNetworkRules ->
       url = document.location.toString()

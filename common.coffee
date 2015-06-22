@@ -1,50 +1,5 @@
 Common =
 
-  default: do ->
-    defaults = []
-
-    defaults.push
-      name: "Google Search"
-      regexps: "^https?://(www\\.)?google\\.([a-z\\.]+)/search\\?"
-      selectors: "div#search li.g"
-      offset: "50"
-      style:
-        "border-color": "#0266C8"
-        opacity: "0.2"
-
-    defaults.push
-      name: "DuckDuckGo Search"
-      regexps: "^https://duckduckgo\\.com/\\?"
-      selectors: [
-        "div#links div.result__body"
-        "div#zero_click_wrapper div.zci__main div.zci__body"
-      ]
-      offset: "50"
-      style:
-        "z-index": 2000000000
-
-    defaults.push
-      name: "Youtube Search Results"
-      regexps: "^https?://www\\.youtube\\.com/results\\?"
-      selectors: "ol.item-section > li"
-      activators: 'a[href^="/watch"]'
-
-    defaults.push
-      name: "Facebook Home Page"
-      regexps: "^https?://www\\.facebook\\.com/?$"
-      selectors: "div[data-timestamp] > div.userContentWrapper"
-      activators: [ "div.fbstoryattachmentimage img", "a[rel=theater]" ]
-      style:
-        "border-color": "#3b5998"
-        opacity: "0.2"
-
-    defaults.push
-      name: "JK-Navigator-Too Options Page"
-      regexps: "^chrome-extension://.*/options/options.html"
-      selectors: []
-
-    defaults
-
   documentReady: (func) ->
     if document.readyState == "loading"
       window.addEventListener "DOMContentLoaded", handler = ->
