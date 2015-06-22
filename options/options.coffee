@@ -24,6 +24,7 @@ class RuleSet
     showButton = element.querySelector(".container-show")
 
     removeButton.addEventListener "click", ->
+      removeButton.blur()
       removeButton.style.color = "Red"
       if confirm "Are you sure you want to remove this these rules?"
         wrapper.style.display = "none"
@@ -52,13 +53,16 @@ class RuleSet
             showButton.value = "Show Rules"
 
         showButton.addEventListener "click", ->
+          showButton.blur()
           items[key] = not items[key]
           chrome.storage.local.set items
           maintainShowState()
         maintainShowState()
 
     refresh = -> fetchUrl url
-    refreshButton.addEventListener "click", refresh
+    refreshButton.addEventListener "click",
+      refreshButton.blur()
+      refresh()
     refreshers.push refresh
 
     element.querySelector(".rule-count").textContent =
@@ -86,7 +90,9 @@ class RuleSet
               text.style.display = "none"
 
           maintainState()
-          ele.querySelector(".rule-show").addEventListener "click", ->
+          ruleShow = ele.querySelector(".rule-show")
+          ruleShow.addEventListener "click", ->
+            ruleShow.blur()
             showing = not showing
             maintainState()
 
@@ -210,8 +216,9 @@ fetchUrl = (url) ->
             showMessage "Rules refreshed: #{url}."
             initialiseNetworkRules()
           else
-            showMessage "...#{url} added successfully."
-            new RuleSet $("network"), url, items[key], items[successKey]
+            chrome.storage.sync.get [ key, successKey ], (items) ->
+              showMessage "...#{url} added successfully."
+              new RuleSet $("network"), url, items[key], items[successKey]
 
 Common.documentReady ->
   chrome.storage.sync.get null, (items) ->
@@ -219,7 +226,10 @@ Common.documentReady ->
     urlElement = $("add-network-text")
     urlElement.value = localStorage.previousUrl
 
-    $("add-network-button").addEventListener "click", fetchUrl
+    addButton = $("add-network-button")
+    addButton.addEventListener "click", ->
+      addButton.blur()
+      fetchUrl()
     urlElement.addEventListener "keydown", (event) ->
       fetchUrl() if event.keyCode == 13
 
