@@ -200,17 +200,18 @@ fetchUrl = (url) ->
           showMessage "Yikes, an internal Chrome error occurred."
           return
 
-        if refreshingRules
-          showMessage "Rules refreshed: #{url}."
-          initialiseNetworkRules()
-        else if items[key]
-          showMessage "These rules have been added previously; they've been refreshed now."
-          initialiseNetworkRules()
-        else
-          chrome.storage.sync.get [ key, successKey ], (items) ->
-            unless chrome.runtime.lastError
-              showMessage "...#{url} added successfully."
-              new RuleSet $("network"), url, items[key], items[successKey]
+        # Delay just a little bit in the hope that, if there are many messages, then this one ends up at the
+        # bottom of the list.
+        Common.setTimeout 100, ->
+          if refreshingRules
+            showMessage "Rules refreshed: #{url}."
+            initialiseNetworkRules()
+          else if items[key]
+            showMessage "Rules refreshed: #{url}."
+            initialiseNetworkRules()
+          else
+            showMessage "...#{url} added successfully."
+            new RuleSet $("network"), url, items[key], items[successKey]
 
 Common.documentReady ->
   chrome.storage.sync.get null, (items) ->
