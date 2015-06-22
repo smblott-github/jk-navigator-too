@@ -99,8 +99,8 @@ textarea:read-only {
    right: 20px;
    bottom: 20px;
    width: 600px;
-   min-height: 50px;
-   max-height: 150px;
+   min-height: 150px;
+   /* max-height: 150px; */
    max-height: 75%;
    border-radius: 4px;
    overflow: scroll;

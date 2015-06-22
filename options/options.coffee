@@ -34,6 +34,7 @@ class RuleSet
             network = items.network.filter (str) -> str != url
             chrome.storage.sync.remove key, ->
               chrome.storage.sync.set { network }
+              showMessage "Removed URL: #{url}"
       else
         removeButton.style.color = ""
 
