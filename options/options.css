@@ -83,12 +83,13 @@ textarea:read-only {
    min-width: 120px;
 }
 
-.rule-wrapper {
-   /*
+.container-wrapper {
    border-style: solid;
    border-width: 1px;
    border-color: #e3e3e3;
-   */
+   border-radius: 4px;
+   margin-bottom: 10px;
+   padding: 3px;
 }
 
 #messages {
