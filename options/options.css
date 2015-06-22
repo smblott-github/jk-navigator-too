@@ -66,7 +66,7 @@ pre, code, .code, #status, .rule-name, #fetch-message  {
   background: #eeeeee;
 }
 
-.network-url, #manual-text, #default-text, .network-text, .rule-text, #messages {
+.network-url, #manual-text, #default-text, .network-text, .rule-text, #messages, .container-url {
   font-family: Consolas, "Liberation Mono", Courier, monospace;
 }
 
@@ -78,7 +78,7 @@ textarea:read-only {
    background-color: #e3e3e3;
 }
 
-.rule-show, .container-remove, .container-refresh, #add-network-button, #save-custom {
+.rule-show, .container-remove, .container-refresh, .container-show, #add-network-button, #save-custom {
    /* margin-right: 15px; */
    min-width: 120px;
 }
@@ -87,6 +87,8 @@ textarea:read-only {
    border-style: solid;
    border-width: 1px;
    border-color: #e3e3e3;
+   border-color: #777;
+   border-color: #666666;
    border-radius: 4px;
    margin-bottom: 10px;
    padding: 3px;
@@ -99,7 +101,6 @@ textarea:read-only {
    width: 600px;
    min-height: 50px;
    max-height: 150px;
-   background-color: #fafafa;
    border-radius: 4px;
    overflow: scroll;
    border-style: solid;

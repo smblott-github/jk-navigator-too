@@ -17,9 +17,11 @@ class RuleSet
     element.querySelector(".container-url").textContent = url
     element.querySelector(".container-last-updated").textContent = lastUpdated
     wrapper = element.querySelector(".container-wrapper")
+    ruleList = element.querySelector(".rule-list")
 
     removeButton = element.querySelector(".container-remove")
     refreshButton = element.querySelector(".container-refresh")
+    showButton = element.querySelector(".container-show")
 
     removeButton.addEventListener "click", ->
       removeButton.style.color = "Red"
@@ -34,9 +36,33 @@ class RuleSet
       else
         removeButton.style.color = ""
 
+    do ->
+      key = Common.getShowKey url
+      chrome.storage.local.get key, (items) ->
+        unless items[key]?
+          items[key] ?= false
+          chrome.storage.local.set items
+
+        maintainShowState = ->
+          if items[key]
+            ruleList.style.display = ""
+            showButton.value = "Hide Rules"
+          else
+            ruleList.style.display = "none"
+            showButton.value = "Show Rules"
+
+        showButton.addEventListener "click", ->
+          items[key] = not items[key]
+          chrome.storage.local.set items
+          maintainShowState()
+        maintainShowState()
+
     refresh = -> fetchUrl url
     refreshButton.addEventListener "click", refresh
     refreshers.push refresh
+
+    element.querySelector(".rule-count").textContent =
+      "#{rules.length} rule#{if rules.length == 1 then "" else "s"}"
 
     for rule in rules
       do (rule) ->
@@ -64,7 +90,7 @@ class RuleSet
             showing = not showing
             maintainState()
 
-        wrapper.appendChild ele
+        ruleList.appendChild ele
     container.appendChild element
 
 initialiseNetworkRules = (callback) ->
