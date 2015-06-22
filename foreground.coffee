@@ -238,11 +238,16 @@ class Interface
 Wrapper =
   interface: null
 
-  init: ->
-    Common.installListener window, "keydown", (event) => @interface?.onKeydown event
-    Common.installListener window, "keyup", (event) => @interface?.onKeyup event
-    Common.installListener window, "scroll", (event) => @interface?.onScroll event
+  installListeners: do ->
+    installedListeners = false
+    ->
+      unless installedListeners
+        installedListeners = true
+        Common.installListener window, "keydown", (event) => @interface?.onKeydown event
+        Common.installListener window, "keyup", (event) => @interface?.onKeyup event
+        Common.installListener window, "scroll", (event) => @interface?.onScroll event
 
+  init: ->
     Scroller.init()
     @launch()
 
@@ -257,6 +262,7 @@ Wrapper =
 
     chrome.runtime.sendMessage { name: "config", url: document.location.toString() }, (config) =>
       Common.log "config:", config?.name ? "disabled"
+      @installListeners()
       @interface = new Interface(config, element) if config
 
 Common.documentReady -> Wrapper.init()
