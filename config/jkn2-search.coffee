@@ -18,6 +18,7 @@ configs.push
     "div#zero_click_wrapper div.zci__main div.zci__body"
   ]
   offset: "50"
+  enterEvent: ctrlKey: true, shiftKey: true
   style:
     "z-index": 2000000000
 
@@ -26,5 +27,6 @@ configs.push
   regexps: "^https?://www\\.youtube\\.com/results\\?"
   selectors: "ol.item-section > li"
   activators: 'a[href^="/watch"]'
+  enterEvent: ctrlKey: true, shiftKey: true
 
 console.log JSON.stringify configs, null, "  "
