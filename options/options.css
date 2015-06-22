@@ -101,11 +101,13 @@ textarea:read-only {
    width: 600px;
    min-height: 50px;
    max-height: 150px;
+   max-height: 75%;
    border-radius: 4px;
    overflow: scroll;
    border-style: solid;
    border-color: #666666;
    border-width: 1px;
+   background-color: #f5f5f5;
 }
 
 #messages::-webkit-scrollbar { width: 0 !important }

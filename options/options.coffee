@@ -60,7 +60,7 @@ class RuleSet
         maintainShowState()
 
     refresh = -> fetchUrl url
-    refreshButton.addEventListener "click",
+    refreshButton.addEventListener "click", ->
       refreshButton.blur()
       refresh()
     refreshers.push refresh
@@ -110,7 +110,7 @@ initialiseNetworkRules = (callback) ->
 class Tween
   constructor: (options) ->
     @element = options.element
-    @delay = options.delay ? 5000
+    @delay = options.delay ? 6000
     @fade= options.fade ? 0.02
     @opacity 0.0
     @timer = null
