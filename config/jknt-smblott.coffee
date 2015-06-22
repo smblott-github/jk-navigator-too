@@ -27,18 +27,19 @@ configs.push
 
 configs.push
   name: "Irish Times Home Page"
-  regexps: "^http://www\\.irishtimes\\.com/$"
+  regexps: "^http://www\\.irishtimes\\.com/?$"
   selectors: [
     "div#content_left_upper div.story"
     "div#content_left div.story"
   ]
 
 configs.push
-  name: "Irish Times Article"
-  regexps: "^http://www\\.irishtimes\\.com/."
-  selectors: 'section[property="articleBody"] > p'
-  style:
-    opacity: "0.2"
+  name: "Irish Independent"
+  regexps: "^http://www\\.independent\\.ie/?"
+  selectors: [
+    "div.column.double article:not(.small) > a"
+    "div.column.single div:not([data-minarticles]) article:not(.small) > a"
+  ]
 
 configs.push
   name: "Intent Radio"
@@ -57,8 +58,10 @@ configs.push
 
 configs.push
   name: "BBC News"
-  regexps: "^https?://www\\.bbc\\.(com|co.uk)/news/\\?$"
-  regexps: "^https?://www\\.bbc\\.(com|co.uk)/news/.*[^0-9]$"
+  regexps: [
+    "^https?://www\\.bbc\\.(com|co\\.uk)/news/?$"
+    "^https?://www\\.bbc\\.(com|co\\.uk)/news/.*[^0-9]$"
+  ]
   selectors: [
     "div.column--primary a[tabindex]"
     # "div.column--primary div[data-entityid^='container-top-stories']"
@@ -109,6 +112,16 @@ configs.push
   name: "Steephill Photos"
   regexps: "^https?://www\\.steephill\\.tv/.*/photos/"
   selectors: "tr a[name] img"
+  offset: 20
+
+configs.push
+  name: "Reddit Comments"
+  regexps: "^http://www\\.reddit\\.com/.*/comments/"
+  selectors: [
+    "div#siteTable div.usertext-body"
+    "div.commentarea > div.sitetable > div.comment"
+  ]
+  activators: "a[href^='http']:not(.author)"
   offset: 20
 
 configs.push
