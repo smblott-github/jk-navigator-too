@@ -23,6 +23,5 @@ configs.push
   selectors: "div.river.span-8 div.post"
   activators: "h4 a"
   offset: 20
-  enterEvent: ctrlKey: true, shiftKey: true
 
 console.log JSON.stringify configs, null, "  "

@@ -6,7 +6,6 @@ configs.push
   regexps: "^https?://www\\.facebook\\.com/?$"
   selectors: "div[data-timestamp] > div.userContentWrapper"
   activators: [ "div.fbstoryattachmentimage img", "a[rel=theater]" ]
-  enterEvent: ctrlKey: true, shiftKey: true
   style:
     "border-color": "#3b5998"
     opacity: "0.2"
@@ -22,7 +21,6 @@ configs.push
     "a[rel=theater]"
     "i > input[type='button']"
   ]
-  enterEvent: ctrlKey: true, shiftKey: true
   style:
     "border-color": "#3b5998"
     opacity: "0.2"
@@ -70,7 +68,6 @@ configs.push
     "a[href^='photos/']" # Photos.
   ]
   nativeJK: true
-  enterEvent: ctrlKey: true, shiftKey: true
 
 console.log JSON.stringify configs, null, "  "
 

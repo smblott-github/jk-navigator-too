@@ -40,9 +40,8 @@ class Interface
         @activateElement element, event
 
       when "up", "down"
-        return if @config.nativeJK
-        return if event.shiftKey or event.ctrlKey or event.altKey
-        @performUpDown action
+        return if event.ctrlKey or event.altKey or @config.nativeJK
+        @performUpDown action, event
 
       else
         return
@@ -54,7 +53,7 @@ class Interface
   onKeyup: (event) ->
     CoreScroller.registerKeyup event
 
-  performUpDown: (action) ->
+  performUpDown: (action, event) ->
     elements = @getElements action
     elements.reverse() if action == "up"
 
@@ -62,7 +61,7 @@ class Interface
     newIndex = Math.max 0, Math.min elements.length - 1, oldIndex + 1
     Common.log oldIndex, newIndex, elements.length if @debug.select
 
-    if (@element and newIndex == oldIndex) or not elements[newIndex]
+    if (@element and newIndex == oldIndex) or not elements[newIndex] or event.shiftKey
       Common.log "  scroll (smooth)" if @debug.select
       element = @element ? document.body
       amount = 100 * if action == "up" then -1 else 1
@@ -185,12 +184,16 @@ class Interface
       @element = @overlay = null
 
   activateElement: (element, event) ->
-    event = Common.extend {}, event
-    event[key] ||= @config.enterEvent?[key] for key in [ "shiftKey", "ctrlKey", "altKey" ]
+    # We assume <Shift> and <Alt> by default.  The user can override (revert) that by using these modifiers.
+    # This may be counterintuitive, however if gives both the best default behaviour and the possibility for
+    # the user the alter it should they wish.
+    keyEvent = shiftKey: true, ctrlKey: true, altKey: event.altKey
+    for key in [ "shiftKey", "ctrlKey" ]
+      delete keyEvent[key] if event[key]
 
     activate = (ele = element) =>
       Common.log "click:", ele.toString()
-      if @config.noclick then console.log "click", ele else Common.simulateClick ele, event
+      if @config.noclick then console.log "click", ele else Common.simulateClick ele, keyEvent
 
     if element.tagName.toLowerCase() == "a"
       activate element

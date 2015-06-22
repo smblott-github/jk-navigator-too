@@ -11,9 +11,9 @@ configs.push
     "div.column--primary a[tabindex]"
     "div.vertical-promo a.bold-image-promo"
     "div#comp-digest-2 div[data-entityid^='more-from-bbc-news']"
+    "div.correspondent-promo div.correspondent-promo__correspondent"
   ]
   offset: 20
-  enterEvent: ctrlKey: true, shiftKey: true
   style:
     "z-index": 2000000000
 
