@@ -1,17 +1,18 @@
 
 configs = []
 
-# configs.push
-#   name: "Facebook Home Page (smblott)"
-#   regexps: "^https?://www\\.facebook\\.com/?$"
-#   selectors: "div[data-timestamp] > div.userContentWrapper"
-#   activators: [ "div.fbstoryattachmentimage img", "a[rel=theater]" ]
-#   style:
-#     "border-color": "#3b5998"
-#     opacity: "0.2"
+configs.push
+  name: "Facebook Home Page (smblott)"
+  regexps: "^https?://www\\.facebook\\.com/?$"
+  selectors: "div[data-timestamp] > div.userContentWrapper"
+  activators: [ "div.fbstoryattachmentimage img", "a[rel=theater]" ]
+  enterEvent: ctrlKey: true, shiftKey: true
+  style:
+    "border-color": "#3b5998"
+    opacity: "0.2"
 
 configs.push
-  name: "Facebook"
+  name: "Facebook (smblott)"
   regexps: "^https?://www\\.facebook\\.com/."
   selectors: [
     "div#content div.userContentWrapper"
@@ -21,6 +22,7 @@ configs.push
     "a[rel=theater]"
     "i > input[type='button']"
   ]
+  enterEvent: ctrlKey: true, shiftKey: true
   style:
     "border-color": "#3b5998"
     opacity: "0.2"
@@ -52,9 +54,7 @@ configs.push
   selectors: "div.river.span-8 div.post"
   activators: "h4 a"
   offset: 20
-  enterEvent:
-    ctrlKey: true
-    shiftKey: true
+  enterEvent: ctrlKey: true, shiftKey: true
 
 configs.push
   name: "BBC News"
@@ -64,15 +64,11 @@ configs.push
   ]
   selectors: [
     "div.column--primary a[tabindex]"
-    # "div.column--primary div[data-entityid^='container-top-stories']"
-    # "div.column--primary div[data-entityid^='av-stories-now']"
-    # "div.column--primary div[data-entityid^='feature-main']"
-    # "div.column--primary div[data-entityid^='explainers']"
-    # "div.column--primary div[data-entityid^='cluster_2']"
-    # "div.column--primary div[data-entityid^='also-in-news']"
-    # "div.column--primary div[data-entityid^='the_reporters']"
+    "div.vertical-promo a.bold-image-promo"
+    "div#comp-digest-2 div[data-entityid^='more-from-bbc-news']"
   ]
   offset: 20
+  enterEvent: ctrlKey: true, shiftKey: true
   style:
     "z-index": 2000000000
 
@@ -197,21 +193,21 @@ configs.push
   ]
   offset: 250
 
-# configs.push
-#   name: "Google Plus"
-#   regexps: "^https?://plus\\.google\\.com"
-#   # selectors: [ "div[id^='update-']" ]
-#   activators: [
-#     # This needs more work.
-#     "div[role='button']:not([g:token])" # Launch videos.
-#     "a[target='_blank'][href^='http']:not([oid]):not([itemprop='map'])" # External links (but not maps).
-#     "a[href^='photos/']" # Photos.
-#   ]
-#   offset: 80
-#   nativeJK: true
-#   style:
-#     "border-color": "#0266C8"
-#     opacity: "0.2"
+# This uses Google Plus' native JK bindings.
+configs.push
+  # noclick: true
+  name: "Google Plus"
+  regexps: "^https?://plus\\.google\\.com"
+  # NOTE: This is pretty dodgy.  Google doesn't the active element.  Instead, we detect its CSS.
+  # Unfortunately, this looks like it's been through a minifier.  So it could easily change.
+  activeSelector: "div.tk.va[id^=update-]"
+  activators: [
+    "div[role='button'][aria-label='Play'" # Launch videos.
+    "a[target='_blank'][href^='http']:not([oid]):not([itemprop='map'])" # External links (but not maps).
+    "a[href^='photos/']" # Photos.
+  ]
+  nativeJK: true
+  enterEvent: ctrlKey: true, shiftKey: true
 
 console.log JSON.stringify configs, null, "  "
 

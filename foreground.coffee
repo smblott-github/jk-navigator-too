@@ -188,9 +188,9 @@ class Interface
     event = Common.extend {}, event
     event[key] ||= @config.enterEvent?[key] for key in [ "shiftKey", "ctrlKey", "altKey" ]
 
-    activate = (ele = element) ->
-      Common.log "click:", ele
-      Common.simulateClick ele, event
+    activate = (ele = element) =>
+      Common.log "click:", ele.toString()
+      if @config.noclick then console.log "click", ele else Common.simulateClick ele, event
 
     if element.tagName.toLowerCase() == "a"
       activate element
@@ -205,15 +205,18 @@ class Interface
       activate element
 
   querySelector: (element, selector, all = false) ->
-    search = (selector) ->
-      if all then element.querySelectorAll selector else element.querySelector selector
     try
-      Common.log "#{selector} #{all}" if @debug.selector
-      Common.log search selector if @debug.selector
-      search selector
+      Common.log "CSS selector pre: #{all} #{selector}" if @debug.selector
+      console.log "CSS selector pre: #{all} #{selector}" if @debug.selector
+      result = if all then element.querySelectorAll selector else element.querySelector selector
+      Common.log "CSS selector post: #{all} #{selector} #{result?}" if @debug.selector
+      console.log "CSS selector post: #{all} #{selector} #{result}" if @debug.selector
+      result
     catch
-      Common.log "ERROR: bad CSS selector: #{selector}"
+      console.error "Bad CSS selector: #{all} #{selector}" if @debug.selector
+      Common.log "Bad CSS selector: #{all} #{selector}" if @debug.selector
       if all then [] else null
+
 
   # If we scroll, and there's already a selected element, and that element goes out of the viewport, then we
   # select the top-most visible selectable element.
