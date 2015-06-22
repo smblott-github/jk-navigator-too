@@ -186,10 +186,12 @@ class Interface
       @element = @overlay = null
 
   activateElement: (element, event) ->
+    event = Common.extend {}, event
+    event[key] ||= @config.enterEvent?[key] for key in [ "shiftKey", "ctrlKey", "altKey" ]
+
     activate = (ele = element) ->
       Common.log "click:", ele
       Common.simulateClick ele, event
-      ele.blur()
 
     if element.tagName.toLowerCase() == "a"
       activate element

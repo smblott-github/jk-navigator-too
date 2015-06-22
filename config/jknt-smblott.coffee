@@ -51,6 +51,9 @@ configs.push
   selectors: "div.river.span-8 div.post"
   activators: "h4 a"
   offset: 20
+  enterEvent:
+    ctrlKey: true
+    shiftKey: true
 
 configs.push
   name: "BBC News"
