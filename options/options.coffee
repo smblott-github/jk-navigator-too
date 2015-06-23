@@ -21,6 +21,9 @@ class RuleSet
     wrapper = element.querySelector(".container-wrapper")
     ruleList = element.querySelector(".rule-list")
 
+    if configs.meta?.name
+      element.querySelector(".container-name").textContent = configs.meta?.name
+
     removeButton = element.querySelector(".container-remove")
     refreshButton = element.querySelector(".container-refresh")
     showButton = element.querySelector(".container-show")
