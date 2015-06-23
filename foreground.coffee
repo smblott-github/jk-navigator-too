@@ -178,6 +178,7 @@ class Interface
       delete keyEvent[key] if event[key]
 
     activate = (ele = element) =>
+      console.log "activate", ele
       if @config.noclick then console.log "click", ele else Common.simulateClick ele, keyEvent
 
     if element.tagName.toLowerCase() == "a"
@@ -194,8 +195,9 @@ class Interface
 
   querySelector: (element, selector, all = false) ->
     try
-      result = if all then element.querySelectorAll selector else element.querySelector selector
-      result
+      results = element.querySelectorAll selector
+      results = (ele for ele in results when Common.isDisplayed ele)
+      if all then results else results[0]
     catch
       console.error "Bad CSS selector: #{all} #{selector}"
       if all then [] else null
@@ -220,8 +222,9 @@ class Interface
         timer = null
         if @element and not Common.isInViewport @element
           @clearSelection()
-        if not @element and element = @getElements(direction)[0] and Common.isInViewport element
-          @selectElement element, false
+        if not @element and element = @getElements(direction)[0]
+          if Common.isInViewport element
+            @selectElement element, false
 
 Wrapper =
   interface: null

@@ -8,6 +8,7 @@ configs.push
     "div#content_left_upper div.story"
     "div#content_left div.story"
   ]
+  offset: 70
 
 configs.push
   name: "The Irish Independent"
@@ -16,6 +17,7 @@ configs.push
     "div.column.double article:not(.small) > a"
     "div.column.single div:not([data-minarticles]) article:not(.small) > a"
   ]
+  offset: 50
 
 configs.push
   name: "The Journal IE Home Page"

@@ -51,6 +51,13 @@ configs.push
     "div.list-stream div.content"
     "div.new-tweets-bar"
   ]
+  activators: [
+    "div.multi-photos"
+    "a.twitter-timeline-link"
+    # View/Hide conversation (also view photo).
+    "div.stream-item-footer span.expand-stream-item"
+    "div.stream-item-footer span.collapse-stream-item"
+  ]
   offset: 80
   style:
     "border-color": "#55B4CF"

@@ -7,12 +7,14 @@
       "activators": [
         "a[href^='showthread.php?goto']",
         "a[href^='showthread.php']"
-      ]
+      ],
+      "offset": 50
     },
     {
       "name": "Vbulletin Thread",
       "regexps": "\\bshowthread\\.php\\?",
-      "selectors": "td[id^='td_post_']"
+      "selectors": "td[id^='td_post_']",
+      "offset": 50
     }
   ],
   "meta": {
