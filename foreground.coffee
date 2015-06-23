@@ -47,7 +47,6 @@ class Interface
 
   performUpDown: (action, event) ->
     elements = @getElements action
-    elements.reverse() if action == "up"
 
     oldIndex = elements.indexOf @element
     newIndex = Math.max 0, Math.min elements.length - 1, oldIndex + 1
@@ -107,6 +106,8 @@ class Interface
       duplicate = curr == prev
       prev = curr
       not duplicate
+
+    if action == "up" then elements.reverse() else elements
 
   getPosition: (element) ->
     { top, bottom } = element.getBoundingClientRect()
@@ -205,18 +206,21 @@ class Interface
   onScroll: do ->
     delay = 50
     timer = null
+    previousPageYOffset = pageYOffset
 
     cancel = ->
       if timer
         clearTimeout timer; timer = null
 
     (event) ->
+      direction = if previousPageYOffset < pageYOffset then "down" else "up"
+      previousPageYOffset = pageYOffset
       cancel()
       timer = Common.setTimeout delay, =>
         timer = null
         if @element and not Common.isInViewport @element
           @clearSelection()
-        if not @element and element = @getElements("down")[0]
+        if not @element and element = @getElements(direction)[0] and Common.isInViewport element
           @selectElement element, false
 
 Wrapper =
