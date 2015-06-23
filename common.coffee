@@ -222,7 +222,7 @@ Common =
   getMeta: (configs) -> configs.meta
 
   mkConfigs: (configs, meta = null) ->
-    JSON.stringify { configs, meta }, null, "  "
+    process.stdout.write JSON.stringify { configs, meta }, null, "  "
 
   log: (args...) ->
     chrome.runtime.sendMessage name: "log", message: args if document.hasFocus()

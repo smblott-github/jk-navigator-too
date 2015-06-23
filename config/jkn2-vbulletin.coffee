@@ -1,8 +1,5 @@
 
 configs = []
-meta =
-  name: "VBulletin"
-  comment: "Experimental support for vbulletin-based sites."
 
 configs.push
   name: "Vbulletin Forum Display"
@@ -16,5 +13,7 @@ configs.push
   selectors: "td[id^='td_post_']"
   offset: 150
 
-process.stdout.write require("../common.js").Common.mkConfigs configs, meta
+require("../common.js").Common.mkConfigs configs,
+  name: "VBulletin"
+  comment: "Experimental support for vbulletin-based sites."
 

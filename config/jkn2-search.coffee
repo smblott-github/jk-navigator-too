@@ -1,7 +1,5 @@
 
 configs = []
-meta =
-  name: "Search Engines"
 
 configs.push
   name: "Google Search"
@@ -27,5 +25,5 @@ configs.push
   selectors: "ol.item-section > li"
   activators: 'a[href^="/watch"]'
 
-process.stdout.write require("../common.js").Common.mkConfigs configs, meta
+require("../common.js").Common.mkConfigs configs, name: "Search Engines"
 

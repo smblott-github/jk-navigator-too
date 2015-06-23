@@ -1,8 +1,5 @@
 
 configs = []
-meta =
-  name: "Github"
-  comment: "Github provides its own keyboard bindings on some pages.  However, the bindings here offer a better (??) overall feel. (Well, that's my opinion.)"
 
 configs.push
   name: "Github Issues/Pulls/Notifications"
@@ -51,5 +48,7 @@ configs.push
 #     "div.tabnav a.tabnav-tab:not(.selected):not(.preview-tab)"
 #   ]
 
-process.stdout.write require("../common.js").Common.mkConfigs configs, meta
+require("../common.js").Common.mkConfigs configs,
+  name: "Github"
+  comment: "Github provides its own keyboard bindings on some pages.  However, the bindings here offer a better (??) overall feel. (Well, that's my opinion.)"
 

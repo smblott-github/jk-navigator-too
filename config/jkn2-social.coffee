@@ -1,8 +1,5 @@
 
 configs = []
-meta =
-  name: "Social Networks"
-  comment: "Facebook, Twitter, Reddit, etc."
 
 configs.push
   name: "Facebook Home Page"
@@ -68,5 +65,7 @@ configs.push
     "a[href^='photos/']" # Photos.
   ]
 
-process.stdout.write require("../common.js").Common.mkConfigs configs, meta
+require("../common.js").Common.mkConfigs configs,
+  name: "Social Networks"
+  comment: "Facebook, Twitter, Reddit, etc."
 

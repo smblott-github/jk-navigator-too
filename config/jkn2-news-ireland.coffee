@@ -1,7 +1,5 @@
 
 configs = []
-meta =
-  name: "Irish News Sites"
 
 configs.push
   name: "The Irish Times"
@@ -25,5 +23,5 @@ configs.push
   selectors: "div.river.span-8 div.post"
   activators: "h4 a"
 
-process.stdout.write require("../common.js").Common.mkConfigs configs, meta
+require("../common.js").Common.mkConfigs configs, name: "Irish News Sites"
 

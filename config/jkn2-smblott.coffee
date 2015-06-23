@@ -1,8 +1,5 @@
 
 configs = []
-meta =
-  name: "SMBlott's Sites"
-  comment: "This is unlikely to contain much of interest to anybody else."
 
 configs.push
   name: "Intent Radio"
@@ -21,5 +18,7 @@ configs.push
   regexps: "^https?://www\\.steephill\\.tv/.*/photos/"
   selectors: "tr a[name] img"
 
-process.stdout.write require("../common.js").Common.mkConfigs configs, meta
+require("../common.js").Common.mkConfigs configs,
+  name: "SMBlott's Sites"
+  comment: "This is unlikely to contain much of interest to anybody else."
 
