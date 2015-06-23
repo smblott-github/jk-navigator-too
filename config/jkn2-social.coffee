@@ -2,7 +2,7 @@
 configs = []
 meta =
   name: "Social Networks"
-  comment: "Facebook, Twitter, etc."
+  comment: "Facebook, Twitter, Reddit, etc."
 
 configs.push
   name: "Facebook Home Page"
@@ -59,10 +59,10 @@ configs.push
 
 # This uses Google Plus' native JK bindings.
 configs.push
-  # noclick: true
   name: "Google Plus"
+  native: true
   regexps: "^https?://plus\\.google\\.com"
-  # NOTE: This is pretty dodgy.  Google doesn't the active element.  Instead, we detect its CSS.
+  # NOTE: This is pretty dodgy.  Google doesn't set activeElement.  Instead, we detect its CSS.
   # Unfortunately, this looks like it's been through a minifier.  So it could easily change.
   activeSelector: "div.tk.va[id^=update-]"
   activators: [
@@ -70,7 +70,6 @@ configs.push
     "a[target='_blank'][href^='http']:not([oid]):not([itemprop='map'])" # External links (but not maps).
     "a[href^='photos/']" # Photos.
   ]
-  native: true
 
 process.stdout.write require("../common.js").Common.mkConfigs configs, meta
 

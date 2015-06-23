@@ -61,18 +61,18 @@
     },
     {
       "name": "Google Plus",
+      "native": true,
       "regexps": "^https?://plus\\.google\\.com",
       "activeSelector": "div.tk.va[id^=update-]",
       "activators": [
         "div[role='button'][aria-label='Play'",
         "a[target='_blank'][href^='http']:not([oid]):not([itemprop='map'])",
         "a[href^='photos/']"
-      ],
-      "native": true
+      ]
     }
   ],
   "meta": {
     "name": "Social Networks",
-    "comment": "Facebook, Twitter, etc."
+    "comment": "Facebook, Twitter, Reddit, etc."
   }
 }

@@ -193,7 +193,7 @@ fetchUrl = (url) ->
         return
 
       if Common.structurallyEqual configs, items[key]
-        showMessage "...#{url} hasn't unchanged."
+        showMessage "...#{url} is unchanged."
         return
 
       items.network ?= []
