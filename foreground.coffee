@@ -8,7 +8,7 @@ class Interface
   constructor: (@config, element = null) ->
     @element = null
 
-    @config.offset ?= 100
+    @config.offset ?= 25
     @config.native ?= false
 
     if @debug.config

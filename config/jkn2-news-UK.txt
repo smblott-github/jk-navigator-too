@@ -12,7 +12,6 @@
         "div#comp-digest-2 div[data-entityid^='more-from-bbc-news']",
         "div.correspondent-promo div.correspondent-promo__correspondent"
       ],
-      "offset": 20,
       "style": {
         "z-index": 2000000000
       }

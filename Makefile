@@ -1,9 +1,9 @@
 
 build:
-	coffee -c *.coffee ./config/*.coffee
+	coffee -c *.coffee ./config/*.coffee ./options/*.coffee
 
 auto:
-	coffee -w -c .
+	coffee -w -c *.coffee ./config ./options
 
 key = $(HOME)/local/sbenv/ssh/jk-navigator-too.pem
 

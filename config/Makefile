@@ -21,10 +21,13 @@ auto-install:
 	@date
 	@$(MAKE) --no-print-directory install
 
-%.txt: %.coffee
+%.txt: %.coffee ../common.js
 	coffee $< > $@
 
-%.txt: %.js
+%.txt: %.js ../common.js
 	node $< > $@
+
+%.js: %.coffee
+	coffee -c $<
 
 .PHONY: install auto auto-install

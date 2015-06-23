@@ -36,13 +36,11 @@ configs.push
     "div.commentarea > div.sitetable > div.comment"
   ]
   activators: "a[href^='http']:not(.author)"
-  offset: 20
 
 configs.push
   name: "Reddit"
   regexps: "^http://www\\.reddit\\.com/?"
   selectors: "div.entry > p.title > a"
-  offset: 20
 
 configs.push
   name: "Twitter"
@@ -53,7 +51,6 @@ configs.push
     "div.list-stream div.content"
     "div.new-tweets-bar"
   ]
-  offset: 80
   style:
     "border-color": "#55B4CF"
 

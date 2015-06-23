@@ -24,7 +24,6 @@ configs.push
   regexps: "^http://www\\.thejournal\\.ie/?$"
   selectors: "div.river.span-8 div.post"
   activators: "h4 a"
-  offset: 20
 
 process.stdout.write require("../common.js").Common.mkConfigs configs, meta
 

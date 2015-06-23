@@ -61,13 +61,18 @@ button:focus, input[type="text"]:focus, textarea:focus {
   outline: none;
 }
 
-pre, code, .code, #status, .rule-name, #fetch-message  {
+pre, code, .code, #status, .rule-name, #fetch-message, .container-url {
   font-family: Consolas, "Liberation Mono", Courier, monospace;
   background: #eeeeee;
 }
 
-.network-url, #manual-text, #default-text, .network-text, .rule-text, #messages, .container-url {
+.network-url, #manual-text, #default-text, .network-text, .rule-text, #messages {
   font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+.container-url {
+   max-width: calc(100% - 130px);
+   overflow: hidden;
 }
 
 #statusWrapper, #defaultKey, .float-right {
@@ -83,15 +88,25 @@ textarea:read-only {
    min-width: 120px;
 }
 
-.container-wrapper {
+hr {
+   border-top: 1px solid #666666;
+   border-bottom: 0px;
+}
+
+.container-wrapper, #explanation {
    border-style: solid;
    border-width: 1px;
-   border-color: #e3e3e3;
-   border-color: #777;
-   border-color: #666666;
    border-radius: 4px;
    margin-bottom: 10px;
    padding: 3px;
+}
+
+.container-wrapper {
+   border-color: #666666;
+}
+
+#explanation {
+   border-color: #ffffff;
 }
 
 #messages {
@@ -115,4 +130,8 @@ textarea:read-only {
 .message-container {
    margin-top: 0px;
    margin-bottom: 0px;
+}
+
+.rule-comment {
+   width: calc(100% - 130px);
 }

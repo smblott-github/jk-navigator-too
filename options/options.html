@@ -22,8 +22,8 @@
       <p/>
 
       <p>
-        Use <a href="/options/options.html?refresh">this link</a> to automatically refresh network rules on
-        load (tip: bookmark it).
+        Use <a href="/options/options.html?refresh">this link</a> to automatically refresh all rule sets
+        (<i>tip... bookmark it</i>).
       </p>
 
       <template id="container-template">
@@ -31,23 +31,24 @@
           <p>
             <span class="container-url"></span>
             <span class="float-right">
-              <input class="container-show" type="button" value="_" />
+              <input class="container-refresh" type="button" value="Refresh URL" />
             </span>
           </p>
           <p>
             <span class="container-name">&nbsp;</span>
             <span class="float-right">
-              <input class="container-refresh" type="button" value="Refresh URL" />
+              <input class="container-remove" type="button" value="Remove URL" />
             </span>
           </p>
           <p>
             Last updated: <span class="container-last-updated"></span>;
             <span class="rule-count"></span>
             <span class="float-right">
-              <input class="container-remove" type="button" value="Remove URL" />
+              <input class="container-show" type="button" value="_" />
             </span>
           </p>
           <div class="rule-list">
+            <hr />
             <div class="rule-comment"></div>
           </div>
         </div>
@@ -72,16 +73,20 @@
 
       <header>Rules</header>
 
-      <p>
-        Add URLs below to fetch rules over the network.  All configuration is synced between Chrome instances.
-      </p>
+      <div id="explanation">
+        <p>
+          Rule sets are fetched via their URLs.  You can add your own configuration rules by entering
+          their URL here.  These rules are synced between Chrome instances.  Use <code>Enter</code> (or the
+          button) to submit.
+        </p>
 
-      <p>
-        New URL: <input type="text" name="" id="add-network-text" value="" />
-        <span class="float-right">
-            <input id="add-network-button" type="button" value="Add URL" />
-        </span>
-      </p>
+        <p>
+          Add URL: <input type="text" name="" id="add-network-text" value="" />
+          <span class="float-right">
+              <input id="add-network-button" type="button" value="Add URL" />
+          </span>
+        </p>
+      </div>
 
       <div id="network"></div>
 

@@ -24,7 +24,7 @@ class RuleSet
 
     do ->
       if meta?.name
-        element.querySelector(".container-name").textContent = meta.name
+        element.querySelector(".container-name").textContent = "#{meta.name}."
 
       if meta?.comment
         element.querySelector(".rule-comment").innerHTML =
@@ -80,7 +80,7 @@ class RuleSet
     refreshers.push refresh
 
     element.querySelector(".rule-count").textContent =
-      "#{rules.length} rule#{if rules.length == 1 then "" else "s"}"
+      "#{rules.length} rule#{if rules.length == 1 then "" else "s"}."
 
     for rule in rules
       do (rule) ->
@@ -242,7 +242,11 @@ Common.documentReady ->
       addButton.blur()
       fetchUrl()
     urlElement.addEventListener "keydown", (event) ->
-      fetchUrl() if event.keyCode == 13
+      switch event.keyCode
+        when 13 # Enter
+          fetchUrl()
+        when 27 # escape
+          urlElement.blur()
 
     initialiseNetworkRules ->
       url = document.location.toString()
