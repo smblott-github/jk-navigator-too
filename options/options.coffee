@@ -11,7 +11,8 @@ textify = (text) ->
 refreshers = []
 
 class RuleSet
-  constructor: (container, url, rules, lastUpdated = "on installation") ->
+  constructor: (container, url, configs, lastUpdated = "on installation") ->
+    rules = Common.getRules configs
     template = document.querySelector('#container-template').content
     element = document.importNode template, true
     element.querySelector(".container-url").textContent = url
@@ -165,9 +166,6 @@ fetchUrl = (url) ->
       showMessage error
       return
 
-    # Strip leading comments (everything up to the first "[").
-    text = "[" + text.split("[")[1..].join("[") if 0 < text.indexOf "["
-
     try
       configs = JSON.parse text
     catch
@@ -175,7 +173,7 @@ fetchUrl = (url) ->
       return
 
     try
-      for config in configs
+      for config in Common.getRules configs
         config.name.length
         config.regexps.length
     catch

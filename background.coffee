@@ -44,9 +44,8 @@ getConfig = do ->
           # We need "try" here because initialisation may not yet be complete.
           try items.network.map (url) -> Common.getKey url
           catch then []
-        for key in [ "custom", networkKeys...]
-          configs.push items[key]...  if items[key]
-        configs.push Common.default...
+        for key in networkKeys
+          configs.push Common.getRules(items[key])... if items[key]
         console.log "  #{config.name}" for config in configs
 
         chrome.windows.getAll { populate: true }, (windows) ->
