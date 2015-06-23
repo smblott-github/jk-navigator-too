@@ -72,6 +72,12 @@ style:
   opacity: "0.2"
 ```
 
+- **priority** (optional)  (A smaller value is a higher priority.) Rules are
+  sorted by priority (low to high).  First match wins.  Use this if a URL might
+  match several rules.
+
+###### Advanced
+
 - **native** (optional, boolean) Do not use `j`/`k` bindings, use the page's
   native bindings instead. `Enter` remains bound, so you can still hit `Enter`
   to activate the "currently-active element".
@@ -80,6 +86,3 @@ style:
   page does not set `document.activeElement`), these CSS selectors are used to
   find the active element for `Enter`.
 
-- **priority** (optional)  (A smaller value is a higher priority.) Rules are
-  sorted by priority (low to high).  First match wins.  Use this if a URL might
-  match several rules.
