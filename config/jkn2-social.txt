@@ -68,7 +68,7 @@
         "a[target='_blank'][href^='http']:not([oid]):not([itemprop='map'])",
         "a[href^='photos/']"
       ],
-      "nativeJK": true
+      "native": true
     }
   ],
   "meta": {

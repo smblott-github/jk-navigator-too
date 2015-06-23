@@ -70,7 +70,7 @@ configs.push
     "a[target='_blank'][href^='http']:not([oid]):not([itemprop='map'])" # External links (but not maps).
     "a[href^='photos/']" # Photos.
   ]
-  nativeJK: true
+  native: true
 
 process.stdout.write require("../common.js").Common.mkConfigs configs, meta
 

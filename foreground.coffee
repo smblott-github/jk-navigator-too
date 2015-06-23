@@ -9,7 +9,7 @@ class Interface
     @element = null
 
     @config.offset ?= 100
-    @config.nativeJK ?= false
+    @config.native ?= false
 
     if @debug.config
       Common.log @config.name
@@ -40,7 +40,7 @@ class Interface
         @activateElement element, event
 
       when "up", "down"
-        return if event.ctrlKey or event.altKey or @config.nativeJK
+        return if event.ctrlKey or event.altKey or @config.native
         @performUpDown action, event
 
       else
