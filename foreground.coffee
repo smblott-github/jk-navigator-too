@@ -18,9 +18,10 @@ class Interface
         Common.log "  #{key} #{value}" unless key == "name"
 
     chrome.runtime.sendMessage name: "icon", show: true if @config.selectors?
-    @selectElement element, false if element
-    # Disabled.  It's not clear that the UX is better like this on not.
-    # @onScroll focusDelay: 0
+    if element
+      @selectElement element, false
+    else if element = @getElements("down")[0]
+       @selectElement element, false
 
   deactivate: ->
     chrome.runtime.sendMessage name: "icon", show: false
@@ -225,6 +226,7 @@ class Interface
   # If we scroll, and there's already a selected element, and that element goes out of the viewport, then we
   # select the top-most visible selectable element.
   onScroll: do ->
+    delay = 50
     timer = null
 
     cancel = ->
@@ -232,14 +234,13 @@ class Interface
         clearTimeout timer; timer = null
 
     (event) ->
-      delay = event?.focusDelay ? 200
       cancel()
-      unless @element and Common.isInViewport @element
-        if element = @getElements("down")[0]
-          timer = Common.setTimeout delay, =>
-            timer = null
-            unless @element and Common.isInViewport @element
-              @selectElement element, false
+      timer = Common.setTimeout delay, =>
+        timer = null
+        if @element and not Common.isInViewport @element
+          @clearSelection()
+        if not @element and element = @getElements("down")[0]
+          @selectElement element, false
 
 Wrapper =
   interface: null
