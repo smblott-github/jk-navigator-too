@@ -89,11 +89,10 @@ Common =
     url = "#{url.split("&")[0]}&" if 0 <= url.indexOf "&"
     url
 
-  # FIXME.
-  chromeStoreKey: "klbcooigafjpbiahdjccmajnaehomajc"
+  chromeStoreKey: "tooaakbjkmojammjfadiljkfkmfbbfc"
 
   isChromeStoreVersion: do ->
-    0 == chrome?.extension.getURL("").indexOf "chrome-extension://klbcooigafjpbiahdjccmajnaehomajc"
+    0 == chrome?.extension.getURL("").indexOf "chrome-extension://tooaakbjkmojammjfadiljkfkmfbbfc"
 
   log: (args...) ->
     console.log args... unless @isChromeStoreVersion

@@ -16,10 +16,17 @@ pack:
 
 .PHONY: build auto pack
 
-# # For Chrome Store.
-# pack:
-# 	$(MAKE) build
-# 	zip -r jk-navigator-too.zip chrome-extension \
-# 	   -x '*'.coffee \
-# 	   -x icons/icon-512.png
+# For Chrome Store.
+chrome-store:
+	$(MAKE) build
+	zip -r jk-navigator-too.zip . -x \
+	   '*'.coffee \
+	   icons/icon-512.png \
+	   config/'*' \
+	   Makefile \
+	   .git/'*' \
+	   LICENSE \
+	   '*'.md \
+	   .gitignore
+	mv -v jk-navigator-too.zip ~/storage/google-drive/Extensions
 
