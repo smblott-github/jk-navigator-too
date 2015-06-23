@@ -1,5 +1,7 @@
 
 configs = []
+meta =
+  name: "UK News Sites"
 
 configs.push
   name: "BBC News"
@@ -17,5 +19,5 @@ configs.push
   style:
     "z-index": 2000000000
 
-console.log JSON.stringify configs, null, "  "
+process.stdout.write require("../common.js").Common.mkConfigs configs, meta
 

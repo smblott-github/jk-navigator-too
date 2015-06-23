@@ -1,5 +1,8 @@
 
 configs = []
+meta =
+  name: "Social Networks"
+  comment: "Facebook, Twitter, etc."
 
 configs.push
   name: "Facebook Home Page"
@@ -69,5 +72,5 @@ configs.push
   ]
   nativeJK: true
 
-console.log JSON.stringify configs, null, "  "
+process.stdout.write require("../common.js").Common.mkConfigs configs, meta
 

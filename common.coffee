@@ -26,6 +26,10 @@ Common =
   structurallyEqual: (a, b) ->
     if a == b
       true
+    else if not a? and not b?
+      true
+    else if not a? or not b?
+      false
     else if typeof(a) != typeof b
       false
     else if "string" == typeof a
@@ -89,7 +93,7 @@ Common =
   chromeStoreKey: "klbcooigafjpbiahdjccmajnaehomajc"
 
   isChromeStoreVersion: do ->
-    0 == chrome.extension.getURL("").indexOf "chrome-extension://klbcooigafjpbiahdjccmajnaehomajc"
+    0 == chrome?.extension.getURL("").indexOf "chrome-extension://klbcooigafjpbiahdjccmajnaehomajc"
 
   log: (args...) ->
     console.log args... unless @isChromeStoreVersion
@@ -214,7 +218,11 @@ Common =
   getKey: (url) -> "obj-#{url}"
   getSuccessKey: (url) -> "success-#{url}"
   getShowKey: (url) -> "show-#{url}"
-  getRules: (configs) -> configs.rules ? configs
+  getRules: (configs) -> configs.configs ? configs
+  getMeta: (configs) -> configs.meta
+
+  mkConfigs: (configs, meta = null) ->
+    JSON.stringify { configs, meta }, null, "  "
 
   log: (args...) ->
     chrome.runtime.sendMessage name: "log", message: args if document.hasFocus()

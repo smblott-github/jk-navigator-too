@@ -1,5 +1,7 @@
 
 configs = []
+meta =
+  name: "Github"
 
 configs.push
   name: "Github Issues/Pulls/Notifications"
@@ -55,5 +57,5 @@ configs.push
   ]
   offset: 250
 
-console.log JSON.stringify configs, null, "  "
+process.stdout.write require("../common.js").Common.mkConfigs configs, meta
 

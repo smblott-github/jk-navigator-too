@@ -1,5 +1,8 @@
 
 configs = []
+meta =
+  name: "SMBlott's Sites"
+  comment: "This is unlikely to contain much of interest to anybody else."
 
 configs.push
   name: "Intent Radio"
@@ -20,5 +23,5 @@ configs.push
   selectors: "tr a[name] img"
   offset: 20
 
-console.log JSON.stringify configs, null, "  "
+process.stdout.write require("../common.js").Common.mkConfigs configs, meta
 

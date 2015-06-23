@@ -1,5 +1,7 @@
 
 configs = []
+meta =
+  name: "Irish News Sites"
 
 configs.push
   name: "The Irish Times"
@@ -24,4 +26,5 @@ configs.push
   activators: "h4 a"
   offset: 20
 
-console.log JSON.stringify configs, null, "  "
+process.stdout.write require("../common.js").Common.mkConfigs configs, meta
+

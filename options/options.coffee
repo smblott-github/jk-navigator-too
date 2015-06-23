@@ -12,6 +12,7 @@ refreshers = []
 
 class RuleSet
   constructor: (container, url, configs, lastUpdated = "on installation") ->
+    console.log configs
     rules = Common.getRules configs
     template = document.querySelector('#container-template').content
     element = document.importNode template, true
