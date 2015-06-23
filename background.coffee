@@ -1,4 +1,6 @@
 
+console.log "isChromeStoreVersion:", Common.isChromeStoreVersion
+
 do ->
   # Force reset to default (for dev/debug only).
   forceReset = false
@@ -10,12 +12,12 @@ do ->
         for own key of defaults
           delete defaults[key] if items[key] and not forceReset
         if 0 < Object.keys(defaults).length
-          console.log "setting defaults:", defaults
+          console.log "setting defaults:", defaults unless Common.isChromeStoreVersion
           chrome.storage.sync.set defaults
 
   if forceReset
     chrome.storage.sync.get null, (items) ->
-      console.log "removing:", Object.keys(items)...
+      console.log "removing:", Object.keys(items)... unless Common.isChromeStoreVersion
       chrome.storage.sync.remove Object.keys(items), setDefaults
   else
     setDefaults()
@@ -35,7 +37,7 @@ getConfig = do ->
         testRegexp url, regexp
 
   getConfigs = ->
-    console.log "updating configs..."
+    console.log "updating configs..." unless Common.isChromeStoreVersion
     chrome.storage.sync.get null, (items) ->
       unless chrome.runtime.lastError
         cache.clear()
@@ -47,7 +49,8 @@ getConfig = do ->
         for key in networkKeys
           configs.push Common.getRules(items[key])... if items[key]
         configs.sort (a,b) -> (a.priority ? 0) - (b.priority ? 0)
-        console.log "  #{config.name}" for config in configs
+        unless Common.isChromeStoreVersion
+          console.log "  #{config.name}" for config in configs
 
         chrome.windows.getAll { populate: true }, (windows) ->
           for window in windows
@@ -59,7 +62,7 @@ getConfig = do ->
 
   lookup = (url, sendResponse) ->
     if cache.has url
-      console.log "#{url} -> cached"
+      console.log "#{url} -> cached" unless Common.isChromeStoreVersion
       sendResponse cache.get url
 
     else
@@ -68,14 +71,14 @@ getConfig = do ->
         try
           for regexp in Common.stringToArray config.regexps
             if testRegexp url, regexp
-              console.log "#{url} -> #{config.name}"
+              console.log "#{url} -> #{config.name}" unless Common.isChromeStoreVersion
               sendResponse cache.set url, config
               return
         catch
           console.error "regexp failed to compile: #{regexp}"
           console.error config
 
-      console.log "#{url} -> disabled"
+      console.log "#{url} -> disabled" unless Common.isChromeStoreVersion
       sendResponse cache.set url, null
 
   (request, sender, sendResponse) ->
@@ -88,15 +91,10 @@ updateIcon = (request, sender) ->
     chrome.pageAction.hide sender.tab.id
   false # We will not be calling sendResponse.
 
-consoleLog = (request, sender) ->
-  console.log "#{sender.tab.id}", request.message...
-  false # We will not be calling sendResponse.
-
 do ->
   handlers =
     icon: updateIcon
     config: getConfig
-    log: consoleLog
 
   chrome.runtime.onMessage.addListener (request, sender, sendResponse) ->
     if handlers[request.name]?

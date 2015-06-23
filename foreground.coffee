@@ -1,21 +1,11 @@
 
 class Interface
-  debug:
-    config: false
-    selector: false
-    select: false
-
   constructor: (@config, element = null) ->
     @element = null
 
     @config.offset ?= 25
     @config.native ?= false
     @config.selectors ?= []
-
-    if @debug.config
-      Common.log @config.name
-      for own key, value of @config
-        Common.log "  #{key} #{value}" unless key == "name"
 
     chrome.runtime.sendMessage name: "icon", show: true if @config.selectors?
     if element
@@ -61,10 +51,8 @@ class Interface
 
     oldIndex = elements.indexOf @element
     newIndex = Math.max 0, Math.min elements.length - 1, oldIndex + 1
-    Common.log oldIndex, newIndex, elements.length if @debug.select
 
     if (@element and newIndex == oldIndex) or not elements[newIndex] or event.shiftKey
-      Common.log "  scroll (smooth)" if @debug.select
       element = @element ? document.body
       amount = 100 * if action == "up" then -1 else 1
       Scroller.scrollBy (@element ? document.body), "y", amount, true
@@ -77,13 +65,10 @@ class Interface
       # if 0 <= oldIndex < newIndex
       #   { top, bottom } = @element.getBoundingClientRect()
       #   if action == "up" and top + delta < @config.offset
-      #     Common.log "  use previous element \"up\"" if @debug.select
       #     newIndex = oldIndex
       #   # else if action == "down" and @config.offset + delta < top
-      #   #   Common.log "  use previous element \"down\"" if @debug.select
       #   #   newIndex = oldIndex
 
-      Common.log "  scroll (element) #{elements[newIndex]?}" if @debug.select
       @selectElement elements[newIndex]
 
   eventToAction: do ->
@@ -132,8 +117,6 @@ class Interface
       "visible"
 
   selectElement: (element, shouldScroll = true) ->
-    Common.log "selectElement #{element?} #{shouldScroll}" if @debug.select
-    Common.log "              #{element == @element} (expect false for a new element)" if @debug.select
     if element
       @clearSelection()
       @element = document.activeElement = element
@@ -177,7 +160,6 @@ class Interface
         { top, bottom } = @element.getBoundingClientRect()
         isOffTop = top < @config.offset
         isOffBottom = 0 < bottom - (innerHeight - @config.offset)
-        Common.log "  top=#{top} delta=#{top - @config.offset}" if @debug.scroll
         Scroller.scrollBy @element, "y", top - @config.offset # if isOffTop or isOffBottom
 
   clearSelection: ->
@@ -194,7 +176,6 @@ class Interface
       delete keyEvent[key] if event[key]
 
     activate = (ele = element) =>
-      Common.log "click:", ele.toString()
       if @config.noclick then console.log "click", ele else Common.simulateClick ele, keyEvent
 
     if element.tagName.toLowerCase() == "a"
@@ -211,15 +192,10 @@ class Interface
 
   querySelector: (element, selector, all = false) ->
     try
-      Common.log "CSS selector pre: #{all} #{selector}" if @debug.selector
-      console.log "CSS selector pre: #{all} #{selector}" if @debug.selector
       result = if all then element.querySelectorAll selector else element.querySelector selector
-      Common.log "CSS selector post: #{all} #{selector} #{result?}" if @debug.selector
-      console.log "CSS selector post: #{all} #{selector} #{result}" if @debug.selector
       result
     catch
-      console.error "Bad CSS selector: #{all} #{selector}" if @debug.selector
-      Common.log "Bad CSS selector: #{all} #{selector}" if @debug.selector
+      console.error "Bad CSS selector: #{all} #{selector}"
       if all then [] else null
 
 
@@ -268,7 +244,6 @@ Wrapper =
     @interface = null
 
     chrome.runtime.sendMessage { name: "config", url: document.location.toString() }, (config) =>
-      Common.log "config:", config?.name ? "disabled"
       @installListeners()
       @interface = new Interface(config, element) if config
 

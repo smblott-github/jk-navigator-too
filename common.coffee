@@ -94,9 +94,6 @@ Common =
   isChromeStoreVersion: do ->
     0 == chrome?.extension.getURL("").indexOf "chrome-extension://tooaakbjkmojammjfadiljkfkmfbbfc"
 
-  log: (args...) ->
-    console.log args... unless @isChromeStoreVersion
-
   simulateClick: (element, modifiers) ->
     modifiers ||= {}
 
@@ -222,9 +219,6 @@ Common =
 
   mkConfigs: (configs, meta = null) ->
     process.stdout.write JSON.stringify { configs, meta }, null, "  "
-
-  log: (args...) ->
-    chrome.runtime.sendMessage name: "log", message: args if document.hasFocus()
 
 # This is a simple class for the common case where we want to use some data value which may be immediately
 # available, or for which we may have to wait.  It implements a use-immediately-or-wait queue, and calls the
