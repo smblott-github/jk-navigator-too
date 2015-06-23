@@ -12,8 +12,9 @@ refreshers = []
 
 class RuleSet
   constructor: (container, url, configs, lastUpdated = "on installation") ->
-    console.log configs
     rules = Common.getRules configs
+    meta = Common.getMeta configs
+
     template = document.querySelector('#container-template').content
     element = document.importNode template, true
     element.querySelector(".container-url").textContent = url
@@ -21,8 +22,15 @@ class RuleSet
     wrapper = element.querySelector(".container-wrapper")
     ruleList = element.querySelector(".rule-list")
 
-    if configs.meta?.name
-      element.querySelector(".container-name").textContent = configs.meta?.name
+    do ->
+      if meta?.name
+        element.querySelector(".container-name").textContent = meta.name
+
+      if meta?.comment
+        element.querySelector(".rule-comment").innerHTML =
+          meta.comment.split("\n\n").map (p) -> "<p>#{p}</p>"
+      else
+        element.querySelector(".rule-comment").style.display = "none"
 
     removeButton = element.querySelector(".container-remove")
     refreshButton = element.querySelector(".container-refresh")
