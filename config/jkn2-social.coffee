@@ -6,6 +6,7 @@ configs.push
   regexps: "^https?://www\\.facebook\\.com/?$"
   selectors: "div[data-timestamp] > div.userContentWrapper"
   activators: [ "div.fbstoryattachmentimage img", "a[rel=theater]" ]
+  offset: 65
   style:
     "border-color": "#3b5998"
     opacity: "0.2"
@@ -50,6 +51,7 @@ configs.push
     "div.list-stream div.content"
     "div.new-tweets-bar"
   ]
+  offset: 80
   style:
     "border-color": "#55B4CF"
 
