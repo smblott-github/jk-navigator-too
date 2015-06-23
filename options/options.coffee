@@ -233,7 +233,7 @@ fetchUrl = (url) ->
 
 Common.documentReady ->
   chrome.storage.sync.get null, (items) ->
-    localStorage.previousUrl ?= "http://smblott.org/jknt-smblott.txt"
+    localStorage.previousUrl ?= "http://jkn2.smblott.org/jkn2-search.txt"
     urlElement = $("add-network-text")
     urlElement.value = localStorage.previousUrl
 

@@ -5,7 +5,7 @@
 # automate that process.  It also uploads the resulting files to a web server.
 
 # Set target to an rsync-accessible target directory.
-target ?= desktop:/home/www/smblott.org
+target ?= desktop:/home/www/smblott.org/jkn2
 
 js = $(wildcard *.js)
 cs = $(wildcard *.coffee)

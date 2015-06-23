@@ -10,6 +10,7 @@ class Interface
 
     @config.offset ?= 25
     @config.native ?= false
+    @config.selectors ?= []
 
     if @debug.config
       Common.log @config.name
