@@ -65,9 +65,9 @@ class Interface
       if 0 <= oldIndex < newIndex
         if Common.canScroll action
           { top, bottom } = @element.getBoundingClientRect()
-          if action == "up" and top + delta < @config.offset and Common.canScroll "up"
+          if action == "up" and top + delta < @config.offset
             newIndex = oldIndex
-          else if action == "down" and @config.offset + delta < top and Common.canScroll "up"
+          else if action == "down" and @config.offset + delta < top
             newIndex = oldIndex
 
       @selectElement elements[newIndex]
