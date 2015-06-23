@@ -38,19 +38,25 @@ A rule set is a list of rules, with each rule having the following properties:
 
 - **name**: (required) A short name. Example:
 
-    name: "Google Search"
+```
+name: "Google Search"
+```
 
 - **regexps**: (required) Either a single string or a list of strings, each
   being a Javascript regular expression which is matched against the URL of the
   page. To match *all* pages, use `"."`.  Example:
 
-    regexps: "^https?://(www\.)?google\.([a-z\.]+)/search\?"
+```
+regexps: "^https?://(www\.)?google\.([a-z\.]+)/search\?"
+```
 
 - **selectors** (kinda required) Again, either a single string or a list of
   strings, each being a CSS selector.  These are used to choose which elements
   within the page are selectable.
 
-    selectors: "div#search li.g"
+```
+selectors: "div#search li.g"
+```
 
 - **activators** (optional) Again CSS selector(s), as above, but require only
   if the default method of finding the element to click when you type `Enter`
@@ -60,9 +66,11 @@ A rule set is a list of rules, with each rule having the following properties:
   those of the overlay element highlighting the currently-selected element.
   For example, you can change the colour of the overlay:
 
-    style:
-      "border-color": "#0266C8"
-      opacity: "0.2"
+```
+style:
+  "border-color": "#0266C8"
+  opacity: "0.2"
+```
 
 - **native** (optional, boolean) Do not use `j`/`k` bindings, use the page's
   native bindings instead. `Enter` remains bound, so you can still hit `Enter`
