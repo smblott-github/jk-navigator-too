@@ -1,34 +1,77 @@
 ## JK-Navigator-Too
 
-This is a work in progress.  It's a variation on
-[jk-navigator](https://chrome.google.com/webstore/detail/jk-shortcuts-navigator/chgfodomgimhbcmlfljhkgildehakgif?hl=en),
-but it's not yet ready for prime time.
+With JK-Navigator-Too (jkn2), you can bind logical movements to the `j` and `k` keys
+(for example, to select search results on Google, or news stories on the BBC,
+or Reddit posts, or whatever).
 
-### Configuration
+In addition, the `Enter` key activates the link associated with the selected
+element.  Searching Google usually becomes something like `j-j-Enter`; browsing
+Reddit: `j-Enter`, `j-Enter`.  You get the idea.
 
-(Also a work in progress.)
+Here's a screenshot:
 
-    {
-      name: "google search"
-      regexps: "^https?://(www\\.)?google\\.([a-z\\.]+)/search\\?"
-      selectors: [ "li.g h3.r a", "a._eu._h2" ]
-    }
+![Screenshot](https://cloud.githubusercontent.com/assets/2641335/8305814/691ad966-19aa-11e5-9ce5-fc83d0b00f2a.png)
 
-    name:
-      For documentation only
+#### Configuration
 
-    regexp:
-      Either a string or an array of strings, each a Jacascript regular
-      expression identifying the URLs to which this definition applies.
+All jkn2 configuration is via rule sets on the web; there some examples [here](http://jkn2.smblott.org/).
 
-    selectors:
-      Either a string or an array of strings, each a CSS selector identifying
-      the logical entities to which j/k should scroll.
+A rule set is a JSON-encoded list of rules.  It's probably simplest just to look at an [example](http://jkn2.smblott.org/jkn2-search.txt):
+- `configs` is the list of rules.
+- `meta` is metadata describing the rule set.
 
-    activators:
-      Either a string or an array of strings, each a CSS selector identifying
-      the element which should be "clicked" when the user types <Enter>.
+You can create your own rule sets (or, perhaps just touch up the existing
+ones).  See
+[here](https://github.com/smblott-github/jk-navigator-too/tree/master/config)
+and
+[here](https://github.com/smblott-github/jk-navigator-too/blob/master/config/Makefile)
+for workflow ideas.
 
-    color:
-      The CSS background colour to apply to the selected element.
+##### Details: Metadata
 
+The metadata consists of two properties: a (short) `name` and a slightly longer
+`comment`.  These are both used (if present) on the options page.
+
+##### Details: Rule Set
+
+A rule set is a list of rules, with each rule having the following properties:
+
+- **name**: (required) A short name. Example:
+
+    name: "Google Search"
+
+- **regexps**: (required) Either a single string or a list of strings, each
+  being a Javascript regular expression which is matched against the URL of the
+  page. To match *all* pages, use `"."`.  Example:
+
+    regexps: "^https?://(www\.)?google\.([a-z\.]+)/search\?"
+
+- **selectors** (kinda required) Again, either a single string or a list of
+  strings, each being a CSS selector.  These are used to choose which elements
+  within the page are selectable.
+
+    selectors: "div#search li.g"
+
+- **activators** (optional) Again CSS selector(s), as above, but require only
+  if the default method of finding the element to click when you type `Enter`
+  doesn't work.  There are examples [here](http://jkn2.smblott.org/jkn2-social.txt).
+
+- **style** (optional) A Javascript object whose properties are mixed into
+  those of the overlay element highlighting the currently-selected element.
+  For example, you can change the colour of the overlay:
+
+    style:
+      "border-color": "#0266C8"
+      opacity: "0.2"
+
+- **native** (optional, boolean) Do not use `j`/`k` bindings, use the page's
+  native bindings instead. `Enter` remains bound, so you can still hit `Enter`
+  to activate the "currently-active element".
+
+- **activeSelector** (optional) When using native `j`/`k` bindings (and the
+  page does not set `document.activeElement`), these CSS selectors are used to
+  find the active element for `Enter`.
+
+- **priority** (optional)  (A smaller value is a higher priority.) Rules are
+  sorted by priority (low to high).  First match wins.  Use this if a URL might
+  match several rules.

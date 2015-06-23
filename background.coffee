@@ -46,6 +46,7 @@ getConfig = do ->
           catch then []
         for key in networkKeys
           configs.push Common.getRules(items[key])... if items[key]
+        configs.sort (a,b) -> (a.priority ? 0) - (b.priority ? 0)
         console.log "  #{config.name}" for config in configs
 
         chrome.windows.getAll { populate: true }, (windows) ->
