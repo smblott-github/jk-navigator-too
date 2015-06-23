@@ -57,17 +57,18 @@ class Interface
       amount = 100 * if action == "up" then -1 else 1
       Scroller.scrollBy (@element ? document.body), "y", amount, true
     else
-      # # Sometimes, we just scroll to the previously selected element, which feels better from a UX
-      # # perspective.
-      # # Delta is a wiggle fudgement.  If we're closer than delta, then we that assume the current element is
-      # # already in the right position.
-      # delta = 10
-      # if 0 <= oldIndex < newIndex
-      #   { top, bottom } = @element.getBoundingClientRect()
-      #   if action == "up" and top + delta < @config.offset
-      #     newIndex = oldIndex
-      #   # else if action == "down" and @config.offset + delta < top
-      #   #   newIndex = oldIndex
+      # Sometimes, we just scroll to the previously selected element, which feels better from a UX
+      # perspective.
+      # Delta is a wiggle fudgement.  If we're closer than delta, then we that assume the current element is
+      # already in the right position.
+      delta = 10
+      if 0 <= oldIndex < newIndex
+        if Common.canScroll action
+          { top, bottom } = @element.getBoundingClientRect()
+          if action == "up" and top + delta < @config.offset and Common.canScroll "up"
+            newIndex = oldIndex
+          else if action == "down" and @config.offset + delta < top and Common.canScroll "up"
+            newIndex = oldIndex
 
       @selectElement elements[newIndex]
 

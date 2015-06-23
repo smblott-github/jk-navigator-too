@@ -220,6 +220,13 @@ Common =
   mkConfigs: (configs, meta = null) ->
     process.stdout.write JSON.stringify { configs, meta }, null, "  "
 
+  canScroll: (direction) ->
+    switch direction
+      when "up"
+        0 < pageYOffset
+      when "down"
+        pageYOffset + innerHeight < document.body.offsetHeight
+
 # This is a simple class for the common case where we want to use some data value which may be immediately
 # available, or for which we may have to wait.  It implements a use-immediately-or-wait queue, and calls the
 # fetch function to fetch the data asynchronously.
