@@ -8,10 +8,11 @@ class Interface
     @config.selectors ?= []
 
     chrome.runtime.sendMessage name: "icon", show: true if @config.selectors?
-    if element
+    if element and Common.isInViewport(element) and Common.isDisplayed element
       @selectElement element, false
     else if element = @getElements("down")[0]
-       @selectElement element, false
+      if Common.isInViewport element
+        @selectElement element, false
 
   deactivate: ->
     chrome.runtime.sendMessage name: "icon", show: false
@@ -133,11 +134,12 @@ class Interface
           characterData: true
           subtree: true
         observeFunction = (mutations) =>
-          if Common.isDisplayed element
+          if @element and @element == element and Common.isDisplayed(element) and Common.isInViewport element
             # We could probably be more selective as to the types of mutations for which we re-select the
             # current element.
             @selectElement element, false
           else
+            # @clearSelection() has the side effect of disabling this mutation observer.
             @clearSelection()
       else
         observeFunction = null
@@ -242,13 +244,13 @@ class Interface
   # If we scroll, and there's already a selected element, and that element goes out of the viewport, then we
   # select the top-most visible selectable element.
   onScroll: do ->
-    delay = 50
+    delay = 100
     timer = null
     previousPageYOffset = pageYOffset
 
     cancel = ->
-      if timer
-        clearTimeout timer; timer = null
+      clearTimeout timer if timer
+      timer = null
 
     (event, clear = false) ->
       # Figure out the direction of the last scroll.  If we're at or close to the top of the window, then we
@@ -259,9 +261,10 @@ class Interface
       unless clear
         timer = Common.setTimeout delay, =>
           timer = null
-          if @element and not Common.isInViewport @element
-            @clearSelection()
-          if not @element
+          if @element
+            unless Common.isInViewport(@element) and Common.isDisplayed @element
+              @clearSelection()
+          unless @element
             if element = (ele for ele in @getElements direction when Common.isInViewport ele)[0]
               @selectElement element, false
 
