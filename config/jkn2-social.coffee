@@ -54,8 +54,17 @@ configs.push
   regexps: "^https?://([a-z]+\\.)?twitter.com/?"
   selectors: [
     "div.home-stream div.original-tweet"
+    "div.home-stream li.conversation-root"
+    "div.home-stream li.js-simple-tweet"
+
     "div.profile-stream div.original-tweet"
+    "div.profile-stream li.conversation-root"
+    "div.profile-stream li.js-simple-tweet"
+
     "div.list-stream div.original-tweet"
+    "div.profile-stream li.conversation-root"
+    "div.profile-stream li.js-simple-tweet"
+
     "div.new-tweets-bar"
 
     # "div.home-stream div.content"
