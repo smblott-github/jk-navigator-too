@@ -225,13 +225,19 @@ class Interface
 
   querySelector: (element, selector, all = false) ->
     try
-      results = element.querySelectorAll selector
+      results =
+        if selector.trim()[0] == "/"
+          # xPath.
+          xPathResult = document.evaluate selector, document, Common.namespaceResolver, Common.xPathResultType
+          ele while xPathResult and ele = xPathResult.iterateNext()
+        else
+          # CSS.
+          element.querySelectorAll selector
       results = (ele for ele in results when Common.isDisplayed ele)
       if all then results else results[0]
     catch
-      console.error "Bad CSS selector: #{all} #{selector}"
+      console.error "Bad xPath/CSS selector: #{all} #{selector}"
       if all then [] else null
-
 
   # If we scroll, and there's already a selected element, and that element goes out of the viewport, then we
   # select the top-most visible selectable element.

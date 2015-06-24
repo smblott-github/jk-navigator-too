@@ -39,6 +39,8 @@ The metadata consists of two properties: a (short) `name` and a slightly longer
 
 ##### Details: Rule Set
 
+*[Note, anywhere a CSS selector can be used below, and xPath selector (with a leading `/`) can also be used.]*
+
 A rule set is a list of rules, with each rule having the following properties:
 
 - **name**: (required) A short name. Example:

@@ -229,6 +229,10 @@ Common =
         when "down"
           pageYOffset + innerHeight + fudgeFactor < document.body.offsetHeight
 
+
+  xPathResultType: XPathResult?.ANY_TYPE
+  namespaceResolver: (namespace) -> if namespace == "xhtml" then "http://www.w3.org/1999/xhtml" else null
+
 # This is a simple class for the common case where we want to use some data value which may be immediately
 # available, or for which we may have to wait.  It implements a use-immediately-or-wait queue, and calls the
 # fetch function to fetch the data asynchronously.
