@@ -265,6 +265,12 @@ class Interface
             if element = (ele for ele in @getElements direction when Common.isInViewport ele)[0]
               @selectElement element, false
 
+  onFocus: (event) ->
+    if event.target == window
+      # Re-draw the overlay whenever we return to the window.
+      if @element and Common.isDisplayed(@element) and Common.isInViewport @element
+        @selectElement @element, false
+
 Wrapper =
   interface: null
 
@@ -276,6 +282,7 @@ Wrapper =
         Common.installListener window, "keydown", (event) => @interface?.onKeydown event
         Common.installListener window, "keyup", (event) => @interface?.onKeyup event
         Common.installListener window, "scroll", (event) => @interface?.onScroll event
+        Common.installListener window, "focus", (event) => @interface?.onFocus event
 
   init: ->
     Scroller.init()

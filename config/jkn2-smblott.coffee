@@ -9,7 +9,7 @@ configs.push
 configs.push
   name: "La Fouly Webcam"
   regexps: "^http://www\\.telelafouly\\.ch/[a-z]+/webcam"
-  selectors: "a.cboxElement img"
+  selectors: "div#webcam > a > img"
   style:
     "border-color": "#55B4CF"
 
