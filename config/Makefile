@@ -14,6 +14,7 @@ install: $(js:.js=.txt) $(cs:.coffee=.txt)
 	rsync $? $(target)
 
 auto:
+	@$(MAKE) --no-print-directory install
 	# For "entr", see http://entrproject.org/.
 	@ls $(cs) $(js) | entr $(MAKE) --no-print-directory auto-install
 

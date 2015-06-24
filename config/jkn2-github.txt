@@ -24,6 +24,11 @@
         "div.discussion-timeline div[id^='issuecomment-']",
         "div.discussion-timeline div[id^='commitcomment-']",
         "div.tabnav a.tabnav-tab:not(.selected):not(.preview-tab)"
+      ],
+      "activators": [
+        "div.comment-content a.issue-link",
+        "div.comment-content a:not(.user-mention)",
+        "div.comment-content a"
       ]
     },
     {
@@ -33,7 +38,8 @@
       "selectors": [
         "div#commits_bucket li.js-navigation-item",
         "div.tabnav a.tabnav-tab:not(.selected):not(.preview-tab)"
-      ]
+      ],
+      "activators": "a[href*='/commit/']"
     }
   ],
   "meta": {

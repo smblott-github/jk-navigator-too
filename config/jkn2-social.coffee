@@ -68,6 +68,11 @@ configs.push
   # style:
   #   "border-color": "#55B4CF"
 
+configs.push
+  name: "Imgur Albums"
+  regexps: "^https?://([a-z]+\\.)?imgur.com/a/."
+  selectors: "div#image-container > div.image"
+
 # This uses Google Plus' native JK bindings.
 configs.push
   name: "Google Plus"

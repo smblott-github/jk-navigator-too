@@ -62,6 +62,11 @@
       "offset": 80
     },
     {
+      "name": "Imgur Albums",
+      "regexps": "^https?://([a-z]+\\.)?imgur.com/a/.",
+      "selectors": "div#image-container > div.image"
+    },
+    {
       "name": "Google Plus",
       "native": true,
       "regexps": "^https?://plus\\.google\\.com",

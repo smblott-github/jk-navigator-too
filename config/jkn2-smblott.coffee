@@ -18,6 +18,11 @@ configs.push
   regexps: "^https?://www\\.steephill\\.tv/.*/photos/"
   selectors: "tr a[name] img"
 
+configs.push
+  name: "Weather in La Fouly"
+  regexps: "http://www.meteoschweiz.admin.ch/home.html?"
+  selectors: "section.forecast-local"
+
 require("../common.js").Common.mkConfigs configs,
   name: "SMBlott's Sites"
   comment: "This is unlikely to contain much of interest to anybody else."

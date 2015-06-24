@@ -17,6 +17,11 @@
       "name": "Steephill Photos",
       "regexps": "^https?://www\\.steephill\\.tv/.*/photos/",
       "selectors": "tr a[name] img"
+    },
+    {
+      "name": "Weather in La Fouly",
+      "regexps": "http://www.meteoschweiz.admin.ch/home.html?",
+      "selectors": "section.forecast-local"
     }
   ],
   "meta": {

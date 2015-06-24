@@ -47,8 +47,12 @@ getConfig = do ->
           try items.network.map (url) -> Common.getKey url
           catch then []
         for key in networkKeys
-          configs.push Common.getRules(items[key])... if items[key]
-        configs.sort (a,b) -> (a.priority ? 0) - (b.priority ? 0)
+          if items[key]
+            rules = Common.getRules items[key]
+            # We retain the priority ordering within individual rule sets.
+            rule.priority ?= idx for rule, idx in rules
+            configs.push rules...
+        configs.sort (a,b) -> a.priority - b.priority
         unless Common.isChromeStoreVersion
           console.log "  #{config.name}" for config in configs
 

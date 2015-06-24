@@ -86,7 +86,7 @@ Common =
     # We exclude anchors.
     url = url.split("#")[0]
     # We include the presence of parameters, but not the parameters themselves.
-    url = "#{url.split("&")[0]}&" if 0 <= url.indexOf "&"
+    url = "#{url.split("?")[0]}?" if 0 <= url.indexOf "?"
     url
 
   chromeStoreKey: "tooaakbjkmojammjfadiljkfkmfbbfc"

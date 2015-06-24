@@ -27,6 +27,14 @@ configs.push
     # Navigation bar.
     "div.tabnav a.tabnav-tab:not(.selected):not(.preview-tab)"
   ]
+  activators: [
+    # Prefer issue links.
+    "div.comment-content a.issue-link"
+    # Discourage user mentions.
+    "div.comment-content a:not(.user-mention)"
+    # Prefer other links within the comment itself.
+    "div.comment-content a"
+  ]
 
 configs.push
   name: "Github Commits"
@@ -37,6 +45,7 @@ configs.push
     # Navigation bar.
     "div.tabnav a.tabnav-tab:not(.selected):not(.preview-tab)"
   ]
+  activators: "a[href*='/commit/']"
 
 # This doesn't work well.  It's better without.
 # configs.push
