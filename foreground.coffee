@@ -148,8 +148,9 @@ class Interface
   selectElement: (element, shouldScroll = true) ->
     if element
       @clearSelection()
-      @element = document.activeElement = element
+      @element = element
       @observeElement @element
+      element.focus()
 
       { top, bottom, left, right } = element.getBoundingClientRect()
       borderWidth = 2; extraBorder = 2

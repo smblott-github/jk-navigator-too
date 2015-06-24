@@ -11,8 +11,8 @@ configs.push
   offset: 70
 
 configs.push
-  name: "The Irish Independent"
-  regexps: "^http://www\\.independent\\.ie/?"
+  name: "The Irish Independent Home Page"
+  regexps: "^http://www\\.independent\\.ie/?$"
   selectors: [
     "div.column.double article:not(.small) > a"
     "div.column.single div:not([data-minarticles]) article:not(.small) > a"
