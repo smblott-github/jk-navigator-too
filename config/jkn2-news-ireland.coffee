@@ -25,5 +25,13 @@ configs.push
   selectors: "div.river.span-8 div.post"
   activators: "h4 a"
 
+configs.push
+  name: "The Journal IE Home Page"
+  regexps: [
+    "^http://www\\.broadsheet\\.ie/?$"
+    "^http://www\\.broadsheet\\.ie/page/[0-9]+/?$"
+  ]
+  selectors: "div#primary div#content article.post"
+
 require("../common.js").Common.mkConfigs configs, name: "Irish News Sites"
 
