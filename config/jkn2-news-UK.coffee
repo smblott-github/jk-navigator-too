@@ -20,7 +20,6 @@ configs.push
   name: "Smooth Scrolling On Other BBC News Pages"
   regexps: "^https?://www\\.bbc\\.(com|co\\.uk)/news"
   selectors: []
-  priority: 1000000
 
 configs.push
   name: "The Guardian"
@@ -34,7 +33,6 @@ configs.push
   name: "Smooth Scrolling on Other Guardian Pages"
   regexps: "^https?://www\\.theguardian\\.com/."
   selectors: []
-  priority: 1000000
 
 require("../common.js").Common.mkConfigs configs, name: "UK News Sites"
 

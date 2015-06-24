@@ -3,7 +3,6 @@ configs = []
 
 configs.push
   name: "Github Issues/Pulls/Notifications"
-  priority: 1
   regexps: [
     "^https?://github.com/.*/(issues|pulls)($|\\?)"
     "^https?://github.com/notifications"
@@ -18,7 +17,6 @@ configs.push
 
 configs.push
   name: "Github Discussions"
-  priority: 2
   regexps: "^https?://github.com/.*/(issues?|pulls?)/[0-9]+$"
   selectors: [
     "div.discussion-timeline div[id^='issue-']"
@@ -38,7 +36,6 @@ configs.push
 
 configs.push
   name: "Github Commits"
-  priority: 3
   regexps: "^https?://github.com/.*/commits$"
   selectors: [
     "div#commits_bucket li.js-navigation-item"

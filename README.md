@@ -79,7 +79,8 @@ style:
 
 - **priority** (optional)  (A smaller value is a higher priority.) Rules are
   sorted by priority (low to high).  First match wins.  Use this if a URL might
-  match several rules.
+  match several rules.  However, without an explicit priority, rules within a
+  single rule set retain the original ordering.
 
 ###### Advanced
 

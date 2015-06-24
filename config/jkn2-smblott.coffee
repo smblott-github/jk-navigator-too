@@ -23,6 +23,11 @@ configs.push
   regexps: "http://www.meteoschweiz.admin.ch/home.html?"
   selectors: "section.forecast-local"
 
+configs.push
+  name: "Cycling News Live"
+  regexps: "https?://live.cyclingnews.com/?"
+  selectors: "ol#liveReportConsolePreview > li[id^='entry-']"
+
 require("../common.js").Common.mkConfigs configs,
   name: "SMBlott's Sites"
   comment: "This is unlikely to contain much of interest to anybody else."

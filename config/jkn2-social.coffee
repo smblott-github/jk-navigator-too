@@ -29,7 +29,6 @@ configs.push
 
 configs.push
   name: "Reddit Comments"
-  priority: 1
   regexps: "^http://www\\.reddit\\.com/.*/comments/"
   selectors: [
     "div#siteTable div.usertext-body"
@@ -39,7 +38,6 @@ configs.push
 
 configs.push
   name: "Reddit"
-  priority: 2
   regexps: "^http://www\\.reddit\\.com/?"
   selectors: "div.entry > p.title > a"
 
