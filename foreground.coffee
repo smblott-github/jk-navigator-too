@@ -118,10 +118,36 @@ class Interface
     else
       "visible"
 
+  # This like the "Show Photo" button on Twitter cause the size of the element to change.  We watch for such
+  # changes, and re-draw the overlay.
+  observeElement: do ->
+    observeFunction = null
+    observer = new MutationObserver (mutations) -> observeFunction? mutations
+
+    (element) ->
+      if element
+        observer.disconnect()
+        observer.observe element,
+          childList: true
+          attributes: true
+          characterData: true
+          subtree: true
+        observeFunction = (mutations) =>
+          if Common.isDisplayed element
+            # We could probably be more selective as to the types of mutations for which we re-select the
+            # current element.
+            @selectElement element, false
+          else
+            @clearSelection()
+      else
+        observeFunction = null
+        observer.disconnect()
+
   selectElement: (element, shouldScroll = true) ->
     if element
       @clearSelection()
       @element = document.activeElement = element
+      @observeElement @element
 
       { top, bottom, left, right } = element.getBoundingClientRect()
       borderWidth = 2; extraBorder = 2
@@ -168,6 +194,8 @@ class Interface
     if @element?
       @overlay.parentNode.removeChild @overlay if @overlay
       @element = @overlay = null
+      @observeElement null
+      @onScroll null, true
 
   activateElement: (element, event) ->
     # We assume <Shift> and <Alt> by default.  The user can override (revert) that by using these modifiers.
@@ -179,7 +207,9 @@ class Interface
 
     activate = (ele = element) =>
       console.log "activate", ele
-      if @config.noclick then console.log "click", ele else Common.simulateClick ele, keyEvent
+      unless @config.noclick
+        Common.simulateClick ele, keyEvent
+        ele.blur()
 
     if element.tagName.toLowerCase() == "a"
       activate element
@@ -214,17 +244,20 @@ class Interface
       if timer
         clearTimeout timer; timer = null
 
-    (event) ->
-      direction = if previousPageYOffset < pageYOffset then "down" else "up"
+    (event, clear = false) ->
+      # Figure out the direction of the last scroll.  If we're at or close to the top of the window, then we
+      # assume "down".
+      direction = if previousPageYOffset < pageYOffset or pageYOffset < 100 then "down" else "up"
       previousPageYOffset = pageYOffset
       cancel()
-      timer = Common.setTimeout delay, =>
-        timer = null
-        if @element and not Common.isInViewport @element
-          @clearSelection()
-        if not @element and element = @getElements(direction)[0]
-          if Common.isInViewport element
-            @selectElement element, false
+      unless clear
+        timer = Common.setTimeout delay, =>
+          timer = null
+          if @element and not Common.isInViewport @element
+            @clearSelection()
+          if not @element and element = @getElements(direction)[0]
+            if Common.isInViewport element
+              @selectElement element, false
 
 Wrapper =
   interface: null

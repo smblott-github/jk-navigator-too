@@ -47,21 +47,26 @@ configs.push
   name: "Twitter"
   regexps: "^https?://([a-z]+\\.)?twitter.com/?"
   selectors: [
-    "div.home-stream div.content"
-    "div.profile-stream div.content"
-    "div.list-stream div.content"
+    "div.home-stream div.original-tweet"
+    "div.profile-stream div.original-tweet"
+    "div.list-stream div.original-tweet"
     "div.new-tweets-bar"
+
+    # "div.home-stream div.content"
+    # "div.profile-stream div.content"
+    # "div.list-stream div.content"
+    # "div.new-tweets-bar"
   ]
   activators: [
-    "a.twitter-timeline-link"
+    "div.original-tweet a.twitter-timeline-link"
     # "div.multi-photos"
     # # View/Hide conversation (also view photo).
     # "div.stream-item-footer span.expand-stream-item"
     # "div.stream-item-footer span.collapse-stream-item"
   ]
   offset: 80
-  style:
-    "border-color": "#55B4CF"
+  # style:
+  #   "border-color": "#55B4CF"
 
 # This uses Google Plus' native JK bindings.
 configs.push
