@@ -246,7 +246,7 @@ class Interface
 
     (event, clear = false) ->
       # Figure out the direction of the last scroll.  If we're at or close to the top of the window, then we
-      # assume "down".
+      # just assume "down".
       direction = if previousPageYOffset < pageYOffset or pageYOffset < 100 then "down" else "up"
       previousPageYOffset = pageYOffset
       cancel()
@@ -255,8 +255,8 @@ class Interface
           timer = null
           if @element and not Common.isInViewport @element
             @clearSelection()
-          if not @element and element = @getElements(direction)[0]
-            if Common.isInViewport element
+          if not @element
+            if element = (ele for ele in @getElements direction when Common.isInViewport ele)[0]
               @selectElement element, false
 
 Wrapper =
