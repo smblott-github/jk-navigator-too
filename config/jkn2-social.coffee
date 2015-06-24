@@ -22,6 +22,7 @@ configs.push
     "a[rel=theater]"
     "i > input[type='button']"
   ]
+  offset: 65
   style:
     "border-color": "#3b5998"
     opacity: "0.2"
@@ -52,11 +53,11 @@ configs.push
     "div.new-tweets-bar"
   ]
   activators: [
-    "div.multi-photos"
     "a.twitter-timeline-link"
-    # View/Hide conversation (also view photo).
-    "div.stream-item-footer span.expand-stream-item"
-    "div.stream-item-footer span.collapse-stream-item"
+    # "div.multi-photos"
+    # # View/Hide conversation (also view photo).
+    # "div.stream-item-footer span.expand-stream-item"
+    # "div.stream-item-footer span.collapse-stream-item"
   ]
   offset: 80
   style:

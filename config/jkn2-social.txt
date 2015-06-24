@@ -25,6 +25,7 @@
         "a[rel=theater]",
         "i > input[type='button']"
       ],
+      "offset": 65,
       "style": {
         "border-color": "#3b5998",
         "opacity": "0.2"
@@ -56,10 +57,7 @@
         "div.new-tweets-bar"
       ],
       "activators": [
-        "div.multi-photos",
-        "a.twitter-timeline-link",
-        "div.stream-item-footer span.expand-stream-item",
-        "div.stream-item-footer span.collapse-stream-item"
+        "a.twitter-timeline-link"
       ],
       "offset": 80,
       "style": {
