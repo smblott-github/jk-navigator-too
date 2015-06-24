@@ -14,6 +14,9 @@ do ->
         if 0 < Object.keys(defaults).length
           console.log "setting defaults:", defaults unless Common.isChromeStoreVersion
           chrome.storage.sync.set defaults
+          chrome.runtime.onInstalled.addListener (details) ->
+            if details.reason == "install"
+              chrome.tabs.create url: chrome.extension.getURL "/options/options.html"
 
   if forceReset
     chrome.storage.sync.get null, (items) ->
