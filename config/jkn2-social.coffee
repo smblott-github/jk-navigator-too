@@ -4,7 +4,12 @@ configs = []
 configs.push
   name: "Facebook Home Page"
   regexps: "^https?://www\\.facebook\\.com/?$"
-  selectors: "div[data-timestamp] > div.userContentWrapper"
+  selectors: [
+    # CSS version.
+    # "div[data-timestamp] > div.userContentWrapper"
+    # xPath version (this allows us to select the parent).
+    "//div[@data-timestamp]/div[contains(@class,'userContentWrapper')]/.."
+  ]
   activators: [ "div.fbstoryattachmentimage img", "a[rel=theater]" ]
   offset: 65
   style:
@@ -15,7 +20,10 @@ configs.push
   name: "Facebook"
   regexps: "^https?://www\\.facebook\\.com/."
   selectors: [
-    "div#content div.userContentWrapper"
+    # CSS version.
+    # "div#content div.userContentWrapper"
+    # xPath version (this allows us to select the parent).
+    "//div[@id='content']//div[contains(@class,'userContentWrapper')]/.."
   ]
   activators: [
     "div.fbstoryattachmentimage img",
