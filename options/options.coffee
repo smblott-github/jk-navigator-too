@@ -237,6 +237,9 @@ Common.documentReady ->
     urlElement = $("add-network-text")
     urlElement.value = localStorage.previousUrl
 
+    versionElement = $("version")
+    versionElement.textContent = chrome.runtime.getManifest().version
+
     addButton = $("add-network-button")
     addButton.addEventListener "click", ->
       addButton.blur()
