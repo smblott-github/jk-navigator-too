@@ -37,16 +37,16 @@ configs.push
 
 configs.push
   name: "Reddit Comments"
-  regexps: "^http://www\\.reddit\\.com/.*/comments/"
+  regexps: "^http://[a-z]+\\.reddit\\.com/.*/comments/"
   selectors: [
     "div#siteTable div.usertext-body"
     "div.commentarea > div.sitetable > div.comment"
   ]
-  activators: "a[href^='http']:not(.author)"
+  activators: "a[href^='http']:not(.author):not(.bylink)"
 
 configs.push
   name: "Reddit"
-  regexps: "^http://www\\.reddit\\.com/?"
+  regexps: "^http://[a-z]+\\.reddit\\.com/?"
   selectors: "div.entry > p.title > a"
 
 configs.push

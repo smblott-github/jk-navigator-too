@@ -200,18 +200,16 @@ class Interface
       @onScroll null, true
 
   activateElement: (element, event) ->
-    # We assume <Shift> and <Alt> by default.  The user can override (revert) that by using these modifiers.
-    # This may be counterintuitive, however if gives both the best default behaviour and the possibility for
-    # the user the alter it should they wish.
-    keyEvent = shiftKey: true, ctrlKey: true, altKey: event.altKey
-    for key in [ "shiftKey", "ctrlKey" ]
-      delete keyEvent[key] if event[key]
-
     activate = (ele = element) =>
       console.log "activate", ele
       unless @config.noclick
-        Common.simulateClick ele, keyEvent
-        ele.blur()
+        if ele.tagName.toLowerCase() == "a" and /^(http|https|file):\/\//.test ele.href
+          # These lines we open ourselves.
+          chrome.runtime.sendMessage name: "open", url: ele.href
+        else
+          # Otherwise, we click on the element.
+          Common.simulateClick ele, shiftKey: true, ctrlKey: true
+          ele.blur()
 
     if element.tagName.toLowerCase() == "a"
       activate element
@@ -222,7 +220,7 @@ class Interface
         if candidate = @querySelector element, selector
           activate candidate
           return
-      # OK.  Just click the element, then.
+      # OK.  Just pick the element itself, then.
       activate element
 
   querySelector: (element, selector, all = false) ->

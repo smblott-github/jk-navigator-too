@@ -98,10 +98,17 @@ updateIcon = (request, sender) ->
     chrome.pageAction.hide sender.tab.id
   false # We will not be calling sendResponse.
 
+open = ({ url }, sender) ->
+  chrome.tabs.getAllInWindow null, (tabs) ->
+    chrome.tabs.getSelected null, (tab) ->
+      chrome.tabs.create url: url, index: tab.index + 1, openerTabId: tab.id
+  false # We will not be calling sendResponse.
+
 do ->
   handlers =
     icon: updateIcon
     config: getConfig
+    open: open
 
   chrome.runtime.onMessage.addListener (request, sender, sendResponse) ->
     if handlers[request.name]?
