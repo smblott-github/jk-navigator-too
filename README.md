@@ -2,6 +2,9 @@
 
 Available on the [Chrome Store](https://chrome.google.com/webstore/detail/jk-navigator-tooaakbjkmojammjfadiljkfkmfbbfc).
 
+**Note**:  This is still a work in progress.  It works well in many cases (e.g.
+Google, BBC News, Reddit), but there are quirks in others.
+
 With JK-Navigator-Too (jkn2), you can bind logical movements to the `j` and `k` keys
 (for example, to select search results on Google, or news stories on the BBC,
 or Reddit posts, or whatever).
