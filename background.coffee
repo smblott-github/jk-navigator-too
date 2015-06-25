@@ -98,11 +98,26 @@ updateIcon = (request, sender) ->
     chrome.pageAction.hide sender.tab.id
   false # We will not be calling sendResponse.
 
-open = ({ url }, sender) ->
-  chrome.tabs.getAllInWindow null, (tabs) ->
-    chrome.tabs.getSelected null, (tab) ->
-      chrome.tabs.create url: url, index: tab.index + 1, openerTabId: tab.id
-  false # We will not be calling sendResponse.
+open = do ->
+  removeRedirection = do ->
+    matcher = new RegExp "[&?].*\=(https?%3A%2F%2F[a-zA-Z0-9][^&]*)", "i"
+
+    (url) ->
+      match = matcher.exec url
+      if match and match[1]
+        try
+          decodeURIComponent match[1]
+        catch
+          console.error "Failed to URI decode: #{match[1]}"
+          url
+      else
+        url
+
+  ({ url }, sender) ->
+    chrome.tabs.getAllInWindow null, (tabs) ->
+      chrome.tabs.getSelected null, (tab) ->
+        chrome.tabs.create url: removeRedirection(url), index: tab.index + 1, openerTabId: tab.id
+    false # We will not be calling sendResponse.
 
 do ->
   handlers =
