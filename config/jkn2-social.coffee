@@ -2,15 +2,20 @@
 configs = []
 
 configs.push
+  comment: "This uses the native Facebook j/k bindings, but allows you to type 'Enter' to select the 'main' link in the post."
+
   name: "Facebook Home Page"
   regexps: "^https?://www\\.facebook\\.com/?$"
-  selectors: [
-    # CSS version.
-    # "div[data-timestamp] > div.userContentWrapper"
-    # xPath version (this allows us to select the parent).
-    "//div[@data-timestamp]/div[contains(@class,'userContentWrapper')]/.."
-  ]
+  native: true
+  # These selectors are good (15/6/24).  They're just not needed if we're using the native j/k/ bindings.
+  # selectors: [
+  #   # CSS version.
+  #   # "div[data-timestamp] > div.userContentWrapper"
+  #   # xPath version (this allows us to select the parent).
+  #   "//div[@data-timestamp]/div[contains(@class,'userContentWrapper')]/.."
+  # ]
   activators: [ "div.fbstoryattachmentimage img", "a[rel=theater]" ]
+  activeSelector: "div[tabindex='0'] > div.userContentWrapper"
   offset: 65
   style:
     "border-color": "#3b5998"
@@ -52,32 +57,18 @@ configs.push
 configs.push
   name: "Twitter"
   regexps: "^https?://([a-z]+\\.)?twitter.com/?"
-  selectors: [
-    "div.home-stream div.original-tweet"
-    "div.home-stream li.conversation-root"
-    "div.home-stream li.js-simple-tweet"
-
-    "div.profile-stream div.original-tweet"
-    "div.profile-stream li.conversation-root"
-    "div.profile-stream li.js-simple-tweet"
-
-    "div.list-stream div.original-tweet"
-    "div.profile-stream li.conversation-root"
-    "div.profile-stream li.js-simple-tweet"
-
-    "div.new-tweets-bar"
-
-    # "div.home-stream div.content"
-    # "div.profile-stream div.content"
-    # "div.list-stream div.content"
-    # "div.new-tweets-bar"
-  ]
+  selectors: do ->
+    selectors = [ "div.new-tweets-bar" ]
+    for context in [ "div.home-stream", "div.profile-stream", "div.list-stream" ]
+      for content in [ "div.original-tweet", "li.conversation-root", "li.js-simple-tweet", "div.QuoteTweet" ]
+        selectors.push "#{context} #{content}"
+    selectors
   activators: [
     "div.original-tweet a.twitter-timeline-link"
     # "div.multi-photos"
-    # # View/Hide conversation (also view photo).
-    # "div.stream-item-footer span.expand-stream-item"
-    # "div.stream-item-footer span.collapse-stream-item"
+    # View/Hide conversation (also view photo).
+    "div.stream-item-footer span.expand-stream-item"
+    "div.stream-item-footer span.collapse-stream-item"
   ]
   offset: 80
   # style:

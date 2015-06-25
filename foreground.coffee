@@ -27,7 +27,8 @@ class Interface
     switch action = @eventToAction event
       when "enter"
         element = @element ? document.activateElement
-        element ?= @querySelector document, @config.activeSelector if @config.activeSelector
+        element ?= @querySelector document.body, @config.activeSelector if @config.activeSelector
+        console.log "pick", element
         return unless element and Common.isInViewport element
 
         @activateElement element, event
@@ -148,9 +149,8 @@ class Interface
   selectElement: (element, shouldScroll = true) ->
     if element
       @clearSelection()
-      @element = element
+      @element = document.activeElement = element
       @observeElement @element
-      element.focus()
 
       { top, bottom, left, right } = element.getBoundingClientRect()
       borderWidth = 2; extraBorder = 2
