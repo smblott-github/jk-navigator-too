@@ -68,6 +68,11 @@ configs.push
 
 configs.push
   name: "Twitter"
+  comment:
+    """
+    In addition to selecting tweets, this also selects the "New Tweets" button at the top of the page.  Scroll
+    to the top and hit "Enter" to load new tweets.
+    """
   regexps: "^https?://([a-z]+\\.)?twitter.com/?"
   selectors: do ->
     selectors = [ "div.new-tweets-bar" ]
@@ -83,8 +88,6 @@ configs.push
     "div.stream-item-footer span.collapse-stream-item"
   ]
   offset: 80
-  # style:
-  #   "border-color": "#55B4CF"
 
 configs.push
   name: "Imgur Albums"
@@ -105,8 +108,8 @@ configs.push
     """
   native: true
   regexps: "^https?://plus\\.google\\.com"
-  # NOTE: This is pretty dodgy.  Google doesn't set activeElement.  Instead, we detect its CSS.
-  # Unfortunately, this looks like it's been through a minifier.  So it could easily change.
+  # NOTE: This is pretty dodgy.  Google doesn't set activeElement.  Instead, we detect the active element via
+  # its CSS.  Unfortunately, this looks like it's been through a minifier.  So it could easily change.
   activeSelector: "div.tk.va[id^=update-]"
   activators: [
     "div[role='button'][aria-label='Play'" # Launch videos.
