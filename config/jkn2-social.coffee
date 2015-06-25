@@ -43,13 +43,17 @@ configs.push
     "a[rel=theater]"
     "i > input[type='button']"
   ]
-  offset: 65
+  offset: 100
   style:
     "border-color": "#3b5998"
     opacity: "0.2"
 
 configs.push
   name: "Reddit Comments"
+  comment:
+    """
+    We select comments, but not responses.  This avoids the need to "j" through endless lists of drivel.
+    """
   regexps: "^http://[a-z]+\\.reddit\\.com/.*/comments/"
   selectors: [
     "div#siteTable div.usertext-body"
