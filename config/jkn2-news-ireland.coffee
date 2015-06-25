@@ -7,6 +7,8 @@ configs.push
   selectors: [
     "div#content_left_upper div.story"
     "div#content_left div.story"
+    "div#content_left div.trending"
+    "div#content_left ul.latest_news_index > li"
   ]
   offset: 70
 
