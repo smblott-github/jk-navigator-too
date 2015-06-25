@@ -86,6 +86,12 @@ class RuleSet
       do (rule) ->
         template = document.querySelector('#rule-template').content
         ele = document.importNode template, true
+
+        commentElement = ele.querySelector ".rule-comment"
+        commentElement.style.display = "none"
+        commentElement.innerHTML = rule.comment if rule.comment
+        delete rule.comment
+
         ele.querySelector(".rule-name").textContent = rule.name or "Unknown Name"
         ele.querySelector(".rule-text").textContent = textify rule
         # ele.querySelector(".rule-enabled").checked = true
@@ -98,10 +104,10 @@ class RuleSet
           maintainState = ->
             if showing
               button.value = "Hide Details"
-              text.style.display = ""
+              text.style.display = commentElement.style.display = ""
             else
               button.value = "Show Details"
-              text.style.display = "none"
+              text.style.display = commentElement.style.display = "none"
 
           maintainState()
           ruleShow = ele.querySelector(".rule-show")
