@@ -22,6 +22,8 @@ configs.push
     "div.discussion-timeline div[id^='issue-']"
     "div.discussion-timeline div[id^='issuecomment-']"
     "div.discussion-timeline div[id^='commitcomment-']"
+    "div.discussion-timeline div[id^='discussion-diff-']"
+    "div.discussion-timeline div.commit-comment"
     # Navigation bar.
     "div.tabnav a.tabnav-tab:not(.selected):not(.preview-tab)"
   ]

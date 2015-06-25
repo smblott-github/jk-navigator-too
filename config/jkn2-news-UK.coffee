@@ -25,6 +25,12 @@ configs.push
   selectors: []
 
 configs.push
+  name: "The Guardian Live Blogs"
+  regexps: "^https?://www\\.theguardian\\.com/.*/live/"
+  selectors: "div.live-blog div[itemprop='liveBlogUpdate']"
+  activators: "div.block-elements a"
+
+configs.push
   name: "The Guardian"
   regexps: "^https?://www\\.theguardian\\.com(/?|/[a-z]+|/[a-z]+/[a-z]+)$"
   selectors: [
