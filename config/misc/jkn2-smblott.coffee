@@ -28,7 +28,7 @@ configs.push
   regexps: "https?://live.cyclingnews.com/?"
   selectors: "ol#liveReportConsolePreview > li[id^='entry-']"
 
-require("../common.js").Common.mkConfigs configs,
+require("../../common.js").Common.mkConfigs configs,
   name: "SMBlott's Sites"
-  comment: "This is unlikely to contain much of interest to anybody else."
+  comment: "This rule set is unlikely to contain much of interest to anybody other than smblott."
 

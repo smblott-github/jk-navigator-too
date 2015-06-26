@@ -35,5 +35,7 @@ configs.push
   ]
   selectors: "div#primary div#content article.post"
 
-require("../common.js").Common.mkConfigs configs, name: "Irish News Sites"
+require("../../common.js").Common.mkConfigs configs,
+  name: "Irish News Sites"
+  comment: "Bindings for various Irish news sites."
 

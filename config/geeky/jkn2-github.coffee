@@ -46,20 +46,11 @@ configs.push
   ]
   activators: "a[href*='/commit/']"
 
-# This doesn't work well.  It's better without.
-# configs.push
-#   name: "Github Diffs"
-#   regexps: [
-#     "^https?://github.com/.*/pull/[0-9]+/files"
-#   ]
-#   selectors: [
-#     "td.blob-code-addition"
-#     "td.blob-code-deletion"
-#     # Navigation bar.
-#     "div.tabnav a.tabnav-tab:not(.selected):not(.preview-tab)"
-#   ]
-
-require("../common.js").Common.mkConfigs configs,
+require("../../common.js").Common.mkConfigs configs,
   name: "Github"
-  comment: "Github provides its own keyboard bindings on some pages.  However, the bindings here offer a better (??) overall feel. (Well, that's my opinion.)"
+  comment:
+    """
+    Github provides its own keyboard bindings on some pages.  However, the bindings here offer a better (??)
+    overall feel. (Well, that's my opinion.)
+    """
 

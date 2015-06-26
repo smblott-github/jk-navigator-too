@@ -7,8 +7,8 @@
 # Set target to an rsync-accessible target directory.
 target ?= desktop:/home/www/smblott.org/jkn2
 
-js = $(wildcard *.js)
-cs = $(wildcard *.coffee)
+js = $(wildcard */*.js)
+cs = $(wildcard */*.coffee)
 
 install: $(js:.js=.txt) $(cs:.coffee=.txt)
 	rsync $? $(target)

@@ -17,7 +17,12 @@ configs.push
   selectors: "td[id^='td_post_']"
   offset: 50
 
-require("../common.js").Common.mkConfigs configs,
+require("../../common.js").Common.mkConfigs configs,
   name: "VBulletin"
-  comment: "Experimental support for vbulletin-based sites."
+  comment:
+    """
+    Experimental support for vbulletin-based sites.  We just guess that some common vbulletin paths are
+    actually vbulletin sites, a hope...
+    """
+
 

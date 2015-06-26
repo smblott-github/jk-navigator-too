@@ -43,5 +43,7 @@ configs.push
   regexps: "^https?://www\\.theguardian\\.com/."
   selectors: []
 
-require("../common.js").Common.mkConfigs configs, name: "UK News Sites"
+require("../../common.js").Common.mkConfigs configs,
+  name: "UK News Sites"
+  comment: "Bindings for various UK news sites."
 
