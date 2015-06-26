@@ -1,3 +1,4 @@
+#
 # Requirements:
 # - GNU make
 # - nodejs
@@ -6,7 +7,7 @@
 # - rsync
 
 # Instead of writing JSON by hand, we write a Javascript or CoffeeScript
-# program to build the JSON.  There are examples in the */*.coffeescript files.
+# program to build the JSON.  There are examples in the */*.coffee files.
 
 # Set target to an rsync-accessible target directory.
 # For example:
@@ -19,7 +20,8 @@
 #
 #   build: just build the config files
 #
-#   auto: (requires entr) install, then run install again whenever one of the source files changes.
+#   auto: (requires entr) install, then run install again whenever one of the
+#         source files changes.
 
 target ?= desktop:/home/www/smblott.org/jkn2
 
