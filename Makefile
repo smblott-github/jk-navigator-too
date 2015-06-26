@@ -1,6 +1,6 @@
 
 build:
-	coffee -c *.coffee ./config/*.coffee ./options/*.coffee
+	coffee -c *.coffee ./config/*/*.coffee ./options/*.coffee
 
 auto:
 	coffee -w -c .

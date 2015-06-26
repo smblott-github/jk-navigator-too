@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "JK-Navigator-Too",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Adds J/K movements and 'Enter' bindings to some popular web pages.",
 
   "options_page": "options/options.html",
