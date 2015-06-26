@@ -25,7 +25,7 @@ Reddit: `j-Enter`, `j-Enter`.
 
 #### Screenshot
 
-Here's a screenshot:
+Here's a screenshot from Google (in this case, `Enter` takes you straight to the BBC Sport site, `j-Enter` takes you to the gossip site):
 
 ![Screenshot](https://cloud.githubusercontent.com/assets/2641335/8305814/691ad966-19aa-11e5-9ce5-fc83d0b00f2a.png)
 
