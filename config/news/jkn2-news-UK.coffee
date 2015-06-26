@@ -16,13 +16,15 @@ configs.push
     "div#comp-digest-2 div[data-entityid^='more-from-bbc-news']"
     "div.correspondent-promo div.correspondent-promo__correspondent"
   ]
-  style:
-    "z-index": 2000000000
+  style: "z-index": 100
 
 configs.push
-  name: "Smooth Scrolling On Other BBC News Pages"
+  name: "Other BBC News Pages (Incl. Live Reporting)"
   regexps: "^https?://www\\.bbc\\.(com|co\\.uk)/news"
-  selectors: []
+  selectors: [
+    "div[live-reporting] article[id^='post_']"
+  ]
+  style: "z-index": 100
 
 configs.push
   name: "The Guardian Live Blogs"
