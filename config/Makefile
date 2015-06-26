@@ -11,7 +11,7 @@ js = $(wildcard */*.js)
 cs = $(wildcard */*.coffee)
 
 install: $(js:.js=.txt) $(cs:.coffee=.txt)
-	rsync $? $(target)
+	rsync --relative $? $(target)
 
 auto:
 	@$(MAKE) --no-print-directory install
@@ -31,4 +31,7 @@ auto-install:
 %.js: %.coffee
 	coffee -c $<
 
-.PHONY: install auto auto-install
+clean:
+	rm -vr /home/www/smblott.org/jkn2/*
+
+.PHONY: install auto auto-install clean
