@@ -1,10 +1,26 @@
-# Requires GNU make.
+# Requirements:
+# - GNU make
+# - nodejs
+# - coffeescript (sudo npm install -g coffee-script)
+# - (optional) entr (http://entrproject.org/).
+# - rsync
 
-# It can be easier to write JSON by building the relevant objects in
-# Javascript/CoffeeScript then writing them out.  This Makefile helps to
-# automate that process.  It also uploads the resulting files to a web server.
+# Instead of writing JSON by hand, we write a Javascript or CoffeeScript
+# program to build the JSON.  There are examples in the */*.coffeescript files.
 
 # Set target to an rsync-accessible target directory.
+# For example:
+#
+#   make target=my-server:public_html/jkn2 install
+#
+# Targets:
+#
+#   install: build config files and install them.
+#
+#   build: just build the config files
+#
+#   auto: (requires entr) install, then run install again whenever one of the source files changes.
+
 target ?= desktop:/home/www/smblott.org/jkn2
 
 js = $(wildcard */*.js)
@@ -12,6 +28,8 @@ cs = $(wildcard */*.coffee)
 
 install: $(js:.js=.txt) $(cs:.coffee=.txt)
 	rsync --relative $? $(target)
+
+build: $(js:.js=.txt) $(cs:.coffee=.txt)
 
 auto:
 	@$(MAKE) --no-print-directory install

@@ -33,6 +33,8 @@ Here's a screenshot from Google (in this case, `Enter` takes you straight to the
 
 It is possible to write your own rule sets; however, unfortunately, the process
 isn't yet properly documented.  If you're feeling brave, then take a look
-[here](https://github.com/smblott-github/jk-navigator-too/tree/master/config) and [here](https://github.com/smblott-github/jk-navigator-too/blob/master/config/Makefile).
+[here](https://github.com/smblott-github/jk-navigator-too/tree/master/config)
+and - in particular -
+[here](https://github.com/smblott-github/jk-navigator-too/blob/master/config/Makefile).
 
 New and improved rules sets are very welcome.  Please submit them as PRs here on github.
