@@ -1,8 +1,8 @@
 ## JK-Navigator-Too
 
 With JK-Navigator-Too (jkn2), you can use `j` and `k` to select elements on a number of popular web sites;
-(for example, to select search results on Google, or news stories on the BBC,
-or Reddit posts, and so on.
+for example, search results on Google, or news stories on the BBC,
+or Reddit posts, etc.
 
 In addition, the `Enter` key activates the link associated with the selected
 element.  Searching Google usually becomes something like `j-j-Enter`; browsing
