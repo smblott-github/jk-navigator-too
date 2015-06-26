@@ -1,7 +1,5 @@
 ## JK-Navigator-Too
 
-Available on the [Chrome Store](https://chrome.google.com/webstore/detail/jk-navigator-tooaakbjkmojammjfadiljkfkmfbbfc).
-
 With JK-Navigator-Too (jkn2), you can use `j` and `k` to select elements on a number of popular web sites;
 (for example, to select search results on Google, or news stories on the BBC,
 or Reddit posts, and so on.
