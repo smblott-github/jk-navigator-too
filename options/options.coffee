@@ -8,7 +8,7 @@ textify = (text) ->
   text = text.replace /},\n  {/g, "},\n\n  {"
   text
 
-refreshers = []
+refreshers = {}
 
 class RuleSet
   constructor: (container, url, configs, lastUpdated = "on installation") ->
@@ -77,7 +77,7 @@ class RuleSet
     refreshButton.addEventListener "click", ->
       refreshButton.blur()
       refresh()
-    refreshers.push refresh
+    refreshers[url] = refresh
 
     element.querySelector(".rule-count").textContent =
       "#{rules.length} rule#{if rules.length == 1 then "" else "s"}."
@@ -258,7 +258,27 @@ Common.documentReady ->
           urlElement.blur()
 
     initialiseNetworkRules ->
-      url = document.location.toString()
-      if /[?&]refresh\b/.test url
-        callback() for callback in refreshers
+      for param in (document.location.search?[1..]?.split("&") ? [])
+        [ key, value ] = param.split "="
+        if key
+          switch key
+
+            when "refresh"
+              refresher() for own url, refresher of refreshers
+
+            when "install", "update"
+              unless value
+                return showMessage "install request with no URL"
+
+              try
+                value = decodeURIComponent value
+              catch
+                return showMessage "failed to URI-decode URL"
+
+              $("add-network-text").value = value
+              fetchUrl()
+
+            else
+              showMessage "unknown URL parameter: #{key}"
+
 

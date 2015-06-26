@@ -103,6 +103,7 @@ open = do ->
     matcher = new RegExp "[&?].*\=(https?%3A%2F%2F[a-zA-Z0-9][^&]*)", "i"
 
     (url) ->
+      return url if 0 == url.indexOf chrome.extension.getURL ""
       match = matcher.exec url
       if match and match[1]
         try
@@ -113,10 +114,13 @@ open = do ->
       else
         url
 
-  ({ url }, sender) ->
+  ({ url, sameTab }, sender) ->
     chrome.tabs.getAllInWindow null, (tabs) ->
       chrome.tabs.getSelected null, (tab) ->
-        chrome.tabs.create url: removeRedirection(url), index: tab.index + 1, openerTabId: tab.id
+        if sameTab
+          chrome.tabs.update tab.id, { url }
+        else
+          chrome.tabs.create url: removeRedirection(url), index: tab.index + 1, openerTabId: tab.id
     false # We will not be calling sendResponse.
 
 do ->
