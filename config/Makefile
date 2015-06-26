@@ -16,20 +16,24 @@
 #
 # Targets:
 #
-#   install: build config files and install them.
+#   install: build the config files and install them
 #
 #   build: just build the config files
 #
 #   auto: (requires entr) install, then run install again whenever one of the
-#         source files changes.
+#         source files changes
 
 target ?= desktop:/home/www/smblott.org/jkn2
 
 js = $(wildcard */*.js)
 cs = $(wildcard */*.coffee)
 
-install: $(js:.js=.txt) $(cs:.coffee=.txt)
-	rsync --relative $? $(target)
+install:
+	@$(MAKE) --no-print-directory .install
+
+.install: $(js:.js=.txt) $(cs:.coffee=.txt)
+	rsync --relative --verbose $? $(target)
+	@touch .install
 
 build: $(js:.js=.txt) $(cs:.coffee=.txt)
 
@@ -52,6 +56,7 @@ auto-install:
 	coffee -c $<
 
 clean:
-	rm -vr /home/www/smblott.org/jkn2/*
+	rm -f .install
+	find . -type f -name '*.txt' -delete
 
 .PHONY: install auto auto-install clean
