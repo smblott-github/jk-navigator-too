@@ -26,6 +26,7 @@ class Interface
 
     switch action = @eventToAction event
       when "enter"
+        return if event.ctrlKey or event.altKey or event.shiftKey
         element = @element ? document.activateElement
         element ?= @querySelector document.body, @config.activeSelector if @config.activeSelector
         console.log "pick", element

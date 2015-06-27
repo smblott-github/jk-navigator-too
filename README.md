@@ -2,11 +2,9 @@
 
 With JK-Navigator-Too (jkn2), you can use `j`/`k` to select elements on a number of popular web sites:
 search results on Google, DuckDuckGo, Youtube, news stories and live reporting on the BBC or the Guardian,
-posts on Reddit, and so on.
+posts on Reddit, various Github pages, and so on.
 
-In addition, the `Enter` key activates the link associated with the selected
-element.  The browsing experience is `j-Enter`, or `j-j-Enter`, or
-whatever; no mouse required.
+In addition, `Enter` activates the link associated with the selected element; usually, no mouse is required.
 
 #### Getting Started
 
@@ -23,16 +21,16 @@ whatever; no mouse required.
    a popup appears at the bottom right-hand side of the screen.  You can import
    the rule set by clicking "Yes please".
 
-#### Screenshots
+In addition to `j`/`k` for selecting elements, jkn2 implements smooth scrolling on `J`/`K` whenever it is active.
 
-Here are some screenshots:
+#### Screenshots
 
 - [Google Search](https://cloud.githubusercontent.com/assets/2641335/8390527/c02f0716-1c90-11e5-83ee-3003241c09f8.png)
 - [Reddit](https://cloud.githubusercontent.com/assets/2641335/8390547/43e6b9c8-1c91-11e5-80a4-3613488fa514.png)
 - [BBC Live Reporting](https://cloud.githubusercontent.com/assets/2641335/8390555/8db98936-1c91-11e5-9a08-4e2e2ef524f6.png)
 - [Github Issues](https://cloud.githubusercontent.com/assets/2641335/8390564/263da264-1c92-11e5-8925-89e084eabff7.png)
 
-In each case, `j` selects the next item and `Enter` follows the associated link.
+In each case, `j` selects the next item or `Enter` follows the associated link.
 
 #### Why Another JK-Navigator?
 
@@ -46,8 +44,7 @@ There are several similar extensions or user scripts out there; so why another?
   the user hits `Enter`).
 
 - Here, we distribute rule-set configurations over the network and synchronise
-  configuration between browser interfaces.  In other words, we're not typing
-  JSON into an HTML input.
+  configuration between browser instances.
 
 In some rule sets, we use the site's native `j`/`k` bindings (*hey, they work well*), but augment them
 with `Enter`-to-activate-the-select-link; examples are the
@@ -60,9 +57,10 @@ consistent UX across a variety of sites.
 - If you use [Vimium](https://github.com/philc/vimium), then you'll need to add
   [exclusion
   rules](https://github.com/philc/vimium/wiki/Disabling-Vimium#partially-disable-vimium-on-a-site)
-  for the sites where JK-Navigator-Too is enabled.
-- JK-Navigator-Too can also be used to add smooth `j`/`k` scrolling to any
-  site.  Simply defined no selectors: `selectors: []`.
+  for the sites where jkn2 is enabled.
+- Jkn2 can also be used to add smooth `j`/`k` scrolling to *any* site.  There's
+  such an example
+  [here](http://jkn2.smblott.org/experimental/jkn2-global-smooth-scrolling.txt).
 
 #### Customisation
 
