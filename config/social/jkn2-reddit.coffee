@@ -7,7 +7,7 @@ configs.push
     """
     We select comments, but not responses.  This avoids the need to "j" through endless lists of drivel.
     """
-  regexps: "^http://[a-z]+\\.reddit\\.com/.*/comments/"
+  regexps: "^https?://[a-z]+\\.reddit\\.com/.*/comments/"
   selectors: [
     "div#siteTable div.usertext-body"
     "div.commentarea > div.sitetable > div.comment"
@@ -16,7 +16,7 @@ configs.push
 
 configs.push
   name: "Reddit"
-  regexps: "^http://[a-z]+\\.reddit\\.com/?"
+  regexps: "^https?://[a-z]+\\.reddit\\.com/?"
   selectors: "div.entry > p.title > a"
 
 
