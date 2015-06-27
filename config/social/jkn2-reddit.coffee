@@ -17,7 +17,11 @@ configs.push
 configs.push
   name: "Reddit"
   regexps: "^https?://[a-z]+\\.reddit\\.com/?"
-  selectors: "div.entry > p.title > a"
+  selectors: [
+    # "div.entry > p.title > a"
+    "//div[@id='siteTable']/div"
+  ]
+  activators: "div.entry > p.title > a"
 
 
 require("../../common.js").Common.mkConfigs configs, name: "Reddit"
