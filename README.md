@@ -55,6 +55,13 @@ with `Enter`-to-activate-the-select-link; examples are the
 Plus](http://jkn2.smblott.org/social/jkn2-google-plus.txt).  This gives a
 consistent UX across a variety of sites.
 
+#### Tip
+
+- If you use [Vimium](https://github.com/philc/vimium), then you'll need to add
+  [exclusion
+  rules](https://github.com/philc/vimium/wiki/Disabling-Vimium#partially-disable-vimium-on-a-site)
+  for the sites where JK-Navigator-Too is enabled.
+
 #### Customisation
 
 It is possible to write your own rule sets; however, unfortunately, the process
