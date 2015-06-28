@@ -22,21 +22,19 @@ class Interface
     # console.clear()
     CoreScroller.registerKeydown event
     return unless Common.isActive()
-    return if event.repeat
 
     switch action = @eventToAction event
       when "enter"
         return if event.ctrlKey or event.altKey or event.shiftKey
-        element = @element ? document.activateElement
-        element ?= @querySelector document.body, @config.activeSelector if @config.activeSelector
-        console.log "pick", element
-        return unless element and Common.isInViewport element
-
-        @activateElement element, event
+        unless event.repeat
+          element = @element ? document.activateElement
+          element ?= @querySelector document.body, @config.activeSelector if @config.activeSelector
+          console.log "pick", element
+          @activateElement element, event if element and Common.isInViewport element
 
       when "up", "down"
         return if event.ctrlKey or event.altKey or @config.native
-        @performUpDown action, event
+        @performUpDown action, event unless event.repeat
 
       else
         return
