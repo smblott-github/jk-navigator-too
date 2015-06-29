@@ -52,25 +52,28 @@ class Interface
     oldIndex = elements.indexOf @element
     newIndex = Math.max 0, Math.min elements.length - 1, oldIndex + 1
 
-    if (@element and newIndex == oldIndex) or not elements[newIndex] or event.shiftKey
-      element = @element ? document.body
-      amount = 100 * if action == "up" then -1 else 1
-      Scroller.scrollBy (@element ? document.body), "y", amount, true
-    else
-      # Sometimes, we just scroll to the previously selected element, which feels better from a UX
-      # perspective.
-      # Delta is a wiggle fudgement.  If we're closer than delta, then we that assume the current element is
-      # already in the right position.
-      delta = 10
-      if 0 <= oldIndex < newIndex
-        if Common.canScroll action
-          { top, bottom } = @element.getBoundingClientRect()
-          if action == "up" and top + delta < @config.offset
-            newIndex = oldIndex
-          else if action == "down" and @config.offset + delta < top
-            newIndex = oldIndex
+    { top, bottom } = @element.getBoundingClientRect() if @element
+    delta = 10
 
+    if event.shiftKey
+      @smoothScroll action
+    else if 0 <= oldIndex and Common.canScroll(action) and action == "up" and top + delta < @config.offset
+      # Re-use the previous element (this gives a better UX).
+      @selectElement elements[oldIndex]
+    else if 0 <= oldIndex and Common.canScroll(action) and action == "down" and @config.offset + delta < top
+      # Again, re-use the previous element (this gives a better UX).
+      @selectElement elements[oldIndex]
+    else if oldIndex < newIndex and elements[newIndex]
+      # Normal logical scroll.
       @selectElement elements[newIndex]
+    else
+      # Normal fallback smooth scroll.
+      @smoothScroll action
+
+  smoothScroll: (action) ->
+    element = @element ? document.body
+    amount = 100 * if action == "up" then -1 else 1
+    Scroller.scrollBy element, "y", amount, true
 
   eventToAction: do ->
     mapping =
