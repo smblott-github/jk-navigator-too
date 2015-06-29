@@ -94,11 +94,19 @@ class Interface
       when "down"
         elements = elements.filter (ele) => @getPosition(ele) != "above"
 
-    # Sort (and discard elements which are too small).
+    # Add element rects.
     elements = elements.map (ele) -> element: ele, rect: ele.getBoundingClientRect()
-    elements = elements.filter (ele) -> 100 < (ele.rect.bottom - ele.rect.top) * (ele.rect.right - ele.rect.left)
+
+    # Discard alements which are too small, or off-screen in the x-axis.
+    elements = elements.filter (ele) ->
+      100 < (ele.rect.bottom - ele.rect.top) * (ele.rect.right - ele.rect.left) and
+        0 <= ele.rect.left and ele.rect.right <= window.innerWidth
+
+    # Sort: top to bottom, left to right.
     elements.sort (a,b) ->
       if a.rect.top == b.rect.top then a.rect.left - b.rect.left else a.rect.top - b.rect.top
+
+    # Remove rects.
     elements = elements.map (ele) -> ele.element
 
     # De-duplicate.
