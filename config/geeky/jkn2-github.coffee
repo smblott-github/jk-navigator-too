@@ -11,7 +11,7 @@ configs.push
   selectors: [
     "li.js-navigation-item"
     "div.pagination a.next_page"
-    "div.subnav-links a.subnav-item:not(.selected):not([data-selected-links^='repo_labels']):not([data-selected-links^='repo_milestones'])"
+    # "div.subnav-links a.subnav-item:not(.selected):not([data-selected-links^='repo_labels']):not([data-selected-links^='repo_milestones'])"
   ]
   activators: "a.issue-title-link"
 
@@ -42,7 +42,7 @@ configs.push
   selectors: [
     "div#commits_bucket li.js-navigation-item"
     # Navigation bar.
-    "div.tabnav a.tabnav-tab:not(.selected):not(.preview-tab)"
+    # "div.tabnav a.tabnav-tab:not(.selected):not(.preview-tab)"
   ]
   activators: "a[href*='/commit/']"
 
