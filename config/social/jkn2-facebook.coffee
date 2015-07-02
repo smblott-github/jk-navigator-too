@@ -19,7 +19,7 @@ configs.push
   #   "//div[@data-timestamp]/div[contains(@class,'userContentWrapper')]/.."
   # ]
   activators: [ "div.fbstoryattachmentimage img", "a[rel=theater]" ]
-  activeSelector: "div[tabindex='0'] > div.userContentWrapper"
+  activeSelector: "div[tabindex='0'] div.userContentWrapper"
   offset: 65
   style:
     "border-color": "#3b5998"
