@@ -4,7 +4,10 @@ configs = []
 configs.push
   name: "Google Search"
   regexps: "^https?://(www\\.)?google\\.([a-z\\.]+)/search\\?"
-  selectors: "div#search li.g"
+  selectors: [
+    "div#search li.g"
+    "div.srg div.g"
+  ]
   style:
     "border-color": "#0266C8"
     opacity: "0.2"
