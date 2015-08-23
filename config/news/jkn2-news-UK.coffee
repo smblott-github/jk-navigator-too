@@ -39,7 +39,7 @@ configs.push
     "div.fc-item__container"
     "button.button--show-more"
   ]
-  offset: 60
+  offset: 80
 
 configs.push
   name: "Smooth Scrolling on Other Guardian Pages"
