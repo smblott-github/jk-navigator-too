@@ -6,7 +6,8 @@ configs.push
   regexps: "^https?://(www\\.)?google\\.([a-z\\.]+)/search\\?"
   selectors: [
     "div#search li.g"
-    "div.srg div.g"
+    # "div.srg div.g"
+    "div.g > div.rc"
   ]
   style:
     "border-color": "#0266C8"
