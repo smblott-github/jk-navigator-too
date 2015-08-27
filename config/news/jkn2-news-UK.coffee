@@ -31,6 +31,7 @@ configs.push
   regexps: "^https?://www\\.theguardian\\.com/.*/live/"
   selectors: "div.live-blog div[itemprop='liveBlogUpdate']"
   activators: "div.block-elements a"
+  offset: 75
 
 configs.push
   name: "The Guardian"
