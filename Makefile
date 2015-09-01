@@ -23,4 +23,3 @@ chrome-store:
 
 .PHONY: build auto chrome-store
 
-
