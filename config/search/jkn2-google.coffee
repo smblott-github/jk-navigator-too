@@ -8,6 +8,7 @@ configs.push
     "div#search li.g"
     # "div.srg div.g"
     "div.g > div.rc"
+    "div.g > div > div.rc"
   ]
   style:
     "border-color": "#0266C8"
