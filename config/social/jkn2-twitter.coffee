@@ -11,7 +11,8 @@ configs.push
   regexps: "^https?://([a-z]+\\.)?twitter.com/?"
   selectors: do ->
     selectors = [ "div.new-tweets-bar" ]
-    for context in [ "div.home-stream", "div.profile-stream", "div.list-stream", "div.search-stream", "li.stream-item" ]
+    # for context in [ "div.home-stream", "div.profile-stream", "div.list-stream", "div.search-stream", "li.stream-item" ]
+    for context in [ "li.stream-item" ]
       for content in [ "div.original-tweet", "li.conversation-root", "li.js-simple-tweet", "div.QuoteTweet" ]
         selectors.push "#{context} #{content}"
     selectors
