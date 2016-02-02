@@ -10,7 +10,7 @@ configs.push
     bindings, such as o, n and p.
     """
   native: true
-  regexps: "^https?://plus\\.google\\.com"
+  regexps: "^DISABLED-https?://plus\\.google\\.com"
   # NOTE: This is pretty dodgy.  Google doesn't set activeElement.  Instead, we detect the active element via
   # its CSS.  Unfortunately, this looks like it's been through a minifier.  So it could easily change.
   activeSelector: "div.tk.va[id^=update-]"
