@@ -23,7 +23,7 @@ configs.push
     "div.stream-item-footer span.expand-stream-item"
     "div.stream-item-footer span.collapse-stream-item"
   ]
-  offset: 80
+  offset: 140
 
 require("../../common.js").Common.mkConfigs configs, name: "Twitter"
 
