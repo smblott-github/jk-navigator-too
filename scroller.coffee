@@ -39,7 +39,7 @@ getDimension = (el, direction, amount) ->
     name = amount
     # the clientSizes of the body are the dimensions of the entire page, but the viewport should only be the
     # part visible through the window
-    if name is 'viewSize' and el is document.body
+    if name is 'viewSize' and el is document.documentElement
       # TODO(smblott) Should we not be returning the width/height of element, here?
       if direction is 'x' then window.innerWidth else window.innerHeight
     else
@@ -81,14 +81,14 @@ doesScroll = (element, direction, amount, factor) ->
 
 # From element and its parents, find the first which we should scroll and which does scroll.
 findScrollableElement = (element, direction, amount, factor) ->
-  while element != document.body and
+  while element != document.documentElement and
     not (doesScroll(element, direction, amount, factor) and shouldScroll(element, direction))
-      element = element.parentElement || document.body
+      element = element.parentElement || document.documentElement
   element
 
-# On some pages, document.body is not scrollable.  Here, we search the document for the largest visible
+# On some pages, document.documentElement is not scrollable.  Here, we search the document for the largest visible
 # element which does scroll vertically. This is used to initialize activatedElement. See #1358.
-firstScrollableElement = (element=document.body) ->
+firstScrollableElement = (element=document.documentElement) ->
   if doesScroll(element, "y", 1, 1) or doesScroll(element, "y", -1, 1)
     element
   else
@@ -214,14 +214,14 @@ Scroller =
   scrollBy: (element, direction, amount, continuous = false) ->
     factor = 1
     # if this is called before domReady, just use the window scroll function
-    if (!document.body and amount instanceof Number)
+    if (!document.documentElement and amount instanceof Number)
       if (direction == "x")
         window.scrollBy(amount, 0)
       else
         window.scrollBy(0, amount)
       return
 
-    activatedElement = element ? document.body
+    activatedElement = element ? document.documentElement
     return unless activatedElement
 
     # Avoid the expensive scroll calculation if it will not be used.  This reduces costs during smooth,
@@ -232,7 +232,7 @@ Scroller =
       CoreScroller.scroll element, direction, elementAmount, continuous
 
   scrollTo: (direction, pos) ->
-    activatedElement ||= (document.body and firstScrollableElement()) or document.body
+    activatedElement ||= (document.documentElement and firstScrollableElement()) or document.documentElement
     return unless activatedElement
 
     element = findScrollableElement activatedElement, direction, pos, 1
@@ -242,7 +242,7 @@ Scroller =
   # Scroll the top, bottom, left and right of element into view.  The is used by visual mode to ensure the
   # focus remains visible.
   scrollIntoView: (element) ->
-    activatedElement ||= document.body and firstScrollableElement()
+    activatedElement ||= document.documentElement and firstScrollableElement()
     rect = element. getClientRects()?[0]
     if rect?
       # Scroll y axis.
@@ -268,7 +268,7 @@ Scroller =
   # Scroll element to position top, left.  This is used by edit mode to ensure that the caret remains visible
   # in text inputs (not contentEditable).
   scrollToPosition: (element, top, left) ->
-    activatedElement ||= document.body and firstScrollableElement()
+    activatedElement ||= document.documentElement and firstScrollableElement()
 
     # Scroll down, "y".
     amount = top + 20 - (element.clientHeight + element.scrollTop)
