@@ -19,7 +19,7 @@ chrome-store:
 	   LICENSE \
 	   '*'.md \
 	   .gitignore
-	mv -v jk-navigator-too.zip ~/storage/google-drive/Extensions
+	mv -v jk-navigator-too.zip ~/smblott@gmail.com/extensions/
 
 .PHONY: build auto chrome-store
 
