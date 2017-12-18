@@ -10,6 +10,7 @@ configs.push
     "div.g > div.rc"
     "div.g > div > div.rc"
     "div.g > div > div > div.rc"
+    "g-inner-card"
   ]
   style:
     "border-color": "#0266C8"
