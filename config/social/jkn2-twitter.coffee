@@ -19,9 +19,9 @@ configs.push
     selectors.push "li.missing-tweets-bar"
     selectors
   activators: [
+    "a.show-thread-link"
+    "div.tweet"
     "div.original-tweet a.twitter-timeline-link"
-    # "div.multi-photos"
-    # View/Hide conversation (also view photo).
     "div.stream-item-footer span.expand-stream-item"
     "div.stream-item-footer span.collapse-stream-item"
   ]
