@@ -19,6 +19,7 @@ configs.push
     selectors.push "li.missing-tweets-bar"
     selectors
   activators: [
+    "a.js-openLink"
     "div.tweet"
     "a.show-thread-link"
     "div.original-tweet a.twitter-timeline-link"
