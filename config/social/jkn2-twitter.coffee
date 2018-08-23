@@ -19,8 +19,8 @@ configs.push
     selectors.push "li.missing-tweets-bar"
     selectors
   activators: [
-    "a.show-thread-link"
     "div.tweet"
+    "a.show-thread-link"
     "div.original-tweet a.twitter-timeline-link"
     "div.stream-item-footer span.expand-stream-item"
     "div.stream-item-footer span.collapse-stream-item"
