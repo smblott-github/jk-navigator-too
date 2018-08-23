@@ -29,7 +29,6 @@ class Interface
         unless event.repeat
           element = @element ? document.activateElement
           element ?= @querySelector document.body, @config.activeSelector if @config.activeSelector
-          console.log "pick", element
           @activateElement element, event if element and Common.isInViewport element
 
       when "up", "down"
@@ -212,7 +211,6 @@ class Interface
 
   activateElement: (element, event) ->
     activate = (ele = element) =>
-      console.log "activate", ele
       unless @config.noclick
         if ele.tagName.toLowerCase() == "a" and /^(http|https|file):\/\//.test ele.href
           # These lines we open ourselves.
@@ -228,6 +226,9 @@ class Interface
       selectors = [ "a[target=_blank]", "a[href~=http", "a[href~=https]", "a" ]
       selectors = [ (Common.stringToArray @config.activators)..., selectors... ] if @config.activators
       for selector in selectors
+        if element.matches selector
+          activate element
+          return
         if candidate = @querySelector element, selector
           activate candidate
           return
